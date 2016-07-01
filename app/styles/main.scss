@@ -87,3 +87,65 @@ body {
     border-bottom: 0;
   }
 }
+
+
+.menu-holder{
+  .navbar-nav {
+    li > div {
+    }
+    &.nav li{
+      &.active{
+        a{
+          color: #555;
+        }
+      }
+    }
+    &.nav a{
+      color: black;
+      &:hover{
+        color: black;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.nav > li {
+  a {
+    display: block;
+    padding: 5px 31px !important;
+    position: relative;
+    line-height: 40px;
+  }
+  .logout{
+    a{
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+    }
+  }
+}
+
+.menu-space{
+  height: 116px;
+}
+
+.fb-picture{
+  border-radius: 23px;
+}
+
+.no-padding-left{
+  padding-left: 0px;
+}
+
+.no-padding-right{
+  padding-right: 0px;
+}
+
+.navbar-brand{
+  padding-top: 3px;
+}
+
+.navbar-brand > img {
+    width: 84px;
+}
+
