@@ -12,6 +12,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
             		var needsToLog = auth.checkForLogin();
             		if(needsToLog){
             			$scope.displayLoginModal = true;
+            			angular.element(".collapse").addClass('displayModalLogin');
             		}
             	}
 
@@ -20,6 +21,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 					$scope.isAuthenticated = v;
 					if(v == true && $scope.displayLoginModal == true){
 						$scope.displayLoginModal = false;
+						angular.element(".collapse").removeClass('displayModalLogin');
 					}
 					if(v == true){
 						$scope.user = auth.loggedUser;

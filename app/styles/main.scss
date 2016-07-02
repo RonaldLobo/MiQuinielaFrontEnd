@@ -91,6 +91,7 @@ body {
 
 .menu-holder{
   .navbar-nav {
+    background-color: #f8f8f8;
     li > div {
     }
     &.nav li{
@@ -149,3 +150,26 @@ body {
     width: 84px;
 }
 
+
+.modal { 
+position: fixed; 
+top: 3%; 
+right: 3%; 
+left: 3%; 
+bottom: 3%; 
+width: auto; 
+margin: 0; 
+}
+.modal-body { 
+height: 60%; 
+}
+.modal-body { 
+max-height: 350px; 
+padding: 15px; 
+overflow-y: auto; 
+-webkit-overflow-scrolling: touch; 
+}
+
+.displayModalLogin{
+  display: block !important;
+}

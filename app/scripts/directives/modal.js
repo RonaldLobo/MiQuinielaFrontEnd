@@ -28,6 +28,7 @@ angular.module('miQuinielaApp')
 
             element.bind("hide.bs.modal", function () {
                 scope.display = false;
+                angular.element(".collapse").removeClass('displayModalLogin');
                 if (!scope.$$phase && !scope.$root.$$phase)
                     scope.$apply();
             });

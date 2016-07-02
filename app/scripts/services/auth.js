@@ -20,7 +20,7 @@ angular.module('miQuinielaApp')
   		var self = this;
   		if(user.username && user.password){
 	      	$http({
-				url: 'http://localhost/api/login',
+				url: '/API/index.php/login',
 				skipAuthorization: true,
 				method: 'POST',
 				data: {
@@ -45,7 +45,7 @@ angular.module('miQuinielaApp')
   		var self = this;
   		if(user.id){
 	      	$http({
-				url: 'http://localhost/api/login',
+				url: '/API/index.php/login',
 				skipAuthorization: true,
 				method: 'POST',
 				data: {
