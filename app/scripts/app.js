@@ -19,19 +19,25 @@ angular
     'ngSanitize',
     'ngTouch',
     'angular-jwt',
-    'facebook'
+    'facebook',
+    'ngLodash'
   ])  
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainCtrl',
-        controllerAs: 'main'
+        templateUrl: 'views/misjuegos.html',
+        controller: 'MisjuegosCtrl',
+        controllerAs: 'misjuegos'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
         controller: 'AboutCtrl',
         controllerAs: 'about'
+      })
+      .when('/misjuegos', {
+        templateUrl: 'views/misjuegos.html',
+        controller: 'MisjuegosCtrl',
+        controllerAs: 'misjuegos'
       })
       .otherwise({
         redirectTo: '/'

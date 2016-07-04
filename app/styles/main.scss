@@ -8,8 +8,17 @@
   padding: 0.2em 0;
 }
 
+html{
+  // background-color: #004d00;
+}
+
 body {
   padding: 0;
+  // background-color: #004d00 !important;
+}
+
+.container{
+  background-color: white !important;
 }
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -173,3 +182,49 @@ overflow-y: auto;
 .displayModalLogin{
   display: block !important;
 }
+
+.pantalla-partidos{
+
+  .muestra-partido{
+    .nombre-equipo{
+      width: 100px;
+      display: inline-block;
+      text-align: center;
+    }
+    .campo-marcador{
+      width: 45px !important;
+      display: inline-block;
+      text-align: center;
+    }
+    .titulo-linea{
+      width: 100px;
+      display: inline-block;
+      text-decoration: underline;
+    }
+  }
+
+  .linea-divisoria-hoy{
+    border-top: 1px solid green;
+    border-bottom: 1px solid green;
+    text-align: center;
+  }
+
+  .partido{
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid gray;
+  }
+
+  .row-par{
+    background-color: #f8f8f8;
+  }
+
+  .guardar-link{
+    &:hover{
+      text-decoration:underline;
+      cursor: pointer;
+    }
+  }
+}
+
+
