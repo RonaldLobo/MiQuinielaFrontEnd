@@ -1,0 +1,245 @@
+// bower:scss
+// endbower
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+html{
+  // background-color: #004d00;
+}
+
+body {
+  padding: 0;
+  // background-color: #004d00 !important;
+}
+
+.container{
+  background-color: white !important;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 10px;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+
+  .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+
+  p + h4 {
+    margin-top: 28px;
+  }
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+  }
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+
+.menu-holder{
+  .navbar-nav {
+    background-color: #f8f8f8;
+    li > div {
+    }
+    &.nav li{
+      &.active{
+        a{
+          color: #555;
+        }
+      }
+    }
+    &.nav a{
+      color: black;
+      &:hover{
+        color: black;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.nav > li {
+  a {
+    display: block;
+    padding: 5px 31px !important;
+    position: relative;
+    line-height: 40px;
+  }
+  .logout{
+    a{
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+    }
+  }
+}
+
+.menu-space{
+  height: 116px;
+}
+
+.fb-picture{
+  border-radius: 23px;
+}
+
+.no-padding-left{
+  padding-left: 0px;
+}
+
+.no-padding-right{
+  padding-right: 0px;
+}
+
+.navbar-brand{
+  padding-top: 3px;
+}
+
+.navbar-brand > img {
+    width: 84px;
+}
+
+
+.modal { 
+position: fixed; 
+top: 3%; 
+right: 3%; 
+left: 3%; 
+bottom: 3%; 
+width: auto; 
+margin: 0; 
+}
+.modal-body { 
+height: 60%; 
+}
+.modal-body { 
+max-height: 350px; 
+padding: 15px; 
+overflow-y: auto; 
+-webkit-overflow-scrolling: touch; 
+}
+
+.displayModalLogin{
+  display: block !important;
+}
+
+.pantalla-partidos{
+
+  .muestra-partido{
+    .nombre-equipo{
+      width: 100px;
+      display: inline-block;
+      text-align: center;
+    }
+    .campo-marcador{
+      width: 45px !important;
+      display: inline-block;
+      text-align: center;
+    }
+    .titulo-linea{
+      width: 100px;
+      display: inline-block;
+      text-decoration: underline;
+    }
+  }
+
+  .linea-divisoria-hoy{
+    border-top: 1px solid green;
+    border-bottom: 1px solid green;
+    text-align: center;
+  }
+
+  .partido{
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-bottom: 1px solid gray;
+  }
+
+  .row-par{
+    background-color: #f8f8f8;
+  }
+
+  .guardar-link{
+    &:hover{
+      text-decoration:underline;
+      cursor: pointer;
+    }
+  }
+}
+
+.title-page{
+  font-size: 20px;
+  padding: 14px;
+  color: green;
+}
+
+.configuracion{
+  &>div{
+    margin-bottom: 15px;
+    &>input{
+      width: 75%;
+    }
+  }
+}
+
+

@@ -1,0 +1,82 @@
+<p class="title-page">Mis Partidos</p>
+<div class="col-xs-12 pantalla-partidos no-padding-left no-padding-right">
+	<div class="partido col-xs-12 no-padding-left no-padding-right">
+		<div class="col-xs-9 muestra-partido">
+			<p class="col-xs-12 no-padding-left no-padding-right">
+				<span class="titulo-linea col-xs-2">Predicción</span>
+				<span class="nombre-equipo col-xs-2">Equipo Casa</span>
+				<span class="campo-marcador col-xs-1"></span> 
+				<span class="col-xs-1">-</span> 
+				<span class="campo-marcador col-xs-1"></span>
+				<span class="nombre-equipo col-xs-2">Equipo Visita</span>
+			</p>
+		</div>
+		<div class="col-xs-2">
+			Torneo
+		</div>
+		<div class="col-xs-1">
+			Pts
+		</div>
+	</div>
+
+	<div ng-repeat="partido in filtradosPasado">
+		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
+			<div class="col-xs-9 muestra-partido">
+				<p class="col-xs-12 no-padding-left no-padding-right">
+					<span class="titulo-linea col-xs-2">Predicción</span>
+					<span class="nombre-equipo col-xs-2">{{partido.equipo1}}</span>
+					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcadorEquipo1" disabled> 
+					<span class="col-xs-1">-</span> 
+					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcadorEquipo2" disabled>
+					<span class="nombre-equipo col-xs-2">{{partido.equipo2}}</span>
+				</p>
+				<p class="col-xs-12 no-padding-left no-padding-right">
+					<span class="titulo-linea col-xs-2">Resultado</span>
+					<span parse-fecha class="nombre-equipo col-xs-2" fecha="partido.fecha"></span>
+					<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo1}}</span> 
+					<span class="col-xs-1">-</span> 
+					<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo2}}</span>
+				</p>
+			</div>
+			<div class="col-xs-2">
+				{{partido.torneo.nombre}}
+			</div>
+			<div class="col-xs-1">
+				{{partido.prediccion.puntaje}}
+			</div>
+		</div>
+	</div>
+
+	<div class="col-xs-12 linea-divisoria-hoy">
+		Sin jugarse aún!
+	</div>
+
+	<div ng-repeat="partido in filtradosFuturo">
+		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
+			<div class="col-xs-9 muestra-partido">
+				<p class="col-xs-12 no-padding-left no-padding-right">
+					<span class="titulo-linea col-xs-2">Predicción</span>
+					<span class="nombre-equipo col-xs-2">{{partido.equipo1}}</span>
+					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcadorEquipo1"> 
+					<span class="col-xs-1">-</span> 
+					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcadorEquipo2">
+					<span class="nombre-equipo col-xs-2">{{partido.equipo2}}</span>
+					<span class="guardar-link col-xs-1" ng-click="guardarPrediccion(partido.id,partido.prediccion.id,partido.prediccion.marcadorEquipo1,partido.prediccion.marcadorEquipo2)">Guardar</span>
+				</p>
+				<p class="col-xs-12 no-padding-left no-padding-right">
+					<span class="titulo-linea col-xs-2">Resultado</span>
+					<span parse-fecha class="nombre-equipo col-xs-2" fecha="partido.fecha"></span>
+					<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo1}}</span> 
+					<span class="col-xs-1">-</span> 
+					<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo2}}</span>
+				</p>
+			</div>
+			<div class="col-xs-2">
+				{{partido.torneo.nombre}}
+			</div>
+			<div class="col-xs-1">
+				{{partido.prediccion.puntaje}}
+			</div>
+		</div>
+	</div>
+</div>
