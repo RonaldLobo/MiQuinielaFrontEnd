@@ -242,4 +242,17 @@ overflow-y: auto;
   }
 }
 
+.invitacion-cont{
+  padding-left: 12px;
+  span{
+    border: 1px solid black;
+    padding: 4px 4px 4px 5px;
+    border-radius: 13px;
+    margin-left: 24px;
+    cursor: pointer;
+  }
+  &:hover{
+    text-decoration: underline;
+  }
+}
 
