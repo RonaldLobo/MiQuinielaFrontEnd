@@ -15,7 +15,8 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
             			angular.element(".collapse").addClass('displayModalLogin');
             		}
             	}
-
+            	console.log('logged',auth.loggedUser);
+            	$scope.user = auth.loggedUser;
 
             	$scope.$watch(function(){return auth.isAuthenticated;}, function (v) {
 					$scope.isAuthenticated = v;
@@ -58,7 +59,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
                 	$scope.home = false;
                 	$scope.about = false;
                 	$scope.foro = false;
-                	$scope.news = false;
+                	$scope.configuracion = false;
 	                switch($location.path()){
 	                	case "/": 
 	                		$scope.home = true;
@@ -69,8 +70,8 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	                	case "/foro": 
 	                		$scope.foro = true;
 	                		break;
-	                	case "/news": 
-	                		$scope.news = true;
+	                	case "/configuracion": 
+	                		$scope.configuracion = true;
 	                		break;
 	                }
 	            });

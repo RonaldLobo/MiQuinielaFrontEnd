@@ -2,10 +2,11 @@
 	<ul class="nav navbar-nav">
       <li ng-class="{'active': home }"><a href="#/">Partidos</a></li>
       <li ng-class="{'active': about }"><a ng-href="#/about">Torneos</a></li>
-      <li ng-class="{'active': news }"><a ng-href="#/">Configuracion</a></li>
+      <li ng-class="{'active': about }"><a ng-href="#/about">Grupos</a></li>
+      <li ng-class="{'active': configuracion }"><a ng-href="#/configuracion">Configuración</a></li>
       <li>
       	<div ng-if="isAuthenticated == true">
-		    <p>{{user.name}}</p>
+		    <p>{{user.usuario}}</p>
 		    <div class="col-xs-12 no-padding-left no-padding-right">
 		    	<div class="col-xs-6 no-padding-left" ng-if="isFacebookAuth">
 		    		<div><img class="fb-picture" src="http://graph.facebook.com/{{user.fbId}}/picture"/></div>
