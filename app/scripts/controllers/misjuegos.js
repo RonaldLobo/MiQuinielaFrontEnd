@@ -58,7 +58,7 @@ angular.module('miQuinielaApp')
 			marcadorEquipo1 : 1,
 		    marcadorEquipo2 : 1,
 		    prediccion: {
-		    	id : 2,
+		    	id : 3,
 		    	marcadorEquipo1: 1,
 		    	marcadorEquipo2: 0,
 		    	puntaje: 0
@@ -76,7 +76,7 @@ angular.module('miQuinielaApp')
 			marcadorEquipo1 : 0,
 		    marcadorEquipo2 : 0,
 		    prediccion: {
-		    	id : 2,
+		    	id : 7,
 		    	marcadorEquipo1: 2,
 		    	marcadorEquipo2: 0,
 		    	puntaje: 0
@@ -94,7 +94,7 @@ angular.module('miQuinielaApp')
 			marcadorEquipo1 : 0,
 		    marcadorEquipo2 : 0,
 		    prediccion: {
-		    	id : 2,
+		    	id : 6,
 		    	marcadorEquipo1: 0,
 		    	marcadorEquipo2: 0,
 		    	puntaje: 0
@@ -117,9 +117,8 @@ angular.module('miQuinielaApp')
     	return date.getTime() < o.fecha;  
     });
 
-    $scope.guardarPrediccion = function(id,marcador1,marcador2){
-    	console.log('guardar',id,marcador1,marcador2);
+    $scope.guardarPrediccion = function(id,idPrediccion,marcador1,marcador2){
+    	console.log('guardar',id,idPrediccion,marcador1,marcador2);
     };
 
-    // $scope.filtradosPorFecha = 
   }]);

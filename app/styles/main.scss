@@ -230,4 +230,19 @@ overflow-y: auto;
   }
 }
 
+.title-page{
+  font-size: 20px;
+  padding: 14px;
+  color: green;
+}
+
+.configuracion{
+  &>div{
+    margin-bottom: 15px;
+    &>input{
+      width: 75%;
+    }
+  }
+}
+
 

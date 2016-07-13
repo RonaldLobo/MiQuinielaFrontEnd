@@ -20,22 +20,21 @@ angular.module('miQuinielaApp')
   		var self = this;
   		if(user.username && user.password){
 	      	$http({
-				url: '/API/index.php/login',
+				url: 'http://localhost/API/index.php/login',
 				skipAuthorization: true,
 				method: 'POST',
 				data: {
-					username: user.username,
-					password: user.password,
-					type: "normal"
+					usuario: user.username,
+					contrasenna: user.password,
+					tipo: "normal"
 				}
 			}).then(function(response) {
-				self.loggedUser.name = user.username;
-				self.loggedUser.id = '1';
 				self.isFacebookAuth = false;
 				localStorage.setItem('JWT', response.data.auth.token);
-				localStorage.setItem('userId', '1');
-				localStorage.setItem('userName', user.username);
+				localStorage.setItem('usuarioId', response.data.auth.user.id);
 				localStorage.setItem('isFacebookAuth', false);
+				self.loggedUser = response.data.auth.user;
+				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
 				self.isAuthenticated = true;
 			});
 		}
@@ -59,7 +58,7 @@ angular.module('miQuinielaApp')
 				self.loggedUser.id = '1';
 				self.loggedUser.fbId = user.id;
 				localStorage.setItem('JWT', response.data.auth.token);
-				localStorage.setItem('userId', '1');
+				localStorage.setItem('usuarioId', '1');
 				localStorage.setItem('userFbId', user.id);
 				localStorage.setItem('userName', user.name);
 				localStorage.setItem('isFacebookAuth', true);
@@ -70,8 +69,7 @@ angular.module('miQuinielaApp')
 
   	this.checkForLogin = function(){
   		if(localStorage.getItem('JWT')){
-  			this.loggedUser.id = localStorage.getItem('userId');
-  			this.loggedUser.name = localStorage.getItem('userName');
+  			this.loggedUser = JSON.parse(localStorage.getItem('usuario'));
   			if(localStorage.getItem('isFacebookAuth') == true){
   				this.isFacebookAuth = true;
   				this.loggedUser.fbId = localStorage.getItem('userFbId');
@@ -87,13 +85,12 @@ angular.module('miQuinielaApp')
 
   	this.logOut = function(){
   		localStorage.removeItem('JWT');
-		localStorage.removeItem('userId');
+		localStorage.removeItem('usuarioId');
 		localStorage.removeItem('userFbId');
-		localStorage.removeItem('userName');
+		localStorage.removeItem('usuario');
 		localStorage.removeItem('isFacebookAuth');
 		this.isFacebookAuth = false;
-		this.loggedUser.name = '';
-		this.loggedUser.id = '';
+		this.loggedUser = {};
 		this.loggedUser.fbId = '';
 		this.isAuthenticated = false;
   	}

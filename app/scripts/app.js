@@ -39,6 +39,11 @@ angular
         controller: 'MisjuegosCtrl',
         controllerAs: 'misjuegos'
       })
+      .when('/configuracion', {
+        templateUrl: 'views/configuracion.html',
+        controller: 'ConfiguracionCtrl',
+        controllerAs: 'configuracion'
+      })
       .otherwise({
         redirectTo: '/'
       });
