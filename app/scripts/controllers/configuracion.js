@@ -53,7 +53,7 @@ angular.module('miQuinielaApp')
 
   	$scope.aceptarInvitacion = function(id){
   		var request = $.ajax({
-		  url: "http://localhost/API/index.php/invitaciones/"+id+"?XDEBUG_SESSION_START=netbeans-xdebug",
+		  url: "http://localhost/API/index.php/invitaciones/"+id,
 		  method: "PUT",
 		  dataType: "text"
 		});

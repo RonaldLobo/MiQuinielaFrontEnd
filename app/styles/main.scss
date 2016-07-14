@@ -259,3 +259,23 @@ overflow-y: auto;
   }
 }
 
+.navbar{
+  .container{
+    background: #f8f8f8 !important;
+  }
+}
+
+.nav .login-info{
+  padding: 0 20px;
+  p{
+    margin: 0;
+  }
+  a{
+    line-height:19px;
+  }
+}
+
+.login-action{
+  padding: 15px 16px !important;
+}
+
