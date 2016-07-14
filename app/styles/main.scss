@@ -156,9 +156,12 @@ body {
 }
 
 .navbar-brand > img {
-    width: 84px;
+    width: 45px;
+    background-color:#f8f8f8;
 }
-
+.navbar-default .navbar-collapse, .navbar-default .navbar-form,.navbar-brand,.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus{
+    background-color:#f8f8f8;
+}
 
 .modal { 
 position: fixed; 
