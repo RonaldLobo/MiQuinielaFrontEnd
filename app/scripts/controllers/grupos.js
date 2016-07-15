@@ -73,7 +73,6 @@ angular.module('miQuinielaApp')
 		     usuarios=data.usuarios;
 	  		 for (var i =0;i< usuariosGrupo.length; i++) {
 	  		 	if(usuariosGrupo[i].grupo==prevGrupo.id){
-	  		 		console.log("ug"+usuariosGrupo[i].grupo);
 	  		 		for (var j = usuarios.length - 1; j >= 0; j--) {
 	  		 			if(usuarios[j].id==usuariosGrupo[i].usuario){
 	  		 				prevGrupo.usuarios[prevGrupo.usuarios.length]={nombre:usuarios[j].nombre,puntaje:j};
@@ -82,6 +81,8 @@ angular.module('miQuinielaApp')
 	  		 	} 
 	  		 };
   			$scope.grupo= prevGrupo;
+  			console.log($scope.grupo);
+
 		   },
     	  contentType: "application/json; charset=utf-8",
 		});
