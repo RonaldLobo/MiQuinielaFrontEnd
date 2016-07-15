@@ -156,7 +156,7 @@ body {
 }
 
 .navbar-brand > img {
-    width: 45px;
+    width: 55px;
     background-color:#f8f8f8;
 }
 .navbar-default .navbar-collapse, .navbar-default .navbar-form,.navbar-brand,.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus{
@@ -220,6 +220,11 @@ overflow-y: auto;
 
   .row-par{
     background-color: #f8f8f8;
+  }
+  .encabezado-tabla{
+    color:#ffffff;
+    background-color:black;
+    font-size:20px;
   }
 
   .guardar-link{
