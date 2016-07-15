@@ -21,10 +21,10 @@ angular.module('miQuinielaApp')
     	$scope.ordenUsuarios==='-puntaje' ? $scope.ordenUsuarios='puntaje': $scope.ordenUsuarios='-puntaje';
 
     }
-    $scope.grupo = {};
 	var usuariosGrupo={};
 	var usuarios={};
-  	$scope.actualizarLista = function(){
+	var prevGrupo={};
+  	var actualizaGrupos = function(){
   		console.log('called 1');
   		var request = $.ajax({
 		  url: "http://localhost/API/index.php/grupos/1",
@@ -34,8 +34,7 @@ angular.module('miQuinielaApp')
 		   },
 		   dataType: 'json',
 		   success: function(data) {
-		      	$scope.grupo.usuarios=data.usuarios;
-		  		$scope.grupo = 
+		  		prevGrupo = 
 		    	{
 		    		id : data.grupo.id,
 					nombre : data.grupo.nombre,
@@ -45,7 +44,10 @@ angular.module('miQuinielaApp')
 		   },
     	  contentType: "application/json; charset=utf-8",
 		});
-  		request = $.ajax({
+  	};
+
+  	var actualizaIntitaciones = function(){
+  		var request = $.ajax({
 		  url: "http://localhost/API/index.php/invitaciones/",
 		  method: "GET",
 		  data: {
@@ -54,37 +56,40 @@ angular.module('miQuinielaApp')
 		   dataType: 'json',
 		   success: function(data) {
 		      usuariosGrupo=data.grupos;
-		      console.log(usuariosGrupo);
 		   },
     	  contentType: "application/json; charset=utf-8",
 		});
+  	};
+  	var actualizarLista = function(){
 
-  		 request= $.ajax({
+  		var request= $.ajax({
 		  url: "http://localhost/API/index.php/usuarios/",
 		  method: "GET",
 		  data: {
 		      format: 'json'
-		   },
+		   }, 
 		   dataType: 'json',
 		   success: function(data) {
 		     usuarios=data.usuarios;
-		      console.log(usuarios);
-		      console.log(usuariosGrupo.length);
-  		 for (var i =0;i< usuariosGrupo.length; i++) {
-  		 	console.log("loop");
-  		 	if(usuariosGrupo[i].grupo==$scope.grupo.id){
-  		 		console.log("ug"+usuariosGrupo[i].grupo);
-  		 		for (var j = usuarios.length - 1; j >= 0; j--) {
-  		 			if(usuarios[j].id==usuariosGrupo[i].usuario){
-  		 				$scope.grupo.usuarios[$scope.grupo.usuarios.length]={nombre:usuarios[j].nombre,puntaje:j};
-  		 			}
-  		 		};
-  		 	}
-  		 };
+	  		 for (var i =0;i< usuariosGrupo.length; i++) {
+	  		 	if(usuariosGrupo[i].grupo==prevGrupo.id){
+	  		 		for (var j = usuarios.length - 1; j >= 0; j--) {
+	  		 			if(usuarios[j].id==usuariosGrupo[i].usuario){
+	  		 				prevGrupo.usuarios[prevGrupo.usuarios.length]={nombre:usuarios[j].nombre,puntaje:j};
+	  		 			}
+	  		 		};
+	  		 	} 
+	  		 };
+  			$scope.grupo= prevGrupo;
+  			console.log($scope.grupo);
+
 		   },
     	  contentType: "application/json; charset=utf-8",
 		});
 		      
-  	}();
+  	};
+  	actualizaGrupos();
+  	actualizaIntitaciones();
+  	actualizarLista();
     
   });
