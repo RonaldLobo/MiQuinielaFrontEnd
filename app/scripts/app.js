@@ -44,6 +44,11 @@ angular
         controller: 'ConfiguracionCtrl',
         controllerAs: 'configuracion'
       })
+      .when('/grupos', {
+        templateUrl: 'views/grupos.html',
+        controller: 'GruposCtrl',
+        controllerAs: 'grupos'
+      })
       .otherwise({
         redirectTo: '/'
       });
