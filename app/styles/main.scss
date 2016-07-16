@@ -156,7 +156,7 @@ body {
 }
 
 .navbar-brand > img {
-    width: 45px;
+    width: 55px;
     background-color:#f8f8f8;
 }
 .navbar-default .navbar-collapse, .navbar-default .navbar-form,.navbar-brand,.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus{
@@ -221,6 +221,11 @@ overflow-y: auto;
   .row-par{
     background-color: #f8f8f8;
   }
+  .encabezado-tabla{
+    color:#ffffff;
+    background-color:black;
+    font-size:20px;
+  }
 
   .guardar-link{
     &:hover{
@@ -279,4 +284,25 @@ overflow-y: auto;
   text-align:center;
 }
 /*** End Estilos Torneo ***/
+
+.navbar{
+  .container{
+    background: #f8f8f8 !important;
+  }
+}
+
+.nav .login-info{
+  padding: 0 20px;
+  p{
+    margin: 0;
+  }
+  a{
+    line-height:19px;
+  }
+}
+
+.login-action{
+  padding: 15px 16px !important;
+}
+
 

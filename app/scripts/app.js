@@ -49,6 +49,11 @@ angular
         controller: 'TorneosCtrl',
         controllerAs: 'torneos'
       })
+      .when('/grupos', {
+        templateUrl: 'views/grupos.html',
+        controller: 'GruposCtrl',
+        controllerAs: 'grupos'
+      })
       .otherwise({
         redirectTo: '/'
       });

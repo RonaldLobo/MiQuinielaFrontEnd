@@ -12,17 +12,18 @@ angular.module('miQuinielaApp')
         restrict: 'EA',
         templateUrl: 'views/modal.html',
         scope: {
-            display: "="
+            display: "=",
+            elemento: "@"
         },
         transclude: true,
         link: function(scope, element, attributes){
             //display modal watch
             scope.$watch(function(){return scope.display;}, function (v) {
                 if(v == true){
-                    angular.element(".modal").modal('show');
+                    angular.element("#"+scope.elemento).modal('show');
                 }
                 else{
-                    angular.element(".modal").modal('hide');
+                    angular.element("#"+scope.elemento).modal('hide');
                 }
             },true);
 

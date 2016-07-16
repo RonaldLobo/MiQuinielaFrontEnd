@@ -1,0 +1,19 @@
+<p class="title-page">Grupo: {{grupo.nombre}}</p>
+<div class="col-xs-12 pantalla-partidos no-padding-left no-padding-right">
+	<div class="partido col-xs-12 no-padding-left no-padding-right">
+		<p class="col-xs-12 no-padding-left no-padding-right encabezado-tabla">
+			<span class="titulo-linea col-xs-8">Usuario</span>
+			<span class="nombre-equipo col-xs-4">Puntos <span ng-click="cambiarOrden()">{{flecha}}</span></span>
+		</p>
+	</div>
+
+	<div ng-repeat="usuario in grupo.usuarios | orderBy:ordenUsuarios">
+		<div class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
+			<p class="col-xs-12 no-padding-left no-padding-right">
+				<span class="titulo-linea col-xs-8">{{usuario.nombre}}</span>
+				<span class="nombre-equipo col-xs-4">{{usuario.puntaje}}</span>
+			</p>
+		</div>
+	</div>
+
+</div>
