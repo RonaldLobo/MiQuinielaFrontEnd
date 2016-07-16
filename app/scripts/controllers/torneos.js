@@ -8,46 +8,66 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('TorneosCtrl', ['$scope','lodash',function ($scope,lodash) {
-    $scope.elementos = [
-    	{
-		     id: 1,
-		     nombre: 'Torneo de Verano Costa Rica 2016',
-         usurioId: 2
-        },
-    	{
-         id : 2,
-		     nombre: 'Torneo de Invierno Costa Rica 2016',
-         usurioId: 2
-    	},
-       {
-         id : 3,
-		     nombre: 'Champions League',
-         usurioId: 1
-    	},
-       {
-         id : 4,
-		     nombre: 'Ligue 1',
-         usurioId: 1  
-    	}
-    ];
+  .controller('TorneosCtrl', ['$http','$scope','$timeout','auth','lodash',function ($http,$scope,$timeout,auth,lodash) {
 
-     $scope.torneosUsuario = _.filter($scope.elementos, function (elemento) {
-       return _.includes([2], elemento.usurioId );  
-    });
+    $http({
+        url: "http://localhost:8012/API/index.php/torneo/",
+        method: 'GET',
+     }).then(function successCallback(response) {
+         console.log('success',response);
+         $scope.torneosUsuario = response.data.torneo;
+     }, function errorCallback(response) {
+         alert( "Request failed: " + response );
+     });
 
       $scope.addTorneo = function(){
          $scope.showAgregarTorneo = true;
       }
       
-      $scope.addTorneoUsuario = function($Nombre) {
-        var dataObject = {"nombre" : $Nombre,"usuarioId" : 1};  
-        $scope.showAgregarTorneo = false;
-        $scope.torneosUsuario.push(dataObject);
+      $scope.addTorneoUsuario = function(torneo) {
+        var torneo = {
+          "usuario": torneo
+        }
+      var request = $.ajax({
+        url: "http://localhost:8012/API/index.php/torneo/",
+        method: "POST",
+        data: JSON.stringify(torneo),
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        });
        };
       
       $scope.delTorneo = function(idTorneo) {
-        $scope.torneosUsuario.splice(idTorneo,1);
+       if(auth.loggedUser.rol == 'admin'){
+         $http({
+          url: "http://localhost:8012/API/index.php/torneo/"+idTorneo,
+          method: 'DELETE',
+       }).then(function successCallback(response) {
+           console.log('success',response);
+          $timeout(function() {
+            $scope.torneosUsuario = _.remove($scope.torneosUsuario, function(n) {
+              return n.id != idTorneo;
+              });
+           });
+       }, function errorCallback(response) {
+           alert( "Request failed: " + response );
+       });
+        } else{
+          $http({
+          url: "http://localhost:8012/API/index.php/torneo/"+idTorneo,
+          method: 'DELETE',
+       }).then(function successCallback(response) {
+           console.log('success',response);
+          $timeout(function() {
+            $scope.torneosUsuario = _.remove($scope.torneosUsuario, function(n) {
+              return n.id != idTorneo;
+              });
+           });
+       }, function errorCallback(response) {
+           alert( "Request failed: " + response );
+       });
+        }
+
       }
       
   }]);
