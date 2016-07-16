@@ -259,3 +259,24 @@ overflow-y: auto;
   }
 }
 
+/*** Start Estilos Torneo ***/
+.pantalla-partidos .partido .torneo-titulo-prin{
+  text-align: center;
+}
+.pantalla-partidos .partido .plus-icon-prin{
+  text-align: center;
+}
+.pantalla-partidos .partido .plus-icon-prin a i{
+  color: gray;
+}
+.btn-agregar-torneo{
+  padding: 2px 10px;
+}
+.txt-add-torneo{
+  width:100%;
+}
+.btn-agregar-torneo{
+  text-align:center;
+}
+/*** End Estilos Torneo ***/
+

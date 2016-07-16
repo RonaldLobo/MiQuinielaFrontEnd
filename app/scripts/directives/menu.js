@@ -57,15 +57,15 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
                 	$scope.home = false;
-                	$scope.about = false;
+                	$scope.torneos = false;
                 	$scope.foro = false;
                 	$scope.configuracion = false;
 	                switch($location.path()){
 	                	case "/": 
 	                		$scope.home = true;
 	                		break;
-	                	case "/about": 
-	                		$scope.about = true;
+	                	case "/torneos": 
+	                		$scope.torneos = true;
 	                		break;
 	                	case "/foro": 
 	                		$scope.foro = true;
