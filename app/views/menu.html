@@ -1,26 +1,31 @@
-<div class="menu-holder" ng-if="visible">
-	<ul class="nav navbar-nav">
-      <li ng-class="{'active': home }"><a href="#/">Partidos</a></li>
-      <li ng-class="{'active': about }"><a ng-href="#/about">Torneos</a></li>
-      <li ng-class="{'active': grupos }"><a ng-href="#/grupos">Grupos</a></li>
-      <li ng-class="{'active': configuracion }"><a ng-href="#/configuracion">Configuración</a></li>
+<div class="menu-holder">
+	<ul class="nav navbar-nav" ng-if="visible">
+      <li ng-class="{'active': home }" ><a href="#/home">Partidos</a></li>
+      <li ng-class="{'active': about }" ><a ng-href="#/about">Torneos</a></li>
+      <li ng-class="{'active': grupos }" ><a ng-href="#/grupos">Grupos</a></li>
+      <li ng-class="{'active': configuracion }" ><a ng-href="#/configuracion">Configuración</a></li>
       <li class="login-info">
       	<div ng-if="isAuthenticated == true">
-		    <p>{{user.usuario}}</p>
-		    <div class="col-xs-12 no-padding-left no-padding-right">
-		    	<div class="col-xs-6 no-padding-left" ng-if="isFacebookAuth">
-		    		<div><img class="fb-picture" src="http://graph.facebook.com/{{user.fbId}}/picture"/></div>
-		    	</div>
-		    	<div class="col-xs-12 logout no-padding-left no-padding-right" ng-class="{'col-xs-6': isFacebookAuth}">
-		    		<a data-ng-disabled="!facebookReady" data-ng-click="logoutBoth()">Log Out</a>
+		    <p ng-if="isFacebookAuth" class="col-xs-6 user-name-display">{{user.nombre}}</p>
+        <p ng-if="isFacebookAuth == false" class="col-xs-6 user-name-display">{{user.usuario}}</p>
+		    <div class="col-xs-5 no-padding-left no-padding-right">
+		    	<div class="col-xs-12 no-padding-left" ng-if="isFacebookAuth == true">
+		    		<div><img class="fb-picture" src="http://graph.facebook.com/{{user.usuario}}/picture"/></div>
 		    	</div>
 		    </div>
+        <div class="logout no-padding-left no-padding-right" ng-class="isFacebookAuth == true ? 'col-xs-12' : 'col-xs-6 log-out-no-fb' ">
+          <a data-ng-disabled="!facebookReady" data-ng-click="logoutBoth()">Log Out</a>
+        </div>
 		</div>
 		<div ng-if="isAuthenticated == false" class="login-action">
       		<a ng-click="showLogin()">Login</a>
 		</div>
       </li>
 	</ul>
+  <div ng-if="visible == false" class="login-action">
+        <a ng-click="showLogin()">Login</a>
+        <a ng-click="showLogup()">LogUp</a>
+  </div>
 </div>
 
 <modal display="displayLoginModal" elemento="loginModal" data-ng-click-right-button="myRightButton()">
@@ -33,11 +38,37 @@
         <form name="myForm">
           <input type="text" name="input" ng-model="inputUser.username" ng-trim="false">
           <input type="text" name="input" ng-model="inputUser.password" ng-trim="false">
+          <p class="error">{{error}}</p>
           <button ng-click="regularLogin(inputUser)">ingresar</button>
         </form>
       </div>
       <div class="col-xs-6 no-padding-left no-padding-right">
         <button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Login with Facebook</button>
+        <!-- <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button> -->
+      </div>
+    </div>
+</modal>
+
+<modal display="displayLogUpModal" elemento="logupModal" data-ng-click-right-button="myRightButton()">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">LogUp</h4>
+    </div>
+    <div class="modal-body col-xs-12">
+      <div class="col-xs-6 divisor-line">
+        <form name="myForm">
+          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false" placeholder="Username">
+          <input type="password" name="input" ng-model="inputUser.password" ng-trim="false" placeholder="Password">
+          <input type="password" name="input" ng-model="inputUser.confirmPassword" ng-trim="false" placeholder="Confirmar Password">
+          <input type="text" name="input" ng-model="inputUser.nombre" ng-trim="false" placeholder="Nombre">
+          <input type="text" name="input" ng-model="inputUser.apellido" ng-trim="false" placeholder="Apellido">
+          <input type="text" name="input" ng-model="inputUser.correo" ng-trim="false" placeholder="Correo">
+          <p class="error">{{errorLogUp}}</p>
+          <button ng-click="regularLogup(inputUser)">Agregarse</button>
+        </form>
+      </div>
+      <div class="col-xs-6 no-padding-right">
+        <button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLoginUp()">Login with Facebook</button>
         <!-- <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button> -->
       </div>
     </div>

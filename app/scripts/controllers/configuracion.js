@@ -11,14 +11,10 @@ angular.module('miQuinielaApp')
   .controller('ConfiguracionCtrl', function ($scope,auth) {
     //get user logged
     $scope.$watch( function () { return auth.loggedUser; }, function (loggedUser) {
-    	console.log('logueado',loggedUser)
     	$scope.usuario = loggedUser;
-    	//get invitaciones
-
   	}, true);
 
   	$scope.actualizarUsuario = function(){
-  		console.log('called 1');
   		var usuario = {
   			"usuario": $scope.usuario
   		}
@@ -32,10 +28,9 @@ angular.module('miQuinielaApp')
 		});
   	};
 
-  	obtenerInvitaciones(1);
+  	obtenerInvitaciones(auth.loggedUser.id);
 
   	function obtenerInvitaciones(id){
-  		console.log('called 2');
   		var request = $.ajax({
 		  url: "http://localhost/API/index.php/invitaciones/"+id,
 		  method: "GET",
@@ -43,7 +38,9 @@ angular.module('miQuinielaApp')
 		 
 		request.done(function( data ) {
 		  console.log('success',data.grupos);
-		  $scope.invitaciones = data.grupos;
+		  $scope.$apply(function(){
+		  	$scope.invitaciones = data.grupos;
+		  });
 		});
 		 
 		request.fail(function( jqXHR, textStatus ) {

@@ -8,117 +8,61 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('MisjuegosCtrl', ['$scope','lodash',function ($scope,lodash) {
+  .controller('MisjuegosCtrl', ['$scope','lodash','$http',function ($scope,lodash,$http) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
-    $scope.partidos = [
-    	{
-    		id : 1,
-			equipo1 : "LDA",
-			equipo2 : "La S",
-			marcadorEquipo1 : 2,
-		    marcadorEquipo2 : 1,
-		    prediccion: {
-		    	id : 1,
-		    	marcadorEquipo1: 2,
-		    	marcadorEquipo2: 1,
-		    	puntaje: 3
-		    },
-		    torneo: {
-		    	id: 1,
-		    	nombre: 'Liga de Costa Rica'
-		    },
-		    fecha : 1467582344906
-    	},
-    	{
-    		id : 2,
-			equipo1 : "Perez",
-			equipo2 : "Santos",
-			marcadorEquipo1 : 2,
-		    marcadorEquipo2 : 1,
-		    prediccion: {
-		    	id : 2,
-		    	marcadorEquipo1: 2,
-		    	marcadorEquipo2: 0,
-		    	puntaje: 1
-		    },
-		    torneo: {
-		    	id: 1,
-		    	nombre: 'Liga de Costa Rica'
-		    },
-		    fecha : 1467582344906
-    	},
-    	{
-    		id : 3,
-			equipo1 : "Liberia",
-			equipo2 : "San Carlos",
-			marcadorEquipo1 : 1,
-		    marcadorEquipo2 : 1,
-		    prediccion: {
-		    	id : 3,
-		    	marcadorEquipo1: 1,
-		    	marcadorEquipo2: 0,
-		    	puntaje: 0
-		    },
-		    torneo: {
-		    	id: 1,
-		    	nombre: 'Liga de Costa Rica'
-		    },
-		    fecha : 1467582344906
-    	},
-    	{
-    		id : 4,
-			equipo1 : "Limon",
-			equipo2 : "Belen",
-			marcadorEquipo1 : 0,
-		    marcadorEquipo2 : 0,
-		    prediccion: {
-		    	id : 7,
-		    	marcadorEquipo1: 2,
-		    	marcadorEquipo2: 0,
-		    	puntaje: 0
-		    },
-		    torneo: {
-		    	id: 1,
-		    	nombre: 'Liga de Costa Rica'
-		    },
-		    fecha : 1467755144906
-    	},
-    	{
-    		id : 5,
-			equipo1 : "Heredia",
-			equipo2 : "La U",
-			marcadorEquipo1 : 0,
-		    marcadorEquipo2 : 0,
-		    prediccion: {
-		    	id : 6,
-		    	marcadorEquipo1: 0,
-		    	marcadorEquipo2: 0,
-		    	puntaje: 0
-		    },
-		    torneo: {
-		    	id: 1,
-		    	nombre: 'Liga de Costa Rica'
-		    },
-		    fecha : 1467755144906 //time basado en la epoca UNIX
-    	}
-    ];
 
-    $scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
-    	var date = new Date();
-    	return date.getTime() >= o.fecha; 
-    });
+    $scope.displayAddPartidoModal = false;
 
-    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
-    	var date = new Date();
-    	return date.getTime() < o.fecha;  
-    });
+    $scope.todayDate = new Date();
+    $scope.initDate = new Date();
+    $scope.finalDate = new Date()
+    $scope.finalDate.setDate($scope.todayDate.getDate() + 7);
+    $scope.initDate.setDate($scope.todayDate.getDate() - 7);
 
+    function convertDate(date){
+    	var dd = date.getDate();
+	    var mm = date.getMonth()+1; //January is 0!
+
+	    var yyyy = date.getFullYear();
+	    if(dd<10){
+	        dd='0'+dd
+	    } 
+	    if(mm<10){
+	        mm='0'+mm
+	    } 
+	    return yyyy+'/'+mm+'/'+dd;
+    }
+
+    console.log($scope.initDate,$scope.finalDate);
+    $http({
+	  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
+	  method: 'GET',
+	}).then(function successCallback(response) {
+	    console.log('success',response.data.partido);
+	    $scope.partidos = response.data.partido;
+		$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
+	    	var date = new Date();
+	    	return date.getTime() >= o.fecha; 
+	    });
+
+	    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
+	    	var date = new Date();
+	    	return date.getTime() < o.fecha;  
+	    });
+	}, function errorCallback(response) {
+	    alert( "Request failed: " + response );
+	});
+	 
     $scope.guardarPrediccion = function(id,idPrediccion,marcador1,marcador2){
     	console.log('guardar',id,idPrediccion,marcador1,marcador2);
+    };
+
+    $scope.agregarPartido = function(){
+    	$scope.displayAddPartidoModal = true;
     };
 
   }]);

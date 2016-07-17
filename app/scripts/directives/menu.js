@@ -12,10 +12,13 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
             		var needsToLog = auth.checkForLogin();
             		if(needsToLog){
             			$scope.displayLoginModal = true;
+            			$scope.visible = false;
             			angular.element(".collapse").addClass('displayModalLogin');
             		}
+            		else{
+            			$scope.visible = true;
+            		}
             	}
-            	console.log('logged',auth.loggedUser);
             	$scope.user = auth.loggedUser;
 
             	$scope.$watch(function(){return auth.isAuthenticated;}, function (v) {
@@ -26,9 +29,14 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 					}
 					if(v == true){
 						$scope.user = auth.loggedUser;
+						$scope.visible = true;
+						$scope.displayLogUpModal = false;
 					}
 					if(auth.isFacebookAuth){
 						$scope.isFacebookAuth = auth.isFacebookAuth;
+					}
+					if(v == false){
+						$scope.visible = false;
 					}
 	            },true);
 
@@ -36,12 +44,42 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 					$scope.isFacebookAuth = auth.isFacebookAuth;
 	            },true);
 
+	            $scope.$watch(function(){return auth.error;}, function (v) {
+					$scope.error = auth.error;
+	            },true);
+
+	            $scope.$watch(function(){return auth.errorLogUp;}, function (v) {
+	            	console.log('ojo este',auth.errorLogUp);
+					$scope.errorLogUp = auth.errorLogUp;
+	            },true);
+	            
+
 	            $scope.regularLogin = function(user){
 			    	auth.regularLogin(user);
 			    }
 
+			    $scope.regularLogup = function(user){
+			    	if(user){
+				    	if(user.password == user.confirmPassword){
+				    		$scope.logupError = null
+				    		delete user.confirmPassword;
+					    	auth.regularLogup(user);
+				    	}
+				    	else{
+				    		$scope.logupError = "Por favor confirme su contraseña";
+				    	}
+				    }
+				    else{
+				    	$scope.logupError = "Por favor ingrese un usuario";
+				    }
+			    }
+
 			    $scope.showLogin = function(){
 			    	$scope.displayLoginModal = true;
+			    }
+
+			    $scope.showLogup = function(){
+			    	$scope.displayLogUpModal = true;
 			    }
 
 			    $scope.logoutBoth = function(){
@@ -53,7 +91,6 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 			    	}
 			    }
 
-                $scope.visible = true;
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
                 	$scope.home = false;
@@ -61,7 +98,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
                 	$scope.grupos = false;
                 	$scope.configuracion = false;
 	                switch($location.path()){
-	                	case "/": 
+	                	case "/home": 
 	                		$scope.home = true;
 	                		break;
 	                	case "/about": 
@@ -112,6 +149,25 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 				$scope.IntentLogin = function() {
 					//if(!userIsConnected) {
 					  $scope.login();
+					//}
+				};
+
+				$scope.IntentLoginUp = function() {
+					//if(!userIsConnected) {
+						Facebook.login(function(response) {
+							if (response.status == 'connected') {
+								$scope.logged = true;
+								Facebook.api('/me', function(response) {
+									console.log('response',response);
+								    $scope.$apply(function() {
+								      $scope.user = response;
+								      auth.fbLoginUp(response);
+								    });
+								    
+								  });
+							}
+
+						});
 					//}
 				};
 

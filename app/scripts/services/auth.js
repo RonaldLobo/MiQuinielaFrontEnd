@@ -8,7 +8,7 @@
  * Service in the miQuinielaApp.
  */
 angular.module('miQuinielaApp')
-  .service('auth', ['$http',function ($http) {
+  .service('auth', ['$http','$location',function ($http,$location) {
   	// public variables
   	this.loggedUser = {};
   	this.isAuthenticated = false,
@@ -36,33 +36,110 @@ angular.module('miQuinielaApp')
 				self.loggedUser = response.data.auth.user;
 				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
 				self.isAuthenticated = true;
+				self.error = null;
+				$location.path('/home');
+			},function(error){
+				self.error = error.data.error.error;
 			});
 		}
   	};
+
+  	this.regularLogup = function(user){
+  		var self = this;
+  		if(user.username && user.password){
+  			var usuario = {
+  				"usuario":{
+  					"usuario": user.username,
+					"contrasenna": user.password,
+					"tipo": "normal",
+					"apellido1": user.apellido,
+					"correo": user.correo,
+					"nombre": user.nombre
+  				}
+  			}
+	      	$http({
+				url: 'http://localhost/API/index.php/signup?XDEBUG_SESSION_START=netbeans-xdebug',
+				skipAuthorization: true,
+				method: 'POST',
+				data: usuario
+			}).then(function(response) {
+				self.isFacebookAuth = false;
+				localStorage.setItem('JWT', response.data.auth.token);
+				localStorage.setItem('usuarioId', response.data.auth.user.id);
+				localStorage.setItem('isFacebookAuth', false);
+				self.loggedUser = response.data.auth.user;
+				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
+				self.isAuthenticated = true;
+				self.errorLogUp = null;
+				$location.path('/home');
+			},function(error){
+				console.log('error',error.data.error.error);
+				self.errorLogUp = error.data.error.error;
+			});
+		}
+  	};
+
+  	this.fbLoginUp = function(user){
+  		console.log('va fb logup',user);
+  		var stringArray = user.name.split(/(\s+)/);
+  		console.log(stringArray);
+  		var self = this;
+  		var usuario = {
+			"usuario":{
+				"usuario": user.id,
+				"contrasenna": null,
+				"tipo": "fb",
+				"apellido1": stringArray[1],
+				"correo": null,
+				"nombre": stringArray[0]
+			}
+		}
+  		if(user.id){
+	      	$http({
+				url: 'http://localhost/API/index.php/signup',
+				skipAuthorization: true,
+				method: 'POST',
+				data: usuario
+			}).then(function(response) {
+				self.isFacebookAuth = true;
+				localStorage.setItem('JWT', response.data.auth.token);
+				localStorage.setItem('usuarioId', response.data.auth.user.id);
+				localStorage.setItem('isFacebookAuth', true);
+				self.loggedUser = response.data.auth.user;
+				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));
+				self.isAuthenticated = true;
+				self.error = null;
+				$location.path('/home');
+			},function(error){
+				self.error = error.data.error.error;
+			});
+		}
+  	}
 
   	this.fbLogin = function(user){
   		var self = this;
   		if(user.id){
 	      	$http({
-				url: '/API/index.php/login',
+				url: 'http://localhost/API/index.php/login?XDEBUG_SESSION_START=netbeans-xdebug',
 				skipAuthorization: true,
 				method: 'POST',
 				data: {
-					username: user.id,
-					password: "",
-					type: "fb"
+					usuario: user.id,
+					contrasenna: "",
+					tipo: "fb"
 				}
 			}).then(function(response) {
 				self.isFacebookAuth = true;
-				self.loggedUser.name = user.name;
-				self.loggedUser.id = '1';
-				self.loggedUser.fbId = user.id;
 				localStorage.setItem('JWT', response.data.auth.token);
-				localStorage.setItem('usuarioId', '1');
-				localStorage.setItem('userFbId', user.id);
-				localStorage.setItem('userName', user.name);
+				localStorage.setItem('usuarioId', response.data.auth.user.id);
 				localStorage.setItem('isFacebookAuth', true);
+				self.loggedUser = response.data.auth.user;
+				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));
 				self.isAuthenticated = true;
+				self.error = null;
+				$location.path('/home');
+			},function(error){
+				self.error = error.data.error.error;
 			});
 		}
   	}
@@ -70,16 +147,11 @@ angular.module('miQuinielaApp')
   	this.checkForLogin = function(){
   		if(localStorage.getItem('JWT')){
   			this.loggedUser = JSON.parse(localStorage.getItem('usuario'));
-  			if(localStorage.getItem('isFacebookAuth') == true){
-  				this.isFacebookAuth = true;
-  				this.loggedUser.fbId = localStorage.getItem('userFbId');
-  			}
-  			else{
-  				this.isFacebookAuth = false;
-  			}
+  			this.isFacebookAuth = localStorage.getItem('isFacebookAuth');
   			this.isAuthenticated = true;
   			return false;
   		}
+  		if($location.path() == "/") return false;
   		return true;
   	}
 
@@ -93,6 +165,7 @@ angular.module('miQuinielaApp')
 		this.loggedUser = {};
 		this.loggedUser.fbId = '';
 		this.isAuthenticated = false;
+		$location.path('/');
   	}
 
   	return this;

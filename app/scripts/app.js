@@ -25,9 +25,9 @@ angular
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/misjuegos.html',
-        controller: 'MisjuegosCtrl',
-        controllerAs: 'misjuegos'
+        templateUrl: 'views/index.html',
+        controller: 'indexCtrl',
+        controllerAs: 'index'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
@@ -49,6 +49,11 @@ angular
         controller: 'GruposCtrl',
         controllerAs: 'grupos'
       })
+      .when('/home', {
+        templateUrl: 'views/misjuegos.html',
+        controller: 'MisjuegosCtrl',
+        controllerAs: 'misjuegos'
+      })
       .otherwise({
         redirectTo: '/'
       });
@@ -64,11 +69,35 @@ angular
         if (jwtHelper.isTokenExpired(jwt)) {
           // This is a promise of a JWT id_token
           // logout
-        } else {
+        } else {  
           return jwt;
         }
       }
-      return 'asdasdasdasdasdasdasda';
+      return '';
     };
     $httpProvider.interceptors.push('jwtInterceptor');
+
+    $httpProvider.interceptors.push(['$q','$injector','$location',function($q, $injector,$location) {
+      return {
+        responseError: function(response) {
+          if (response.status === 401  ) {
+            $location.path('/configuracion');
+            return $q.reject(response);
+          }
+          return $q.reject(response);
+        }
+      };
+    }]);
+  })
+  .run(function($rootScope, $location,auth) {
+    $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      console.log('run here',auth.isAuthenticated);
+      if (auth.isAuthenticated == false) {
+        console.log('not auth and moving to route',next.templateUrl);
+        if ( next.templateUrl === "partials/index.html") {
+        } else {
+          $location.path("/");
+        }
+      }
+    });
   });
