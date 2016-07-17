@@ -45,43 +45,21 @@ angular.module('miQuinielaApp')
     	  contentType: "application/json; charset=utf-8",
 		});
   	};
-
-  	var actualizaIntitaciones = function(){
-  		var request = $.ajax({
-		  url: "http://localhost/API/index.php/invitaciones/",
-		  method: "GET",
-		  data: {
-		      format: 'json'
-		   },
-		   dataType: 'json',
-		   success: function(data) {
-		      usuariosGrupo=data.grupos;
-		   },
-    	  contentType: "application/json; charset=utf-8",
-		});
-  	};
   	var actualizarLista = function(){
 
   		var request= $.ajax({
-		  url: "http://localhost/API/index.php/usuarios/",
+		  url: "http://localhost/API/index.php/usuarios/?userPoints=1",
 		  method: "GET",
 		  data: {
 		      format: 'json'
 		   }, 
 		   dataType: 'json',
 		   success: function(data) {
-		     usuarios=data.usuarios;
-	  		 for (var i =0;i< usuariosGrupo.length; i++) {
-	  		 	if(usuariosGrupo[i].grupo==prevGrupo.id){
-	  		 		for (var j = usuarios.length - 1; j >= 0; j--) {
-	  		 			if(usuarios[j].id==usuariosGrupo[i].usuario){
-	  		 				prevGrupo.usuarios[prevGrupo.usuarios.length]={nombre:usuarios[j].nombre,puntaje:j};
-	  		 			}
-	  		 		};
-	  		 	} 
-	  		 };
-  			$scope.grupo= prevGrupo;
-  			console.log($scope.grupo);
+		  		prevGrupo.usuarios=data.usuarios;
+		  		$scope.$apply(function() {
+	  				$scope.grupo= prevGrupo;
+	  			});
+  				console.log($scope.grupo)
 
 		   },
     	  contentType: "application/json; charset=utf-8",
@@ -89,7 +67,6 @@ angular.module('miQuinielaApp')
 		      
   	};
   	actualizaGrupos();
-  	actualizaIntitaciones();
   	actualizarLista();
     
   });
