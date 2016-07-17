@@ -96,16 +96,13 @@
 	    </div>
 	    <div class="modal-body col-xs-12">
 	        <form name="myForm">
-	          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.password" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.password" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.password" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.password" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false">
-	          <input type="text" name="input" ng-model="inputUser.password" ng-trim="false">
+	          <div class="col-xs-6">
+	          	<span>Equipo</span>
+	          </div>
+	          <div class="col-xs-6">
+	          	<input type="text" name="input" ng-model="inputUser.username" ng-trim="false">
+	          </div>
+	          
 	          <p class="error">{{error}}</p>
 	          <button ng-click="regularLogin(inputUser)">ingresar</button>
 	        </form>

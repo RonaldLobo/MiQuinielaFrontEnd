@@ -44,6 +44,11 @@ angular
         controller: 'ConfiguracionCtrl',
         controllerAs: 'configuracion'
       })
+      .when('/torneos', {
+        templateUrl: 'views/torneos.html',
+        controller: 'TorneosCtrl',
+        controllerAs: 'torneos'
+      })
       .when('/grupos', {
         templateUrl: 'views/grupos.html',
         controller: 'GruposCtrl',

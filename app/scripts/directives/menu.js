@@ -94,6 +94,8 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
                 	$scope.home = false;
+                	$scope.torneos = false;
+                	$scope.foro = false;
                 	$scope.about = false;
                 	$scope.grupos = false;
                 	$scope.configuracion = false;
@@ -101,8 +103,8 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	                	case "/home": 
 	                		$scope.home = true;
 	                		break;
-	                	case "/about": 
-	                		$scope.about = true;
+	                	case "/torneos": 
+	                		$scope.torneos = true;
 	                		break;
 	                	case "/grupos": 
 	                		$scope.grupos = true;
