@@ -16,6 +16,9 @@ body {
   padding: 0;
   // background-color: #004d00 !important;
 }
+.error{
+  color: red;
+}
 
 .container{
   background-color: white !important;
@@ -264,6 +267,27 @@ overflow-y: auto;
   }
 }
 
+/*** Start Estilos Torneo ***/
+.pantalla-partidos .partido .torneo-titulo-prin{
+  text-align: center;
+}
+.pantalla-partidos .partido .plus-icon-prin{
+  text-align: center;
+}
+.pantalla-partidos .partido .plus-icon-prin a i{
+  color: gray;
+}
+.btn-agregar-torneo{
+  padding: 2px 10px;
+}
+.txt-add-torneo{
+  width:100%;
+}
+.btn-agregar-torneo{
+  text-align:center;
+}
+/*** End Estilos Torneo ***/
+
 .navbar{
   .container{
     background: #f8f8f8 !important;
@@ -272,6 +296,7 @@ overflow-y: auto;
 
 .nav .login-info{
   padding: 0 20px;
+  text-align: center;
   p{
     margin: 0;
   }
@@ -282,5 +307,54 @@ overflow-y: auto;
 
 .login-action{
   padding: 15px 16px !important;
+}
+
+
+.home-page{
+    background: transparent !important;
+    position: relative;
+    color: white;
+}
+.bg-image{
+    position: absolute;
+    width: 100%;
+    min-width: 1200px;
+}
+.not-logged{
+  float: right;
+}
+
+.home-page >* {
+    margin-top: 53px;
+}
+
+.divisor-line{
+  border-right: 1px solid black;
+  input{
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px){
+  .container {
+      max-width: 814px !important;
+  }
+}
+
+.user-name-display{
+  padding-top: 16px;
+}
+.log-out-no-fb{
+  padding-top: 11px;
+}
+
+.add-partido{
+  width: 36px;
+  border: 1px solid black;
+  border-radius: 18px;
+  padding-left: 6px;
+  font-size: 23px;
+  padding-top: 2px;
 }
 

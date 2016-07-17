@@ -34,14 +34,14 @@
             <a class="navbar-brand" href="#/"><img src="images/appquinielalogo.png"></a>
           </div>
 
-          <div class="collapse navbar-collapse col-xs-12" id="js-navbar-collapse">
+          <div class="collapse navbar-collapse col-xs-12 not-logged" id="js-navbar-collapse">
             <div ng-menu>
             </div>
           </div>
         </div>
       </div>
     </div>
-
+    <background></background>
     <div class="container no-padding-left no-padding-right">
     <div ng-view=""></div>
     </div>
@@ -93,7 +93,10 @@
         <script src="scripts/controllers/misjuegos.js"></script>
         <script src="scripts/directives/parsefecha.js"></script>
         <script src="scripts/controllers/configuracion.js"></script>
+        <script src="scripts/controllers/torneos.js"></script>
         <script src="scripts/controllers/grupos.js"></script>
+        <script src="scripts/controllers/index.js"></script>
+        <script src="scripts/directives/background.js"></script>
         <!-- endbuild -->
 </body>
 </html>

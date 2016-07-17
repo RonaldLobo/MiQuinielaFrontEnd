@@ -20,13 +20,13 @@
 		<p>Nombre</p>
 		<input type="text" ng-model="usuario.nombre">
 	</div>
-	<div class="col-xs-12 col-md-6">
+	<div class="col-xs-12 col-md-6" ng-if="isFacebookAuth == false">
 		<p>Contraseña</p>
 		<input type="password" ng-model="usuario.contrasenna">
 	</div>
 	<div class="col-xs-12 col-md-6">
 		<p>Tipo</p>
-		<input type="text" ng-model="usuario.tipo">
+		<input type="text" ng-model="usuario.tipo" disabled>
 	</div>
 	<div class="col-xs-12 col-md-6">
 		<p>Invitaciones</p>
