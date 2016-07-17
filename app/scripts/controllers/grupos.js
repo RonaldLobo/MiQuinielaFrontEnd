@@ -15,51 +15,47 @@ angular.module('miQuinielaApp')
       'Karma'
     ];
     $scope.ordenUsuarios='-puntaje';
+    $scope.indexing='$index +1';
     $scope.flecha=">";
     $scope.cambiarOrden=function  (argument) {
     	$scope.flecha===">" ? $scope.flecha="<": $scope.flecha=">";
     	$scope.ordenUsuarios==='-puntaje' ? $scope.ordenUsuarios='puntaje': $scope.ordenUsuarios='-puntaje';
 
     }
-	var usuariosGrupo={};
-	var usuarios={};
-	var prevGrupo={};
+	$scope.usuarios={};
+	$scope.grupos={};
   	var actualizaGrupos = function(){
   		console.log('called 1');
   		var request = $.ajax({
-		  url: "http://localhost/API/index.php/grupos/1",
+		  url: "http://localhost/API/index.php/grupos/",
 		  method: "GET",
 		  data: {
 		      format: 'json'
 		   },
 		   dataType: 'json',
 		   success: function(data) {
-		  		prevGrupo = 
-		    	{
-		    		id : data.grupo.id,
-					nombre : data.grupo.nombre,
-				    usuarios:[]
-		    	};
-
+		  	$scope.$apply(function() {
+		  		$scope.grupos =data.grupos;
+		  		console.log($scope.grupos);
+		  		$scope.grupoSeleccionado=$scope.grupos[0];
+		    });
 		   },
     	  contentType: "application/json; charset=utf-8",
 		});
   	};
-  	var actualizarLista = function(){
+  	$scope.actualizarLista = function(grupoId){
 
   		var request= $.ajax({
-		  url: "http://localhost/API/index.php/usuarios/?userPoints=1",
+		  url: "http://localhost/API/index.php/usuarios/?userPoints="+grupoId,
 		  method: "GET",
 		  data: {
 		      format: 'json'
 		   }, 
 		   dataType: 'json',
 		   success: function(data) {
-		  		prevGrupo.usuarios=data.usuarios;
 		  		$scope.$apply(function() {
-	  				$scope.grupo= prevGrupo;
+		  			$scope.usuarios=data.usuarios;
 	  			});
-  				console.log($scope.grupo)
 
 		   },
     	  contentType: "application/json; charset=utf-8",
@@ -67,6 +63,6 @@ angular.module('miQuinielaApp')
 		      
   	};
   	actualizaGrupos();
-  	actualizarLista();
+  	$scope.actualizarLista(1);
     
   });
