@@ -1,21 +1,20 @@
-<p class="title-page">Grupo: {{grupoSeleccionado.nombre}}</p> 
-<span><strong>Filtrar por: </strong> Grupo </span>
+<span>Seleccionar Grupo </span>
 <select ng-model="grupoSeleccionado" class="grupoFilter" ng-options="y.nombre for (x, y) in grupos" ng-change="actualizarLista(grupoSeleccionado.id)"></select>
-<span>Torneos </span>
-<select ng-model="grupoSeleccionado" class="grupoFilter" ng-options="y.nombre for (x, y) in grupos"></select>
+<p class="title-page">Grupo: {{grupoSeleccionado.nombre}}</p> 
+<h3>Torneo: {{usuarios[0].torneo}}</h3> 
 <div class="col-xs-12 pantalla-partidos no-padding-left no-padding-right">
 	<div class="partido col-xs-12 no-padding-left no-padding-right">
 		<p class="col-xs-12 no-padding-left no-padding-right encabezado-tabla">
 			<span class="titulo-linea col-xs-2"></span>
 			<span class="titulo-linea col-xs-6">Usuario</span>
-			<span class="nombre-equipo col-xs-4">Puntos <span ng-click="cambiarOrden()">{{flecha}}</span></span>
+			<span class="nombre-equipo col-xs-4">Puntos <span class="icono-orden {{flecha}}" ng-click="cambiarOrden()"></span></span>
 		</p>
 	</div>
 
 	<div ng-repeat="usuario in usuarios | orderBy:ordenUsuarios">
 		<div class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
 			<p class="col-xs-12 no-padding-left no-padding-right">
-				<span class="titulo-linea col-xs-2">{{$index +1}}</span>
+				<span class="titulo-linea col-xs-2">{{usuario.position}}</span>
 				<span class="titulo-linea col-xs-6">{{usuario.nombre}}</span>
 				<span class="nombre-equipo col-xs-4">{{usuario.puntaje}}</span>
 			</p>

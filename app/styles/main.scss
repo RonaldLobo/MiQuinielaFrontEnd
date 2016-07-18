@@ -266,7 +266,19 @@ overflow-y: auto;
     text-decoration: underline;
   }
 }
+.icono-orden{
+  width: 15px;
+  height: 15px;
+  background-size: 100% 100%;
+  display: inline-block;
+}
 
+.icono-orden.Desc{
+  background-image: url("../images/downArrow.png");
+}
+.icono-orden.Asc{
+  background-image: url("../images/upArrow.png");
+}
 /*** Start Estilos Torneo ***/
 .pantalla-partidos .partido .torneo-titulo-prin{
   text-align: center;

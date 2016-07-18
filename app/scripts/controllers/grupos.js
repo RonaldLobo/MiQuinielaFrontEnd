@@ -8,17 +8,23 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('GruposCtrl', function ($scope) {
+  .controller('GruposCtrl', function ($scope,auth) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
       'Karma'
     ];
+    //get user logged
+    $scope.usuario=auth.loggedUser.id;
+    /*$scope.$watch( function () { return auth.loggedUser; }, function (loggedUser) {
+    	$scope.usuario = loggedUser.name;
+  	}, true);*/
+    var username=$scope.usuario;
+    
     $scope.ordenUsuarios='-puntaje';
-    $scope.indexing='$index +1';
-    $scope.flecha=">";
+    $scope.flecha="Desc";
     $scope.cambiarOrden=function  (argument) {
-    	$scope.flecha===">" ? $scope.flecha="<": $scope.flecha=">";
+    	$scope.flecha==="Desc" ? $scope.flecha="Asc": $scope.flecha="Desc";
     	$scope.ordenUsuarios==='-puntaje' ? $scope.ordenUsuarios='puntaje': $scope.ordenUsuarios='-puntaje';
 
     }
@@ -27,7 +33,7 @@ angular.module('miQuinielaApp')
   	var actualizaGrupos = function(){
   		console.log('called 1');
   		var request = $.ajax({
-		  url: "http://localhost/API/index.php/grupos/",
+		  url: "http://localhost/API/index.php/grupos/?userId="+username,
 		  method: "GET",
 		  data: {
 		      format: 'json'
@@ -38,6 +44,7 @@ angular.module('miQuinielaApp')
 		  		$scope.grupos =data.grupos;
 		  		console.log($scope.grupos);
 		  		$scope.grupoSeleccionado=$scope.grupos[0];
+		  		$scope.actualizarLista($scope.grupoSeleccionado.id);
 		    });
 		   },
     	  contentType: "application/json; charset=utf-8",
@@ -63,6 +70,5 @@ angular.module('miQuinielaApp')
 		      
   	};
   	actualizaGrupos();
-  	$scope.actualizarLista(1);
     
   });
