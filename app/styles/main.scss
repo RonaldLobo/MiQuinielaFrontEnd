@@ -137,7 +137,9 @@ body {
     }
   }
 }
-
+.btnGuardar{
+  margin-top:10px;
+}
 .menu-space{
   height: 116px;
 }
@@ -184,7 +186,9 @@ padding: 15px;
 overflow-y: auto; 
 -webkit-overflow-scrolling: touch; 
 }
-
+.modal-body form div{ 
+  margin: 5px 0;
+}
 .displayModalLogin{
   display: block !important;
 }
@@ -267,6 +271,7 @@ overflow-y: auto;
   }
 }
 .icono-orden{
+  outline: none;
   width: 15px;
   height: 15px;
   background-size: 100% 100%;
