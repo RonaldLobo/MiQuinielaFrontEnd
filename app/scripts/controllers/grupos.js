@@ -8,7 +8,7 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('GruposCtrl', function ($scope,auth) {
+  .controller('GruposCtrl', function ($scope,auth,$http) {
     this.awesomeThings = [
       'HTML5 Boilerplate',
       'AngularJS',
@@ -19,6 +19,7 @@ angular.module('miQuinielaApp')
     $scope.ordenUsuarios='-puntaje';
     $scope.flecha="Desc";
 	$scope.usuarios={};
+	$scope.usuariosTodos={};
 	$scope.grupos={};
     $scope.displayAddGrupoModal = false;
     $scope.grupoNuevo={};
@@ -66,35 +67,52 @@ angular.module('miQuinielaApp')
 		   },
     	  contentType: "application/json; charset=utf-8",
 		});
+
+		request= $.ajax({
+		  url: "http://localhost/API/index.php/usuarios/?byUser="+$scope.usuario,
+		  method: "GET",
+		   dataType: 'json',
+		   success: function(data) {
+		  		$scope.$apply(function() {
+		  			$scope.usuariosTodos=data.usuarios;
+	  			});
+
+		   },
+    	  contentType: "application/json; charset=utf-8",
+		});
 		      
+		request= $.ajax({
+		  url: "http://localhost/API/index.php/torneo/",
+		  method: "GET",
+		   dataType: 'json',
+		   success: function(data) {
+		  		$scope.$apply(function() {
+		  			$scope.torneos=data.torneo;
+	  			});
+
+		   },
+    	  contentType: "application/json; charset=utf-8",
+		});
   	};
   	$scope.agregarGrupo = function(){
     	$scope.displayAddGrupoModal = true;
     };
     $scope.agregarUsuario=function(){
-    	if($scope.grupoNuevo.user!==""){
-	    	var request= $.ajax({
-			  url: "http://localhost/API/index.php/usuarios/?byUser="+ ($scope.grupoNuevo.user),
-			  method: "GET",
-			   dataType: 'json',
-			   success: function(data) {
-			  		$scope.$apply(function() {
-			  			if(data.usuarios.usuario!=="" && $scope.usuario!==data.usuarios.id && !usuarioRepetido(data.usuarios.usuario)){
-				  			$scope.grupoNuevo.listaUsuarios[$scope.grupoNuevo.listaUsuarios.length]={
-				  				usuario:data.usuarios.usuario,
-				  				id:data.usuarios.id,
-				  				correo:data.usuarios.correo,
-				  				nombre:data.usuarios.nombre+" "+data.usuarios.apellido1
-				  			};
-							cambiaMensaje("");
-				  		}else {cambiaMensaje("Usuario invalido");}
-					$scope.grupoNuevo.user="";
-			  		});
-			  		
+    	if(typeof($scope.grupoNuevo.user)!=="undefined" && $scope.grupoNuevo.user.usuario!=="" && $scope.grupoNuevo.user!==0){
+	  		//$scope.$apply(function() {
+	  			console.log($scope.grupoNuevo.user);
+	  			if($scope.usuario!==$scope.grupoNuevo.user.id && !usuarioRepetido($scope.grupoNuevo.user.usuario)){
+		  			$scope.grupoNuevo.listaUsuarios[$scope.grupoNuevo.listaUsuarios.length]={
+		  				usuario:$scope.grupoNuevo.user.usuario,
+		  				id:$scope.grupoNuevo.user.id,
+		  				correo:$scope.grupoNuevo.user.correo,
+		  				nombre:$scope.grupoNuevo.user.nombre+" "+$scope.grupoNuevo.user.apellido1
+		  			};
+					cambiaMensaje("");
+		  		}else {cambiaMensaje("Usuario invalido");}
+			$scope.grupoNuevo.user=0;
+	  		//});			  		
 
-			   },
-	    	  contentType: "application/json; charset=utf-8",
-			});
 		}else{
 			cambiaMensaje("Usuario vacío");
 		}
@@ -111,36 +129,75 @@ angular.module('miQuinielaApp')
 
     		$scope.grupoNuevo.listaUsuarios.splice(elemento,1);
     };
-    $scope.crearGrupo=function(){
-    	alert($scope.grupoNuevo.listaUsuarios.length);
+    $scope.crearGrupo=function(){    	
+    	if(typeof($scope.grupoNuevo.torneoSelect)!=="undefined" && $scope.grupoNuevo.name!=="" && $scope.grupoNuevo.torneoSelect.id!=="" && $scope.grupoNuevo.torneoSelect!==0){
+	      	$http({
+			  	url: "http://localhost/API/index.php/grupos/",
+				skipAuthorization: true,
+			  	method: "POST",
+			  	data: {
+			  		"grupo":{
+			      		"idTorneo":$scope.grupoNuevo.torneoSelect.id,
+			      		"idUsuario":$scope.usuario,
+			      		"estado":1,
+			      		"nombre":$scope.grupoNuevo.name
+			  		}	
+
+			   	}
+			}).then(function(response) {
+				var migrupo=response.data.grupo.id;
+					$http({
+					  	url: "http://localhost/API/index.php/invitaciones/",
+						skipAuthorization: true,
+					  	method: "POST",
+					  	data: {
+					  		"usuarioGrupo":{
+					      		"usuario":$scope.usuario,
+					      		"grupo":response.data.grupo.id,
+					      		"estado":"miembro"
+					  		}	
+
+					   	}
+					}).then(function(response) {
+							for (var i = 0; i < $scope.grupoNuevo.listaUsuarios.length; i++) {
+								$http({
+								  	url: "http://localhost/API/index.php/invitaciones/",
+									skipAuthorization: true,
+								  	method: "POST",
+								  	data: {
+								  		"usuarioGrupo":{
+								      		"usuario":$scope.grupoNuevo.listaUsuarios[i].id,
+								      		"grupo":migrupo,
+								      		"estado":"invitado"
+								  		}	
+
+								   	}
+								}).then(function(response) {
+								   		//$scope.grupoNuevo.id=response.data.grupo.id;
+										$scope.grupoNuevo.listaUsuarios={};
+										actualizaGrupos();
+										alert("Grupo agregado");
+								   	},function(error){
+										console.log('error',error.data.error.error);
+										self.errorLogUp = error.data.error.error;
+								});
+								
+							};
+
+					   	},function(error){
+							console.log('error',error.data.error.error);
+							self.errorLogUp = error.data.error.error;
+					});
+			   	},function(error){
+					console.log('error',error.data.error.error);
+					self.errorLogUp = error.data.error.error;
+			});
+			$scope.grupoNuevo.user=0;
+			$scope.grupoNuevo.torneoSelect=0;
+			cambiaMensaje("");
+			$scope.grupoNuevo.name="";
+		}else cambiaMensaje("Llenar todos los datos");
     	
-    	var request= $.ajax({
-			  url: "http://localhost/API/index.php/grupos/",
-			  method: "POST",
-			  data: {
-			      usuario:""
-			   }, 
-			   dataType: 'json',
-			   success: function(data) {
-			   	
-			   },
-	    	  contentType: "application/json; charset=utf-8",
-			});
-
-    	request= $.ajax({
-			  url: "http://localhost/API/index.php/invitaciones/",
-			  method: "POST",
-			  data: {
-			      usuarioGrupo: {
-			      	usuario:""
-			      }
-			   }, 
-			   dataType: 'json',
-			   success: function(data) {
-
-			   },
-	    	  contentType: "application/json; charset=utf-8",
-			});
     };
   	actualizaGrupos();
     

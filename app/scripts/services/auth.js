@@ -41,7 +41,7 @@ angular.module('miQuinielaApp')
 			},function(error){
 				self.error = error.data.error.error;
 			});
-		}
+		};
   	};
 
   	this.regularLogup = function(user){
