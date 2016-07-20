@@ -159,7 +159,6 @@ angular.module('miQuinielaApp')
 
 					   	}
 					}).then(function(response) {
-						console.log("length "+$scope.grupoNuevo.listaUsuarios.length);
 							for (var i = 0; i < $scope.grupoNuevo.listaUsuarios.length; i++) {
 								$http({
 								  	url: "http://localhost/API/index.php/invitaciones/",
@@ -177,7 +176,7 @@ angular.module('miQuinielaApp')
 								   		//$scope.grupoNuevo.id=response.data.grupo.id;
 										$scope.grupoNuevo.listaUsuarios={};
 										actualizaGrupos();
-										console.log(response.data);
+										alert("Grupo agregado");
 								   	},function(error){
 										console.log('error',error.data.error.error);
 										self.errorLogUp = error.data.error.error;
