@@ -10,7 +10,29 @@
 angular.module('miQuinielaApp')
   .controller('TorneosCtrl', ['$http','$scope','$timeout','auth','lodash',function ($http,$scope,$timeout,auth,lodash) {
 
-    $http({
+if(auth.loggedUser.rol == 'admin'){
+    ListarTorneosPorUsuarioAdmin();
+   }
+   else{
+     ListarTorneosPorUsuario();
+
+     ListarTorneosGlobal();
+  }
+
+    function ListarTorneosPorUsuario(){
+      $http({
+          url: "http://localhost:8012/API/index.php/torneo/?usuario="+auth.loggedUser.id,
+          method: 'GET',
+       }).then(function successCallback(response) {
+           console.log('success',response);
+           $scope.torneosUsuario = response.data.torneo;
+       }, function errorCallback(response) {
+           alert( "Request failed: " + response );
+       });
+    } 
+
+    function ListarTorneosPorUsuarioAdmin(){
+      $http({
         url: "http://localhost:8012/API/index.php/torneo/",
         method: 'GET',
      }).then(function successCallback(response) {
@@ -19,24 +41,81 @@ angular.module('miQuinielaApp')
      }, function errorCallback(response) {
          alert( "Request failed: " + response );
      });
+     }
+
+    function ListarTorneosGlobal(){
+      $http({
+        url: "http://localhost:8012/API/index.php/torneo/",
+        method: 'GET',
+     }).then(function successCallback(response) {
+         console.log('success',response);
+         $scope.torneosUsuarioGlobal = response.data.torneo;
+     }, function errorCallback(response) {
+         alert( "Request failed: " + response );
+     });
+    }
 
       $scope.addTorneo = function(){
-         $scope.showAgregarTorneo = true;
+        if(auth.loggedUser.rol == 'admin'){
+           $scope.showAgregarTorneo = true;
+        }else{
+           $scope.showAgregarTorneoUsuario = true;
+        }
       }
       
-      $scope.addTorneoUsuario = function(torneo) {
-        var torneo = {
-          "usuario": torneo
+      $scope.addTorneoAdmin = function(torneo) {
+        var torneoAdmin = {
+          "torneo": {
+            "torneo": torneo,
+            "estado": 1
+            }
         }
-      var request = $.ajax({
-        url: "http://localhost:8012/API/index.php/torneo/",
-        method: "POST",
-        data: JSON.stringify(torneo),
-        dataType: "json",
-        contentType: "application/json; charset=utf-8",
-        });
+        if(torneo != undefined){
+         $http({
+           url: "http://localhost:8012/API/index.php/torneo/",
+           method: 'POST',
+           data: JSON.stringify(torneoAdmin)
+         }).then(function successCallback(response) {
+             $scope.showAgregarTorneo = false;
+             $scope.torneosUsuario.push(response.data.torneoAdmin);
+             ListarTorneosPorUsuarioAdmin();
+         }, function errorCallback(response) {
+             alert( "Request failed: " + response );
+         });
+        }
+        else{ 
+          $scope.showAgregarTorneo = false;
+         }
        };
-      
+
+       $scope.addTorneoUsuario = function(torneo) {
+        var torneoUsuario = {
+          "usuarioTorneo": {
+            "torneo": torneo.id,
+            "usuario": auth.loggedUser.id
+            }
+           }
+           
+         var validaTorneoLista = _.filter($scope.torneosUsuario,{ 'id': torneo.id }); 
+         if(Object.keys(validaTorneoLista).length == 0){ 
+            $http({
+                 url: "http://localhost:8012/API/index.php/usuarioTorneos/",
+                 method: 'POST',
+                 data: JSON.stringify(torneoUsuario)
+               }).then(function successCallback(response) {
+                   $scope.showAgregarTorneoUsuario = false;
+                $timeout(function() {
+                    $scope.torneosUsuario.push(response.data.torneoUsuario);
+                    ListarTorneosPorUsuario();
+                });
+               }, function errorCallback(response) {
+                   alert( "Request failed: " + response );
+               });
+         }else{
+            $scope.showAgregarTorneoUsuario = false;
+         }
+       }
+
       $scope.delTorneo = function(idTorneo) {
        if(auth.loggedUser.rol == 'admin'){
          $http({
@@ -52,9 +131,9 @@ angular.module('miQuinielaApp')
        }, function errorCallback(response) {
            alert( "Request failed: " + response );
        });
-        } else{
+        } else {
           $http({
-          url: "http://localhost:8012/API/index.php/torneo/"+idTorneo,
+          url: "http://localhost:8012/API/index.php/usuarioTorneos/"+idTorneo,
           method: 'DELETE',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -67,7 +146,6 @@ angular.module('miQuinielaApp')
            alert( "Request failed: " + response );
        });
         }
-
       }
       
   }]);
