@@ -16,7 +16,8 @@ angular.module('miQuinielaApp')
       },
       link: function postLink(scope, element, attrs) {
       	var date = new Date(scope.fecha);
-        element.text(date.getDate()+'/'+date.getDay()+'/'+date.getFullYear()+':'+date.getHours());
+        var month = date.getMonth() + 1;
+        element.text(date.getDate()+'/'+month+'/'+date.getFullYear()+' '+date.getHours() + ':'+date.getMinutes());
       }
     };
   });

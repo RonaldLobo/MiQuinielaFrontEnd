@@ -20,7 +20,10 @@ angular
     'ngTouch',
     'angular-jwt',
     'facebook',
-    'ngLodash'
+    'ngLodash',
+    'localytics.directives',
+    'ui.bootstrap', 
+    'ui.bootstrap.datetimepicker'
   ])  
   .config(function ($routeProvider) {
     $routeProvider
@@ -86,7 +89,7 @@ angular
       return {
         responseError: function(response) {
           if (response.status === 401  ) {
-            $location.path('/configuracion');
+            $location.path('/');
             return $q.reject(response);
           }
           return $q.reject(response);
@@ -96,9 +99,7 @@ angular
   })
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
-      console.log('run here',auth.isAuthenticated);
       if (auth.isAuthenticated == false) {
-        console.log('not auth and moving to route',next.templateUrl);
         if ( next.templateUrl === "partials/index.html") {
         } else {
           $location.path("/");

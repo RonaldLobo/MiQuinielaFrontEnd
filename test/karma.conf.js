@@ -34,6 +34,11 @@ module.exports = function(config) {
       'bower_components/angular-jwt/dist/angular-jwt.js',
       'bower_components/angular-facebook/lib/angular-facebook.js',
       'bower_components/ng-lodash/build/ng-lodash.js',
+      'bower_components/bootstrap-select/dist/js/bootstrap-select.js',
+      'bower_components/chosen/chosen.jquery.js',
+      'bower_components/angular-chosen-localytics/dist/angular-chosen.js',
+      'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+      'bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

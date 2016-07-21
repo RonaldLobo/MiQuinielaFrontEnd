@@ -49,7 +49,6 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	            },true);
 
 	            $scope.$watch(function(){return auth.errorLogUp;}, function (v) {
-	            	console.log('ojo este',auth.errorLogUp);
 					$scope.errorLogUp = auth.errorLogUp;
 	            },true);
 	            

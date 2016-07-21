@@ -358,3 +358,38 @@ overflow-y: auto;
   padding-top: 2px;
 }
 
+.chosen-container {
+  width: 120px !important;
+}
+
+.modal-content{
+  .modal-body {
+    overflow-y: initial;
+  }
+}
+
+.partido-row{
+  margin-top: 15px;
+}
+
+.date-picker-input{
+  width: 97px !important;
+}
+
+.add-equipo{
+  font-size: 17px;
+  font-weight: bold;
+  border: 1px solid;
+  margin-left: 15px;
+  padding-left: 7px;
+  border-radius: 21px;
+  padding-right: 17px;
+  line-height: 1;
+  padding-bottom: 5px;
+}
+
+.agregar-equipo-cont{
+    margin-left: 14px;
+    margin-top: 14px;
+}
+

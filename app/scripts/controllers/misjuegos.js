@@ -8,12 +8,32 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('MisjuegosCtrl', ['$scope','lodash','$http',function ($scope,lodash,$http) {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth',function ($scope,lodash,$http,auth) {
+
+    $scope.nuevoEquipo = {};
+
+    $scope.nuevoPartido = {};
+
+    $scope.displayAddEquipo = false;
+
+    $scope.displayAgregarEquipo = function(){
+    	if($scope.displayAddEquipo){
+    		$scope.displayAddEquipo = false;
+    	}
+    	else{
+    		$scope.displayAddEquipo = true;
+    	}
+    };
+
+    $scope.picker = {
+        date: new Date()
+    };
+
+    $scope.openCalendar = function(e) {
+        $scope.picker.open = true;
+    };
+
+    $scope.isAdmin = auth.loggedUser.rol == 'admin';
 
     $scope.displayAddPartidoModal = false;
 
@@ -37,32 +57,230 @@ angular.module('miQuinielaApp')
 	    return yyyy+'/'+mm+'/'+dd;
     }
 
+    function convertDateHora(date){
+    	var dd = date.getDate();
+	    var mm = date.getMonth()+1; //January is 0!
+	    var hours = date.getHours();
+		var minutes = date.getMinutes();
+		var seconds = date.getSeconds();
+
+	    var yyyy = date.getFullYear();
+	    if(dd<10){
+	        dd='0'+dd
+	    } 
+	    if(mm<10){
+	        mm='0'+mm
+	    } 
+	    return yyyy+'-'+mm+'-'+dd+' '+hours+':'+minutes+':'+seconds;
+    }
+
+
     console.log($scope.initDate,$scope.finalDate);
     $http({
-	  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
+	  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate),
 	  method: 'GET',
 	}).then(function successCallback(response) {
-	    console.log('success',response.data.partido);
 	    $scope.partidos = response.data.partido;
 		$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
-	    	return date.getTime() >= o.fecha; 
+	    	return date >= new Date(o.fecha); 
 	    });
 
 	    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
-	    	return date.getTime() < o.fecha;  
+	    	return date < new Date(o.fecha);  
 	    });
 	}, function errorCallback(response) {
-	    alert( "Request failed: " + response );
+	    if(response.status == 401){
+	    	auth.logOut();
+	    }
 	});
+
+	// traer equipos y torneos
+	if(auth.loggedUser.rol == 'admin'){
+		$http({
+		  url: "http://localhost/API/index.php/equipo/",
+		  method: 'GET',
+		}).then(function successCallback(response) {
+		    $scope.equipos = response.data.equipo;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
+		});
+
+		$http({
+		  url: "http://localhost/API/index.php/torneo/",
+		  method: 'GET',
+		}).then(function successCallback(response) {
+		    $scope.torneos = response.data.torneo;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
+		});
+	}
+
+	$scope.guardarPartido = function(partido){
+		if(!isNaN(partido.marcadorEquipo1) && !isNaN(partido.marcadorEquipo2)){
+	    	var partido = {
+	    		partido : {
+	    			idPartido: Number(partido.idPartido),
+	    			marcadorEquipo1: Number(partido.marcadorEquipo1),
+	    			marcadorEquipo2: Number(partido.marcadorEquipo2)
+	    		}
+	    	};
+	    	$http({
+			  url: "http://localhost/API/index.php/partidos/?XDEBUG_SESSION_START=netbeans-xdebug",
+			  data: partido,
+			  method: 'PUT',
+			}).then(function successCallback(response) {
+				alert('partido actializado');
+				$http({
+				  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
+				  method: 'GET',
+				}).then(function successCallback(response) {
+				    console.log('success',response.data.partido);
+				    $scope.partidos = response.data.partido;
+					$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
+				    	var date = new Date();
+				    	console.log(date);
+				    	console.log(Date(o.fecha));
+				    	return date >= new Date(o.fecha); 
+				    });
+
+				    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
+				    	var date = new Date();
+				    	return date < new Date(o.fecha);  
+				    });
+				    $scope.displayAddPartidoModal = false;
+				}, function errorCallback(response) {
+				    if(response.status == 401){
+				    	auth.logOut();
+				    }
+				});
+			}, function errorCallback(response) {
+			    if(response.status == 401){
+			    	auth.logOut();
+			    }
+			});
+		}
+		else
+		{
+			console.log('no digito numeros');
+		}
+	};
 	 
-    $scope.guardarPrediccion = function(id,idPrediccion,marcador1,marcador2){
-    	console.log('guardar',id,idPrediccion,marcador1,marcador2);
+    $scope.guardarPrediccion = function(partido){
+    	if(!isNaN(partido.prediccion.marcador1) && !isNaN(partido.prediccion.marcador2)){
+	    	var prediccion = {
+	    		prediccion : {
+	    			id: Number(partido.prediccion.id),
+	    			idPartido: Number(partido.idPartido),
+	    			idUsuario: Number(auth.loggedUser.id),
+	    			marcador1: Number(partido.prediccion.marcador1),
+	    			marcador2: Number(partido.prediccion.marcador2),
+	    			puntaje: 0
+	    		}
+	    	};
+	    	$http({
+			  url: "http://localhost/API/index.php/predicciones/",
+			  data: prediccion,
+			  method: 'PUT',
+			}).then(function successCallback(response) {
+				alert('prediccion guardada');
+			}, function errorCallback(response) {
+			    if(response.status == 401){
+			    	auth.logOut();
+			    }
+			});
+		}
+		else
+		{
+			console.log('no digito numeros');
+		}
     };
 
     $scope.agregarPartido = function(){
     	$scope.displayAddPartidoModal = true;
+    };
+
+    $scope.agregarPartidoNuevo = function(){
+    	var partido = {
+    		partido: {
+	    		idPartidoTorneo : Number($scope.nuevoPartido.torneo),
+	    		idPartidoEquipo1: Number($scope.nuevoPartido.equipo1),
+	    		idPartidoEquipo2: Number($scope.nuevoPartido.equipo2),
+	    		marcadorEquipo1: 0,
+	    		marcadorEquipo1: 0,
+	    		fecha: convertDateHora($scope.picker.date)
+	    	}
+    	};
+    	$http({
+		  url: "http://localhost/API/index.php/partidos/",
+		  data: partido,
+		  method: 'POST',
+		}).then(function successCallback(response) {
+		    $http({
+			  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
+			  method: 'GET',
+			}).then(function successCallback(response) {
+			    console.log('success',response.data.partido);
+			    $scope.partidos = response.data.partido;
+				$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
+			    	var date = new Date();
+			    	console.log(date);
+			    	console.log(Date(o.fecha));
+			    	return date >= new Date(o.fecha); 
+			    });
+
+			    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
+			    	var date = new Date();
+			    	return date < new Date(o.fecha);  
+			    });
+			    $scope.displayAddPartidoModal = false;
+			}, function errorCallback(response) {
+			    if(response.status == 401){
+			    	auth.logOut();
+			    }
+			});
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
+		});
+
+		$http({
+		  url: "http://localhost/API/index.php/torneo/",
+		  method: 'GET',
+		}).then(function successCallback(response) {
+		    $scope.torneos = response.data.torneo;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
+		});
+    };
+
+    $scope.agregarEquipo = function(){
+    	var equipo = {
+    		equipo : {
+    			equipo: $scope.nuevoEquipo.nombre,
+    			estado: 1
+    		}
+    	};
+    	$http({
+		  url: "http://localhost/API/index.php/equipo/",
+		  data: equipo,
+		  method: 'POST',
+		}).then(function successCallback(response) {
+		    $scope.equipos.push(response.data.equipo);
+		    $scope.displayAddEquipo = false;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
+		});
     };
 
   }]);
