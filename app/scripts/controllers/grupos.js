@@ -24,6 +24,9 @@ angular.module('miQuinielaApp')
     $scope.displayAddGrupoModal = false;
     $scope.grupoNuevo={};
     $scope.grupoNuevo.listaUsuarios=[];
+    $scope.act={};
+    $scope.act.crear="active";
+    $scope.muestraTab=true;
 
 
     $scope.cambiarOrden=function  (argument) {
@@ -53,9 +56,33 @@ angular.module('miQuinielaApp')
 			$scope.error=msg;
 
     };
+    $scope.active=function(tab){
+    	if(tab==2){
+    		$scope.act.crear="";
+    		$scope.act.buscar="active";
+    		$scope.muestraTab=false;
+    	}else{
+    		$scope.act.crear="active";
+    		$scope.act.buscar="";  
+    		$scope.muestraTab=true;  		
+    	}
+    }
   	$scope.actualizarLista = function(grupoId){
 
-  		var request= $.ajax({
+		var request= $.ajax({
+		  url: "http://localhost/API/index.php/grupos/?sinUserId="+$scope.usuario,
+		  method: "GET",
+		   dataType: 'json',
+		   success: function(data) {
+		  		$scope.$apply(function() {
+		  			$scope.grupoNuevo.otrosGrupos=data.grupos;
+	  			});
+
+		   },
+    	  contentType: "application/json; charset=utf-8",
+		});
+
+  		request= $.ajax({
 		  url: "http://localhost/API/index.php/usuarios/?userPoints="+grupoId,
 		  method: "GET",
 		   dataType: 'json',
@@ -159,6 +186,7 @@ angular.module('miQuinielaApp')
 
 					   	}
 					}).then(function(response) {
+						if($scope.grupoNuevo.listaUsuarios.length>0){
 							for (var i = 0; i < $scope.grupoNuevo.listaUsuarios.length; i++) {
 								$http({
 								  	url: "http://localhost/API/index.php/invitaciones/",
@@ -183,6 +211,12 @@ angular.module('miQuinielaApp')
 								});
 								
 							};
+						}else{
+							$scope.grupoNuevo.listaUsuarios={};
+							actualizaGrupos();
+							alert("Grupo agregado");
+
+						}
 
 					   	},function(error){
 							console.log('error',error.data.error.error);
@@ -199,6 +233,29 @@ angular.module('miQuinielaApp')
 		}else cambiaMensaje("Llenar todos los datos");
     	
     };
+    $scope.unirGrupo=function(){
+    	$http({
+		  	url: "http://localhost/API/index.php/invitaciones/",
+			skipAuthorization: true,
+		  	method: "POST",
+		  	data: {
+		  		"usuarioGrupo":{
+		      		"usuario":$scope.usuario,
+		      		"grupo":$scope.grupoNuevo.grupoSelect.id,
+		      		"estado":"miembro"
+		  		}	
+
+		   	}
+		}).then(function(response) {
+		   		//$scope.grupoNuevo.id=response.data.grupo.id;
+				$scope.grupoNuevo.grupoSelect=0;
+				actualizaGrupos();
+				alert("Ahora estás en este grupo");
+		   	},function(error){
+				console.log('error',error.data.error.error);
+				self.errorLogUp = error.data.error.error;
+		});
+    }
   	actualizaGrupos();
     
   });

@@ -32,11 +32,14 @@
 
 
 	<modal display="displayAddGrupoModal" elemento="addGrupoModal" data-ng-click-right-button="myRightButton()">
-	    <div class="modal-header">
+	    <div class="modal-header modal-grupo">
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	        <h4 class="modal-title title-page">Crear Grupo</h4>
+	        <div class="modal-body col-xs-12 no-padding">
+	        	<h4 class="modal-title title-page col-xs-6" ng-class="act.crear" ng-click="active(1)">Crear Grupo</h4>
+	        	<h4 class="modal-title title-page col-xs-6" ng-class="act.buscar" ng-click="active(2)">Buscar Grupo</h4>
+	        </div>
 	    </div>
-	    <div class="modal-body col-xs-12">
+	    <div class="modal-body col-xs-12" ng-show="muestraTab">
 	        <form name="myForm">
 	          <div class="col-xs-2">
 	          	<span>Nombre:</span>
@@ -82,6 +85,18 @@
 				</div>
 			</div>
 	        <button class="col-xs-4 btnGuardar" ng-click="crearGrupo(grupoNuevo)">Guardar</button>
+	    </div>
+
+	    <div class="modal-body col-xs-12" ng-hide="muestraTab">
+	        <form name="myForm">
+	          <div class="col-xs-3">
+	          	<span>Buscar Grupo:</span>
+	          </div>
+	          <div class="col-xs-9">
+	          	<select ng-model="grupoNuevo.grupoSelect" ng-options="y.nombre for (x, y) in grupoNuevo.otrosGrupos"></select>
+	          </div>
+	          
+	        <button class="col-xs-4 btnGuardar" ng-click="unirGrupo()">Unirse</button>
 	    </div>
 	</modal>
 
