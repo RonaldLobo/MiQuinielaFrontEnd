@@ -19,57 +19,47 @@ angular.module('miQuinielaApp')
   			"usuario": $scope.usuario
   		}
   		console.log(usuario);
-  		var request = $.ajax({
-		  url: "http://localhost/API/index.php/usuarios/",
-		  method: "PUT",
-		  data: JSON.stringify(usuario),
-    	  dataType: "json",
-    	  contentType: "application/json; charset=utf-8",
+  		$http({
+		  url: "http://localhost/API/index.php/usuarios/?method=PUT",
+		  method: "POST",
+		  data: usuario
 		});
   	};
 
   	obtenerInvitaciones(auth.loggedUser.id);
 
   	function obtenerInvitaciones(id){
-  		var request = $.ajax({
+  		$http({
 		  url: "http://localhost/API/index.php/invitaciones/"+id,
 		  method: "GET",
+		}).then(function successCallback(response) {
+		    $scope.invitaciones = response.data.grupos;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
-		 
-		request.done(function( data ) {
-		  console.log('success',data.grupos);
-		  $scope.$apply(function(){
-		  	$scope.invitaciones = data.grupos;
-		  });
-		});
-		 
-		request.fail(function( jqXHR, textStatus ) {
-		  alert( "Request failed: " + textStatus );
-		});
+		
   	}
 
   	$scope.aceptarInvitacion = function(id){
-  		var request = $.ajax({
-		  url: "http://localhost/API/index.php/invitaciones/"+id,
-		  method: "PUT",
+  		$http({
+		  url: "http://localhost/API/index.php/invitaciones/?id="+id+"&method=PUT",
+		  method: "POST",
 		  dataType: "text"
-		});
-
-		request.done(function() {
-			console.log('in here');
-			$scope.$apply(function() {
+		}).then(function successCallback(response) {
+		    $scope.$apply(function() {
 				$scope.invitaciones = _.remove($scope.invitaciones, function(n) {
-					console.log('inside',id);
 				  console.log(n,n.id, n.id == id);
 				  return n.id != id;
 			  	});
 			});
-		    
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
-		 
-		request.fail(function( jqXHR, textStatus ) {
-		  alert( "Request failed: " + textStatus );
-		});
+
   	}
     
   });

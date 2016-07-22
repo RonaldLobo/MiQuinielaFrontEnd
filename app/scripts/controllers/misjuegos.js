@@ -131,11 +131,10 @@ angular.module('miQuinielaApp')
 	    		}
 	    	};
 	    	$http({
-			  url: "http://localhost/API/index.php/partidos/?XDEBUG_SESSION_START=netbeans-xdebug",
+			  url: "http://localhost/API/index.php/partidos/?method=PUT&XDEBUG_SESSION_START=netbeans-xdebug",
 			  data: partido,
-			  method: 'PUT',
+			  method: 'POST',
 			}).then(function successCallback(response) {
-				alert('partido actializado');
 				$http({
 				  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
 				  method: 'GET',
@@ -184,9 +183,9 @@ angular.module('miQuinielaApp')
 	    		}
 	    	};
 	    	$http({
-			  url: "http://localhost/API/index.php/predicciones/",
+			  url: "http://localhost/API/index.php/predicciones/?method=PUT",
 			  data: prediccion,
-			  method: 'PUT',
+			  method: 'POST',
 			}).then(function successCallback(response) {
 				alert('prediccion guardada');
 			}, function errorCallback(response) {

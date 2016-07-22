@@ -2,7 +2,7 @@
 	<div class="col-xs-11">
 		<p class="title-page">Mis Partidos</p>
 	</div>
-	<div class="col-xs-1 no-padding-left no-padding-right add-partido">
+	<div class="col-xs-1 no-padding-left no-padding-right add-partido" ng-if="isAdmin == true">
 		<span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="agregarPartido()"></span>
 	</div>
 </div>

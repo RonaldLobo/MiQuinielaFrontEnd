@@ -9,11 +9,6 @@
  */
 angular.module('miQuinielaApp')
   .controller('GruposCtrl', function ($scope,auth,$http) {
-    this.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
     //get user logged
     $scope.usuario=auth.loggedUser.id
     $scope.ordenUsuarios='-puntaje';
