@@ -188,6 +188,10 @@ overflow-y: auto;
 }
 .modal-body form div{ 
   margin: 5px 0;
+
+}
+.modal-body form div.chosen-container{
+  margin:0;
 }
 .modal-header,.modal-header .modal-body{
   padding:0;
