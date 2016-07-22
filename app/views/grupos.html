@@ -62,7 +62,7 @@
 		          	<select chosen ng-model="grupoNuevo.user" ng-options="y.usuario for (x, y) in usuariosTodos"></select>
 		          </div>
 		          <div class="col-xs-5">
-		          	<button ng-click="agregarUsuario()">+</button>
+		          	<p class="plus-icon-prin"><a><i class="glyphicon glyphicon-plus gray" ng-click="agregarUsuario()"></i></a></p>
 		          </div>
 		       </div>
 	          <p class="error col-xs-12">{{error}}</p>
