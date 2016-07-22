@@ -18,7 +18,7 @@ angular.module('miQuinielaApp')
     $scope.usuario=auth.loggedUser.id
     $scope.ordenUsuarios='-puntaje';
     $scope.flecha="Desc";
-	$scope.usuarios={};
+	$scope.usuarios=[];
 	$scope.usuariosTodos={};
 	$scope.grupos={};
     $scope.displayAddGrupoModal = false;
@@ -35,20 +35,18 @@ angular.module('miQuinielaApp')
 
     }
   	var actualizaGrupos = function(){
-  		console.log('called 1');
-  		var request = $.ajax({
+  		$http({
 		  url: "http://localhost/API/index.php/grupos/?userId="+$scope.usuario,
 		  method: "GET",
-		   dataType: 'json',
-		   success: function(data) {
-		  	$scope.$apply(function() {
-		  		$scope.grupos =data.grupos;
-		  		console.log($scope.grupos);
-		  		$scope.grupoSeleccionado=$scope.grupos[0];
-		  		$scope.actualizarLista($scope.grupoSeleccionado.id);
-		    });
-		   },
-    	  contentType: "application/json; charset=utf-8",
+		}).then(function successCallback(response) {
+			$scope.grupos = response.data.grupos;
+	  		console.log($scope.grupos);
+	  		$scope.grupoSeleccionado=$scope.grupos[0];
+	  		$scope.actualizarLista($scope.grupoSeleccionado.id);
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
   	};
     var cambiaMensaje=function(msg){
@@ -69,56 +67,48 @@ angular.module('miQuinielaApp')
     }
   	$scope.actualizarLista = function(grupoId){
 
-		var request= $.ajax({
-		  url: "http://localhost/API/index.php/grupos/?sinUserId="+$scope.usuario,
-		  method: "GET",
-		   dataType: 'json',
-		   success: function(data) {
-		  		$scope.$apply(function() {
-		  			$scope.grupoNuevo.otrosGrupos=data.grupos;
-	  			});
-
-		   },
-    	  contentType: "application/json; charset=utf-8",
+		$http({
+		  url: "http://localhost/API/index.php/grupos/?sinUserId="+$scope.usuario+'&XDEBUG_SESSION_START=netbeans-xdebug',
+		  method: "GET"
+		}).then(function successCallback(response) {
+	  		$scope.grupoNuevo.otrosGrupos=response.data.grupos;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
 
-  		request= $.ajax({
+  		$http({
 		  url: "http://localhost/API/index.php/usuarios/?userPoints="+grupoId,
-		  method: "GET",
-		   dataType: 'json',
-		   success: function(data) {
-		  		$scope.$apply(function() {
-		  			$scope.usuarios=data.usuarios;
-	  			});
-
-		   },
-    	  contentType: "application/json; charset=utf-8",
+		  method: "GET"
+		}).then(function successCallback(response) {
+	  		$scope.usuarios=response.data.usuarios;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
 
-		request= $.ajax({
+		$http({
 		  url: "http://localhost/API/index.php/usuarios/?byUser="+$scope.usuario,
-		  method: "GET",
-		   dataType: 'json',
-		   success: function(data) {
-		  		$scope.$apply(function() {
-		  			$scope.usuariosTodos=data.usuarios;
-	  			});
-
-		   },
-    	  contentType: "application/json; charset=utf-8",
+		  method: "GET"
+		}).then(function successCallback(response) {
+	  		$scope.usuariosTodos=response.data.usuarios;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
 		      
-		request= $.ajax({
+		$http({
 		  url: "http://localhost/API/index.php/torneo/",
-		  method: "GET",
-		   dataType: 'json',
-		   success: function(data) {
-		  		$scope.$apply(function() {
-		  			$scope.torneos=data.torneo;
-	  			});
-
-		   },
-    	  contentType: "application/json; charset=utf-8",
+		  method: "GET"
+		}).then(function successCallback(response) {
+	  		$scope.torneos=response.data.torneo;
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
   	};
   	$scope.agregarGrupo = function(){

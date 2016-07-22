@@ -95,7 +95,6 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
                 	$scope.home = false;
                 	$scope.torneos = false;
                 	$scope.foro = false;
-                	$scope.about = false;
                 	$scope.grupos = false;
                 	$scope.configuracion = false;
 	                switch($location.path()){
