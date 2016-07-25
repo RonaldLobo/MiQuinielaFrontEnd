@@ -191,6 +191,10 @@ overflow-y: auto;
 }
 .modal-body form div{ 
   margin: 5px 0;
+
+}
+.modal-body form div.chosen-container{
+  margin:0;
 }
 .modal-header,.modal-header .modal-body{
   padding:0;
@@ -338,7 +342,9 @@ overflow-y: auto;
   text-align:center;
 }
 /*** End Estilos Torneo ***/
-
+.correo-usuario{
+      overflow-wrap: break-word;
+}
 .navbar{
   .container{
     background: #f8f8f8 !important;
