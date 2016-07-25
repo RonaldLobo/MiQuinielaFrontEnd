@@ -100,6 +100,9 @@ body {
   }
 }
 
+.navbar-header{
+  background: #f8f8f8;
+}
 
 .menu-holder{
   .navbar-nav {
@@ -366,7 +369,7 @@ overflow-y: auto;
 .bg-image{
     position: absolute;
     width: 100%;
-    min-width: 1200px;
+    min-height: 100%;
 }
 .not-logged{
   float: right;
@@ -439,5 +442,55 @@ overflow-y: auto;
 .agregar-equipo-cont{
     margin-left: 14px;
     margin-top: 14px;
+}
+
+@media (max-width: 768px) {
+  body{
+    font-size: 20px;
+  }
+  .header {
+    position: fixed;
+    width: 100%;
+    z-index: 9000;
+    .navbar {
+      margin-bottom: 1px;
+    }
+    .navbar-default {
+      border-color: transparent;
+    }
+  }
+  .dropdown-menu-left{
+    left: -118px !important;
+  }
+  .modal-body {
+    max-height: 400px;
+  }
+  .modal {
+    top: 11%;
+    z-index: 9999;
+  }
+  .view-display{
+    margin-top:60px;
+  }
+  .bg-image {
+    margin-top: 55px;
+  }
+  .divisor-line{
+    border-right:none;
+  }
+  #nuevoUsuario{
+    margin-bottom: 9px;
+  }
+  #entrarForm{
+    margin-bottom: 15px;
+  }
+  .fecha{
+    text-align: center;
+    margin-bottom: 9px;
+  }
+  .guardar-icon{
+    font-size: 28px;
+    margin-left: 14px;
+  }
 }
 

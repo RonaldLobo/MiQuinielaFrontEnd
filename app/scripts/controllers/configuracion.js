@@ -22,6 +22,13 @@ angular.module('miQuinielaApp')
 		  url: "/API/index.php/usuarios/?method=PUT",
 		  method: "POST",
 		  data: usuario
+		}).then(function successCallback(response) {
+		    $scope.usuario = response.data.usuario;
+		    localStorage.setItem('usuario', JSON.stringify($scope.usuario));	
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
   	};
 
@@ -58,7 +65,10 @@ angular.module('miQuinielaApp')
 		    	auth.logOut();
 		    }
 		});
+  	}
 
+  	$scope.cancelarUsuario = function(){
+  		$scope.usuario = JSON.parse(localStorage.getItem('usuario'));
   	}
     
   });
