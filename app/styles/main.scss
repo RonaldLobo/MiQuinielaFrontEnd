@@ -342,7 +342,9 @@ overflow-y: auto;
   text-align:center;
 }
 /*** End Estilos Torneo ***/
-
+.correo-usuario{
+      overflow-wrap: break-word;
+}
 .navbar{
   .container{
     background: #f8f8f8 !important;
