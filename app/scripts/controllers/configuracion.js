@@ -19,7 +19,7 @@ angular.module('miQuinielaApp')
   		}
   		console.log(usuario);
   		$http({
-		  url: "http://localhost/API/index.php/usuarios/?method=PUT",
+		  url: "/API/index.php/usuarios/?method=PUT",
 		  method: "POST",
 		  data: usuario
 		}).then(function successCallback(response) {
@@ -36,7 +36,7 @@ angular.module('miQuinielaApp')
 
   	function obtenerInvitaciones(id){
   		$http({
-		  url: "http://localhost/API/index.php/invitaciones/"+id,
+		  url: "/API/index.php/invitaciones/"+id,
 		  method: "GET",
 		}).then(function successCallback(response) {
 		    $scope.invitaciones = response.data.grupos;
@@ -50,7 +50,7 @@ angular.module('miQuinielaApp')
 
   	$scope.aceptarInvitacion = function(id){
   		$http({
-		  url: "http://localhost/API/index.php/invitaciones/?id="+id+"&method=PUT",
+		  url: "/API/index.php/invitaciones/?id="+id+"&method=PUT",
 		  method: "POST",
 		  dataType: "text"
 		}).then(function successCallback(response) {
