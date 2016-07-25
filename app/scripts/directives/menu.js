@@ -92,6 +92,9 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
+                	if($('.collapse.in').length > 0){
+                		$('.navbar-toggle').click();
+                	}
                 	$scope.home = false;
                 	$scope.torneos = false;
                 	$scope.foro = false;
@@ -204,13 +207,15 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 				* Logout
 				*/
 				$scope.logout = function() {
-				Facebook.logout(function() {
-				  $scope.$apply(function() {
-				    $scope.user   = {};
-				    $scope.logged = false;  
-				  });
-				  auth.logOut();
-				});
+					if(userIsConnected){
+						Facebook.logout(function() {
+						  $scope.$apply(function() {
+						    $scope.user   = {};
+						    $scope.logged = false;  
+						  });
+						});
+					}
+					auth.logOut();
 				}
 
 				/**
