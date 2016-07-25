@@ -11,7 +11,7 @@ angular.module('miQuinielaApp')
   .controller('GruposCtrl', function ($scope,auth,$http) {
     //get user logged
     $scope.usuario=auth.loggedUser.id
-    $scope.ordenUsuarios='-puntaje';
+    $scope.ordenUsuarios='position';
     $scope.flecha="Desc";
 	$scope.usuarios=[];
 	$scope.usuariosTodos={};
@@ -26,7 +26,7 @@ angular.module('miQuinielaApp')
 
     $scope.cambiarOrden=function  (argument) {
     	$scope.flecha==="Desc" ? $scope.flecha="Asc": $scope.flecha="Desc";
-    	$scope.ordenUsuarios==='-puntaje' ? $scope.ordenUsuarios='puntaje': $scope.ordenUsuarios='-puntaje';
+    	$scope.ordenUsuarios==='-position' ? $scope.ordenUsuarios='position': $scope.ordenUsuarios='-position';
 
     }
   	var actualizaGrupos = function(){
