@@ -38,18 +38,18 @@
         <h4 class="modal-title">Entrar</h4>
     </div>
     <div class="modal-body col-xs-12">
-      <div class="col-md-6 col-xs-12">
+      <div class="col-md-12 col-xs-12">
         <form name="myForm" id="entrar-form">
-          <input type="text" name="input" placeholder="usuario"ng-model="inputUser.username" ng-trim="false" class="form-control">
-          <input type="password" name="input" placeholder="contraseña"ng-model="inputUser.password" ng-trim="false" class="form-control">
+          <input type="text" name="input" placeholder="usuario" ng-model="inputUser.username" ng-trim="false" class="form-control" required>
+          <input type="password" name="input" placeholder="contraseña" ng-model="inputUser.password" ng-trim="false" class="form-control" required>
           <p class="error">{{error}}</p>
-          <button class="btn btn-default" ng-click="regularLogin(inputUser)">ingresar</button>
+          <input type="submit" class="btn btn-default" ng-click="regularLogin(inputUser)" value="ingresar">
         </form>
       </div>
-      <div class="col-md-6 col-xs-12">
+      <!-- <div class="col-md-6 col-xs-12">
         <button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLogin()">Entrar con Facebook</button>
-        <!-- <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button> -->
-      </div>
+        <!-- <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button>
+      </div> -->
     </div>
 </modal>
 
@@ -59,21 +59,22 @@
         <h4 class="modal-title">Nuevo Usuario</h4>
     </div>
     <div class="modal-body col-xs-12">
-      <div class="col-md-6 divisor-line col-xs-12">
+      <!-- <div class="col-md-6 divisor-line col-xs-12"> -->
+      <div class="col-xs-12">
         <form name="myForm" id="nuevoUsuario">
-          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false" placeholder="Username" class="form-control">
-          <input type="password" name="input" ng-model="inputUser.password" ng-trim="false" placeholder="Password" class="form-control">
-          <input type="password" name="input" ng-model="inputUser.confirmPassword" ng-trim="false" placeholder="Confirmar Password" class="form-control">
+          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false" placeholder="Username" class="form-control" required>
+          <input type="password" name="input" ng-model="inputUser.password" ng-trim="false" placeholder="Password" class="form-control" required>
+          <input type="password" name="input" ng-model="inputUser.confirmPassword" ng-trim="false" placeholder="Confirmar Password" class="form-control" required>
           <input type="text" name="input" ng-model="inputUser.nombre" ng-trim="false" placeholder="Nombre" class="form-control">
           <input type="text" name="input" ng-model="inputUser.apellido" ng-trim="false" placeholder="Apellido" class="form-control">
           <input type="text" name="input" ng-model="inputUser.correo" ng-trim="false" placeholder="Correo" class="form-control">
           <p class="error">{{errorLogUp}}</p>
-          <button class="btn btn-default" ng-click="regularLogup(inputUser)">Crear</button>
+          <input type="submit" class="btn btn-default" ng-click="regularLogup(inputUser)" value="Crear">
         </form>
       </div>
-      <div class="col-md-6 no-padding-right col-xs-12">
+      <!-- <div class="col-md-6 no-padding-right col-xs-12">
         <button type="button" class="btn btn-primary btn-large" data-ng-show="!logged" data-ng-disabled="!facebookReady" data-ng-click="IntentLoginUp()">Entrar con Facebook</button>
-        <!-- <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button> -->
-      </div>
+        <!-- <button type="button" class="btn btn-danger btn-large" data-ng-show="logged" data-ng-disabled="!facebookReady" data-ng-click="logout()">Logout</button> 
+      </div> -->
     </div>
 </modal>
