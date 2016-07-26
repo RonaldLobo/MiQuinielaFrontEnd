@@ -1,9 +1,6 @@
 // bower:scss
 // endbower
-@font-face {
-    font-family: ChalkBoard;
-    src: url(squeaky-chalk-sound/SqueakyChalkSound.ttf);
-}
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -14,27 +11,18 @@
 html{
   // background-color: #004d00;
 }
-.view-display{
 
-  font-family: ChalkBoard;
-}
-input,select,.modal-dialog,.home-page,.encabezado-tabla,.chosen-container{
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
 body {
   padding: 0;
-  background-color: #006633 !important;
-  color: white;
-
+  // background-color: #004d00 !important;
 }
-
 .error{
   color: red;
 }
-input,.modal-dialog,.login-info{
-  color: black;
-}
 
+.container{
+  background-color: white !important;
+}
 
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
@@ -270,18 +258,15 @@ overflow-y: auto;
   }
 
   .row-par{
-   // background-color: #f8f8f8;
+    background-color: #f8f8f8;
   }
   .encabezado-tabla{
     color:#ffffff;
-    background-color:#663300;
-    border: 1px solid black;
+    background-color:black;
     font-size:20px;
-    padding: 0
+    padding: 0px;
   }
-  .tabla-pizarra{
 
-  }
   .guardar-link{
     &:hover{
       text-decoration:underline;
@@ -293,8 +278,7 @@ overflow-y: auto;
 .title-page{
   font-size: 20px;
   padding: 14px;
-  color: white;
-  font-weight: bold;
+  color: green;
 }
 
 .configuracion{
@@ -359,9 +343,6 @@ overflow-y: auto;
   text-align:center;
 }
 /*** End Estilos Torneo ***/
-.correo-usuario{
-      overflow-wrap: break-word;
-}
 .navbar{
   .container{
     background: #f8f8f8 !important;
@@ -469,7 +450,7 @@ overflow-y: auto;
 
 @media (max-width: 768px) {
   body{
-    font-size: 17px;
+    font-size: 20px;
   }
   .header {
     position: fixed;
