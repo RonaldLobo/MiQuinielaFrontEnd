@@ -25,7 +25,10 @@ body {
 .container{
   background-color: white !important;
 }
-
+.guardar-link{
+  color:green;
+  font-weight: bold;
+}
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
