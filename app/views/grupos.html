@@ -6,7 +6,7 @@
 		</p>
 	</div>
 	<div class="col-xs-1 no-padding-left no-padding-right add-partido">
-		
+
 		<span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="agregarGrupo()"></span>
 	</div>
 </div>
@@ -92,7 +92,10 @@
 	          	<span>Buscar Grupo:</span>
 	          </div>
 	          <div class="col-xs-4">
-	          	<select chosen ng-model="grupoNuevo.grupoSelect" ng-options="y.nombre for (x, y) in grupoNuevo.otrosGrupos"><option value="">Seleccione</option></select>
+	          	<select chosen ng-model="grupoNuevo.grupoSelect" >
+	          		<option value="">Seleccione</option>
+	          		<option ng-repeat="x in grupoNuevo.otrosGrupos">{{x.nombre}}</option>
+	          	</select>
 	          </div>
 	          
 	        <button class="col-xs-10 col-md-4 btnGuardar" ng-click="unirGrupo()">Unirse</button>
