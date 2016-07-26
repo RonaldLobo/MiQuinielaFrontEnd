@@ -48,9 +48,9 @@
 					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
 					<span class="nombre-equipo col-xs-2 hidden-md hidden-lg hidden-sm"></span>
 					<span ng-if="isAdmin == true">
-						<input type="text" class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo1"> 
+						<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo1"> 
 						<span class="col-xs-1">-</span> 
-						<input type="text" class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo2">
+						<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo2">
 					</span>
 					<span ng-if="isAdmin == false">
 						<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo1}}</span> 
