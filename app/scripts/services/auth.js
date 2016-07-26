@@ -20,7 +20,7 @@ angular.module('miQuinielaApp')
   		var self = this;
   		if(user.username && user.password){
 	      	$http({
-				url: '/API/index.php/login',
+				url: 'http://appquiniela.com/API/index.php/login',
 				skipAuthorization: true,
 				method: 'POST',
 				data: {
@@ -58,7 +58,7 @@ angular.module('miQuinielaApp')
   				}
   			}
 	      	$http({
-				url: '/API/index.php/signup',
+				url: 'http://appquiniela.com/API/index.php/signup',
 				skipAuthorization: true,
 				method: 'POST',
 				data: usuario
@@ -96,7 +96,7 @@ angular.module('miQuinielaApp')
 		}
   		if(user.id){
 	      	$http({
-				url: '/API/index.php/signup',
+				url: 'http://appquiniela.com/API/index.php/signup',
 				skipAuthorization: true,
 				method: 'POST',
 				data: usuario
@@ -120,7 +120,7 @@ angular.module('miQuinielaApp')
   		var self = this;
   		if(user.id){
 	      	$http({
-				url: '/API/index.php/login?XDEBUG_SESSION_START=netbeans-xdebug',
+				url: 'http://appquiniela.com/API/index.php/login?XDEBUG_SESSION_START=netbeans-xdebug',
 				skipAuthorization: true,
 				method: 'POST',
 				data: {
