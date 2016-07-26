@@ -1,11 +1,11 @@
 <div class="menu-holder">
-	<ul class="" ng-if="visible">
+	<ul class="nav navbar-nav" ng-if="visible">
       <li ng-class="{'active': home }" ><a href="#/home">Partidos</a></li>
       <li ng-class="{'active': torneos }" ><a ng-href="#/torneos">Torneos</a></li>
       <li ng-class="{'active': grupos }" ><a ng-href="#/grupos">Grupos</a></li>
       <li ng-class="{'active': configuracion }" ><a ng-href="#/configuracion">Configuración</a></li>
       <li class="login-info">
-      	<div class="nav navbar-nav"ng-if="isAuthenticated == true">
+      	<div ng-if="isAuthenticated == true">
 		    <p ng-if="isFacebookAuth" class="col-xs-6 user-name-display">{{user.nombre}}</p>
         <p ng-if="isFacebookAuth == false" class="col-xs-6 user-name-display">{{user.usuario}}</p>
 		    <div class="col-xs-5 no-padding-left no-padding-right">
