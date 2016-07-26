@@ -40,8 +40,8 @@
     <div class="modal-body col-xs-12">
       <div class="col-md-6 col-xs-12">
         <form name="myForm" id="entrar-form">
-          <input type="text" name="input" ng-model="inputUser.username" ng-trim="false" class="form-control">
-          <input type="text" name="input" ng-model="inputUser.password" ng-trim="false" class="form-control">
+          <input type="text" name="input" placeholder="usuario"ng-model="inputUser.username" ng-trim="false" class="form-control">
+          <input type="password" name="input" placeholder="contraseña"ng-model="inputUser.password" ng-trim="false" class="form-control">
           <p class="error">{{error}}</p>
           <button class="btn btn-default" ng-click="regularLogin(inputUser)">ingresar</button>
         </form>
