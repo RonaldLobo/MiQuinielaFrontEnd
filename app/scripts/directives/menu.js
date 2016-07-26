@@ -54,7 +54,9 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	            
 
 	            $scope.regularLogin = function(user){
-			    	auth.regularLogin(user);
+	            	if(user){
+			    		auth.regularLogin(user);
+			    	}
 			    }
 
 			    $scope.regularLogup = function(user){
