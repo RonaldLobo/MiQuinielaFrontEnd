@@ -7,13 +7,6 @@
   color: #000;
   padding: 0.2em 0;
 }
-.modal-dialog select{
-  max-width: 100px !important;
-}
-
-.modal-dialog input{
-  max-width: 150px !important;
-}
 html{
   // background-color: #004d00;
 }
@@ -22,10 +15,24 @@ body {
   padding: 0;
   // background-color: #004d00 !important;
 }
+input:focus{
+  outline:none;
+}
 .error{
   color: red;
 }
-
+.bordeVerde{
+  border: 2px solid green;
+  
+}
+.ptosVerde{
+  color: green;
+  font-weight: bold;
+}
+.ptosAmarillo{
+  color:#ffdb4d;
+  font-weight: bold;
+}
 .container{
   background-color: white !important;
 }
@@ -456,6 +463,15 @@ overflow-y: auto;
 }
 
 @media (max-width: 768px) {
+
+.modal-dialog select{
+  max-width: 100px !important;
+}
+
+.modal-dialog input{
+  max-width: 150px !important;
+}
+
   body{
     font-size: 20px;
   }
