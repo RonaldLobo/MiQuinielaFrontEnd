@@ -33,14 +33,14 @@
 				<p class="col-xs-12 no-padding-left no-padding-right">
 					<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
 					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo1}}</span>
-					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador1" disabled> 
+					<input type="text" ng-change="guardarPartido(partido)" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador1" disabled> 
 					<span class="col-xs-1">-</span> 
-					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador2" disabled>
+					<input type="text" ng-change="guardarPartido(partido)" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador2" disabled>
 					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
 					<span ng-if="isAdmin == true">
-						<span class="guardar-link col-xs-1 hidden-xs" ng-click="guardarPartido(partido)">
+						<!-- <span class="guardar-link col-xs-1 hidden-xs" ng-click="guardarPartido(partido)">
 							Actualizar
-						</span>
+						</span> -->
 					</span>
 				</p>
 				<p class="col-xs-12 no-padding-left no-padding-right">
@@ -83,36 +83,31 @@
 				<p class="col-xs-12 no-padding-left no-padding-right">
 					<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
 					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo1}}</span>
-					<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.prediccion.marcador1"> 
+					<input type="number" string-to-number ng-change="guardarPrediccion(partido)" class="campo-marcador col-xs-1 form-control" ng-model="partido.prediccion.marcador1"> 
 					<span class="col-xs-1">-</span> 
-					<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.prediccion.marcador2">
+					<input type="number" string-to-number ng-change="guardarPrediccion(partido)" class="campo-marcador col-xs-1 form-control" ng-model="partido.prediccion.marcador2">
 					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
-					<span class="guardar-link col-xs-1 hidden-xs" ng-click="guardarPrediccion(partido)">
-							Guardar
-					</span>
+					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
 				</p>
 				<p class="col-xs-12 no-padding-left no-padding-right">
 					<span class="titulo-linea col-xs-2 hidden-xs">Resultado</span>
 					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
 					<span class="nombre-equipo col-xs-2 hidden-md hidden-lg hidden-sm"></span>
-					<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo1}}</span> 
-					<span class="col-xs-1">-</span> 
-					<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo2}}</span>
 				</p>
 			</div>
 			<div class="col-md-2 col-xs-9">
 				<span class="hidden-md hidden-lg hidden-sm">Torneo: </span>{{partido.torneo.nombre}}
 			</div>
-			<span class="guardar-link col-xs-1 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPrediccion(partido)">
+			<!-- <span class="guardar-link col-xs-1 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPrediccion(partido)">
 				<i class="glyphicon glyphicon-floppy-disk"></i>
-			</span>
+			</span> -->
 		</div>
 	</div>
 	<div class="arrow-up scroll-icon">
-		<i class="glyphicon glyphicon-chevron-up">
+		<i class="glyphicon glyphicon-chevron-up"></i>
 	</div>
 	<div class="arrow-down scroll-icon">
-		<i class="glyphicon glyphicon-chevron-down">
+		<i class="glyphicon glyphicon-chevron-down"></i>
 	</div>
 	<div ng-hide="filtradosFuturo.length">No tiene Juegos posteriores a hoy, por favor unase a un grupo</div>
 

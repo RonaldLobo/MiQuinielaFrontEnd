@@ -29,15 +29,20 @@ angular.module('miQuinielaApp')
 					tipo: "normal"
 				}
 			}).then(function(response) {
-				self.isFacebookAuth = false;
-				localStorage.setItem('JWT', response.data.auth.token);
-				localStorage.setItem('usuarioId', response.data.auth.user.id);
-				localStorage.setItem('isFacebookAuth', false);
-				self.loggedUser = response.data.auth.user;
-				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
-				self.isAuthenticated = true;
-				self.error = null;
-				$location.path('/home');
+				if(response.data.error){
+					self.error = response.data.error.error;
+				}
+				else{
+					self.isFacebookAuth = false;
+					localStorage.setItem('JWT', response.data.auth.token);
+					localStorage.setItem('usuarioId', response.data.auth.user.id);
+					localStorage.setItem('isFacebookAuth', false);
+					self.loggedUser = response.data.auth.user;
+					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
+					self.isAuthenticated = true;
+					self.error = null;
+					$location.path('/home');
+				}
 			},function(error){
 				self.error = error.data.error.error;
 			});
@@ -63,15 +68,20 @@ angular.module('miQuinielaApp')
 				method: 'POST',
 				data: usuario
 			}).then(function(response) {
-				self.isFacebookAuth = false;
-				localStorage.setItem('JWT', response.data.auth.token);
-				localStorage.setItem('usuarioId', response.data.auth.user.id);
-				localStorage.setItem('isFacebookAuth', false);
-				self.loggedUser = response.data.auth.user;
-				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
-				self.isAuthenticated = true;
-				self.errorLogUp = null;
-				$location.path('/home');
+				if(response.data.error){
+					self.errorLogUp = response.data.error.error;
+				}
+				else{
+					self.isFacebookAuth = false;
+					localStorage.setItem('JWT', response.data.auth.token);
+					localStorage.setItem('usuarioId', response.data.auth.user.id);
+					localStorage.setItem('isFacebookAuth', false);
+					self.loggedUser = response.data.auth.user;
+					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
+					self.isAuthenticated = true;
+					self.errorLogUp = null;
+					$location.path('/home');
+				}
 			},function(error){
 				console.log('error',error.data.error.error);
 				self.errorLogUp = error.data.error.error;

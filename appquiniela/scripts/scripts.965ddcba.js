@@ -414,7 +414,9 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	            
 
 	            $scope.regularLogin = function(user){
-			    	auth.regularLogin(user);
+	            	if(user){
+			    		auth.regularLogin(user);
+			    	}
 			    }
 
 			    $scope.regularLogup = function(user){
@@ -616,7 +618,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth',function ($scope,lodash,$http,auth) {
+  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout) {
 
     $scope.nuevoEquipo = {};
 
@@ -698,6 +700,19 @@ angular.module('miQuinielaApp')
 	    	var date = new Date();
 	    	return date < new Date(o.fecha);  
 	    });
+	    // set the location.hash to the id of
+	    // the element you wish to scroll to.
+	    $timeout(function(){
+	    	$location.hash('hoy');
+
+		    // call $anchorScroll()
+		    $anchorScroll();
+		    angular.element('.scroll-icon').addClass('blink_me');
+		    $timeout(function(){
+			    angular.element('.scroll-icon').addClass('hide');
+		    }, 3000);
+	    }, 200);
+	    
 	}, function errorCallback(response) {
 	    if(response.status == 401){
 	    	auth.logOut();

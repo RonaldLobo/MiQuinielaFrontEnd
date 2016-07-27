@@ -10,6 +10,9 @@
 angular.module('miQuinielaApp')
   .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout) {
 
+	// $('.btn-navbar').click(); //bootstrap 2.x
+ //    $('.navbar-toggle').click() //bootstrap 3.x by Richard
+
     $scope.nuevoEquipo = {};
 
     $scope.nuevoPartido = {};
@@ -224,7 +227,7 @@ angular.module('miQuinielaApp')
 	    		idPartidoEquipo1: Number($scope.nuevoPartido.equipo1),
 	    		idPartidoEquipo2: Number($scope.nuevoPartido.equipo2),
 	    		marcadorEquipo1: 0,
-	    		marcadorEquipo1: 0,
+	    		marcadorEquipo2: 0,
 	    		fecha: convertDateHora($scope.picker.date)
 	    	}
     	};

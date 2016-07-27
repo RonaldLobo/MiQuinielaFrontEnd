@@ -99,6 +99,10 @@ angular
   })
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      $rootScope.actual = next.templateUrl;
+      // if ( next.templateUrl === "partials/index.html") {
+      //   $rootScope.actual = '/';
+      // }
       if (auth.isAuthenticated == false) {
         if ( next.templateUrl === "partials/index.html") {
         } else {
