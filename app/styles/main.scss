@@ -463,7 +463,9 @@ overflow-y: auto;
 }
 
 @media (max-width: 768px) {
-
+.close{
+  font-size:30px;
+}
 .modal-dialog select{
   max-width: 100px !important;
 }
