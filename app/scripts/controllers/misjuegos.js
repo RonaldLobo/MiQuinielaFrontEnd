@@ -8,7 +8,7 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout) {
+  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout','toastr',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout,toastr) {
 
 	// $('.btn-navbar').click(); //bootstrap 2.x
  //    $('.navbar-toggle').click() //bootstrap 3.x by Richard
@@ -104,7 +104,7 @@ angular.module('miQuinielaApp')
 		    $timeout(function(){
 			    angular.element('.scroll-icon').addClass('hide');
 		    }, 3000);
-	    }, 200);
+	    }, 700);
 	    
 	}, function errorCallback(response) {
 	    if(response.status == 401){
@@ -205,6 +205,7 @@ angular.module('miQuinielaApp')
 			}).then(function successCallback(response) {
 				angular.element( document.getElementsByClassName( 'row-'+num ) ).addClass("bordeVerde");
 				//alert('prediccion guardada');
+				toastr.success('', 'Prediccion Guardada');
 			}, function errorCallback(response) {
 			    if(response.status == 401){
 			    	auth.logOut();

@@ -23,7 +23,8 @@ angular
     'ngLodash',
     'localytics.directives',
     'ui.bootstrap', 
-    'ui.bootstrap.datetimepicker'
+    'ui.bootstrap.datetimepicker',
+    'toastr'
   ])  
   .config(function ($routeProvider) {
     $routeProvider
@@ -96,6 +97,19 @@ angular
         }
       };
     }]);
+  })
+  .config(function(toastrConfig) {
+    angular.extend(toastrConfig, {
+      autoDismiss: false,
+      containerId: 'toast-container',
+      maxOpened: 2,    
+      newestOnTop: true,
+      positionClass: 'toast-top-center',
+      preventDuplicates: false,
+      preventOpenDuplicates: false,
+      target: 'body',
+      timeOut: 1000,
+    });
   })
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
