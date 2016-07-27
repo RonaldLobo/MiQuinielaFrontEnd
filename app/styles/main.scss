@@ -375,7 +375,6 @@ overflow-y: auto;
 
 
 .home-page{
-    background: black !important;
     position: relative;
     color: white;
 }
@@ -489,8 +488,6 @@ overflow-y: auto;
     margin-top:60px;
   }
   .bg-image {
-    bottom: 0px;
-    min-height: 500px;
   }
   .divisor-line{
     border-right:none;
@@ -511,6 +508,9 @@ overflow-y: auto;
   }
   .navbar-brand{
     padding-left: 30px;
+  }
+  .home-page{
+    background: rgba(0,0,0,0.7);
   }
 }
 
@@ -554,5 +554,9 @@ form input.form-control{
 
 .hide{
   display: none;
+}
+
+.no-margin-top{
+  margin-top: 0px;
 }
 

@@ -1,9 +1,9 @@
-angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Facebook','$timeout',function () { 'use strict';
+angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Facebook','$timeout','$rootScope',function () { 'use strict';
 
         return {
             restrict: 'A',
             templateUrl: 'views/menu.html',
-            controller: function ($scope,$location,auth,Facebook,$timeout) {
+            controller: function ($scope,$location,auth,Facebook,$timeout,$rootScope) {
 
             	var self = this;
             	$scope.user = {};
@@ -45,6 +45,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	            },true);
 
 	            $scope.$watch(function(){return auth.error;}, function (v) {
+	            	console.log('changed',auth.error);	
 					$scope.error = auth.error;
 	            },true);
 
@@ -76,6 +77,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 			    }
 
 			    $scope.showLogin = function(){
+			    	console.log('displayLogin');
 			    	$scope.displayLoginModal = true;
 			    }
 
@@ -94,7 +96,8 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
-                	if($('.collapse.in').length > 0){
+                	console.log('watch',$('.collapse.in').length);
+                	if($('.collapse.in').length > 1){
                 		$('.navbar-toggle').click();
                 	}
                 	$scope.home = false;
