@@ -98,7 +98,10 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
                 	console.log('watch',$('.collapse.in').length);
-                	if($('.collapse.in').length > 1){
+                	if($('.collapse.in').length > 1 && $location.path() == "/home"){
+                		$('.navbar-toggle').click();
+                	}
+                	if($('.collapse.in').length > 0 && $location.path() != "/home"){
                 		$('.navbar-toggle').click();
                 	}
                 	$scope.home = false;
