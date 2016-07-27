@@ -6,7 +6,7 @@
 		</p>
 	</div>
 	<div class="col-xs-1 no-padding-left no-padding-right add-partido">
-		
+
 		<span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="agregarGrupo()"></span>
 	</div>
 </div>
@@ -17,7 +17,7 @@
 		<p class="col-xs-12 no-padding-left no-padding-right encabezado-tabla">
 			<span class="titulo-linea col-xs-3">Posición</span>
 			<span class="titulo-linea col-xs-5">Usuario</span>
-			<span class="nombre-equipo col-xs-4">Puntos <span class="icono-orden {{flecha}}" ng-click="cambiarOrden()"></span></span>
+			<span class="nombre-equipo col-xs-4">Puntos<span class="icono-orden {{flecha}}" ng-click="cambiarOrden()"></span></span>
 		</p>
 	</div>
 
@@ -40,25 +40,25 @@
 	        	<h4 class="modal-title title-page col-xs-6" ng-class="act.buscar" ng-click="active(2)">Buscar Grupo</h4>
 	        </div>
 	    </div>
-	    <div class="modal-body col-xs-12" ng-show="muestraTab">
-	        <form class="col-xs-10"name="myForm">
-	          <div class="col-xs-4">
+	    <div class="modal-body col-xs-12 no-padding-left" ng-show="muestraTab">
+	        <form class="col-xs-12"name="myForm">
+	          <div class="col-xs-4 no-padding-left">
 	          	<span>Nombre:</span>
 	          </div>
 	          <div class="col-xs-6">
 	          	<input type="text" name="input" ng-model="grupoNuevo.name" ng-trim="false">
 	          </div>
-	          <div class="col-xs-4">
+	          <div class="col-xs-4 no-padding-left">
 	          	<span>Torneo:</span>
 	          </div>
 	          <div class="col-xs-6">
 	          	<select chosen ng-model="grupoNuevo.torneoSelect" ng-options="y.torneo for (x, y) in torneos"><option value="">Seleccione</option></select>
 	          </div>
 	          
-		          <div class="col-xs-4">
+		          <div class="col-xs-4 no-padding-left">
 		          	<span>Agregar usuario:</span>
 		          </div>
-		          <div class="col-xs-5">
+		          <div class="col-xs-6 col-md-4">
 		          	<select chosen ng-model="grupoNuevo.user" ng-options="y.usuario for (x, y) in usuariosTodos"><option value="">Seleccione</option></select>
 		          </div>
 		          <div class="col-xs-1">
@@ -92,8 +92,11 @@
 	          	<span>Buscar Grupo:</span>
 	          </div>
 	          <div class="col-xs-4">
-	          	<select chosen ng-model="grupoNuevo.grupoSelect" ng-options="y.nombre for (x, y) in grupoNuevo.otrosGrupos"><option value="">Seleccione</option></select>
+	          	<select chosen ng-model="grupoNuevo.grupoSelect" ng-options="y.nombre for (x,y) in grupoNuevo.otrosGrupos" >
+	          		<option value="">Seleccione</option>
+	          	</select>
 	          </div>
+	          <p class="error col-xs-10">{{error}}</p>
 	          
 	        <button class="col-xs-10 col-md-4 btnGuardar" ng-click="unirGrupo()">Unirse</button>
 	    </div>

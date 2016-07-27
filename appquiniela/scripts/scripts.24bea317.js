@@ -23,7 +23,8 @@ angular
     'ngLodash',
     'localytics.directives',
     'ui.bootstrap', 
-    'ui.bootstrap.datetimepicker'
+    'ui.bootstrap.datetimepicker',
+    'toastr'
   ])  
   .config(function ($routeProvider) {
     $routeProvider
@@ -97,8 +98,25 @@ angular
       };
     }]);
   })
+  .config(function(toastrConfig) {
+    angular.extend(toastrConfig, {
+      autoDismiss: false,
+      containerId: 'toast-container',
+      maxOpened: 2,    
+      newestOnTop: true,
+      positionClass: 'toast-top-center',
+      preventDuplicates: false,
+      preventOpenDuplicates: false,
+      target: 'body',
+      timeOut: 1000,
+    });
+  })
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      $rootScope.actual = next.templateUrl;
+      // if ( next.templateUrl === "partials/index.html") {
+      //   $rootScope.actual = '/';
+      // }
       if (auth.isAuthenticated == false) {
         if ( next.templateUrl === "partials/index.html") {
         } else {
@@ -167,6 +185,9 @@ angular.module('miQuinielaApp')
                 }
                 else{
                     angular.element("#"+scope.elemento).modal('hide');
+                    $("#"+scope.elemento).modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                 }
             },true);
 
@@ -211,15 +232,20 @@ angular.module('miQuinielaApp')
 					tipo: "normal"
 				}
 			}).then(function(response) {
-				self.isFacebookAuth = false;
-				localStorage.setItem('JWT', response.data.auth.token);
-				localStorage.setItem('usuarioId', response.data.auth.user.id);
-				localStorage.setItem('isFacebookAuth', false);
-				self.loggedUser = response.data.auth.user;
-				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
-				self.isAuthenticated = true;
-				self.error = null;
-				$location.path('/home');
+				if(response.data.error){
+					self.error = response.data.error.error;
+				}
+				else{
+					self.isFacebookAuth = false;
+					localStorage.setItem('JWT', response.data.auth.token);
+					localStorage.setItem('usuarioId', response.data.auth.user.id);
+					localStorage.setItem('isFacebookAuth', false);
+					self.loggedUser = response.data.auth.user;
+					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
+					self.isAuthenticated = true;
+					self.error = null;
+					$location.path('/home');
+				}
 			},function(error){
 				self.error = error.data.error.error;
 			});
@@ -245,15 +271,20 @@ angular.module('miQuinielaApp')
 				method: 'POST',
 				data: usuario
 			}).then(function(response) {
-				self.isFacebookAuth = false;
-				localStorage.setItem('JWT', response.data.auth.token);
-				localStorage.setItem('usuarioId', response.data.auth.user.id);
-				localStorage.setItem('isFacebookAuth', false);
-				self.loggedUser = response.data.auth.user;
-				localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
-				self.isAuthenticated = true;
-				self.errorLogUp = null;
-				$location.path('/home');
+				if(response.data.error){
+					self.errorLogUp = response.data.error.error;
+				}
+				else{
+					self.isFacebookAuth = false;
+					localStorage.setItem('JWT', response.data.auth.token);
+					localStorage.setItem('usuarioId', response.data.auth.user.id);
+					localStorage.setItem('isFacebookAuth', false);
+					self.loggedUser = response.data.auth.user;
+					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
+					self.isAuthenticated = true;
+					self.errorLogUp = null;
+					$location.path('/home');
+				}
 			},function(error){
 				console.log('error',error.data.error.error);
 				self.errorLogUp = error.data.error.error;
@@ -358,12 +389,12 @@ angular.module('miQuinielaApp')
 
   }]);
 
-angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Facebook','$timeout',function () { 'use strict';
+angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Facebook','$timeout','$rootScope',function () { 'use strict';
 
         return {
             restrict: 'A',
             templateUrl: 'views/menu.html',
-            controller: function ($scope,$location,auth,Facebook,$timeout) {
+            controller: function ($scope,$location,auth,Facebook,$timeout,$rootScope) {
 
             	var self = this;
             	$scope.user = {};
@@ -405,6 +436,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	            },true);
 
 	            $scope.$watch(function(){return auth.error;}, function (v) {
+	            	console.log('changed',auth.error);	
 					$scope.error = auth.error;
 	            },true);
 
@@ -436,6 +468,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 			    }
 
 			    $scope.showLogin = function(){
+			    	console.log('displayLogin');
 			    	$scope.displayLoginModal = true;
 			    }
 
@@ -444,6 +477,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 			    }
 
 			    $scope.logoutBoth = function(){
+			    	
 			    	if($scope.isFacebookAuth){
 			    		this.logout();
 			    	}
@@ -454,8 +488,14 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
-                	if($('.collapse.in').length > 0){
-                		$('.navbar-toggle').click();
+                	var isSecondexpanded = $("#js-navbar-collapse-second").attr("aria-expanded");
+                	var isFirstExpanded = $("#js-navbar-collapse").attr("aria-expanded");
+                	if(isSecondexpanded == "true"){
+                		$('.second-collapse').click();
+                	}
+                	if(isFirstExpanded == "true"){
+                		console.log('expand menu 2');
+                		$('.first-collapse').click();
                 	}
                 	$scope.home = false;
                 	$scope.torneos = false;
@@ -618,7 +658,10 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout) {
+  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout','toastr',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout,toastr) {
+
+	// $('.btn-navbar').click(); //bootstrap 2.x
+ //    $('.navbar-toggle').click() //bootstrap 3.x by Richard
 
     $scope.nuevoEquipo = {};
 
@@ -711,7 +754,7 @@ angular.module('miQuinielaApp')
 		    $timeout(function(){
 			    angular.element('.scroll-icon').addClass('hide');
 		    }, 3000);
-	    }, 200);
+	    }, 700);
 	    
 	}, function errorCallback(response) {
 	    if(response.status == 401){
@@ -793,7 +836,7 @@ angular.module('miQuinielaApp')
 		}
 	};
 	 
-    $scope.guardarPrediccion = function(partido){
+    $scope.guardarPrediccion = function(partido,num){
     	if(!isNaN(partido.prediccion.marcador1) && !isNaN(partido.prediccion.marcador2)){
 	    	var prediccion = {
 	    		prediccion : {
@@ -810,7 +853,9 @@ angular.module('miQuinielaApp')
 			  data: prediccion,
 			  method: 'POST',
 			}).then(function successCallback(response) {
-				alert('prediccion guardada');
+				angular.element( document.getElementsByClassName( 'row-'+num ) ).addClass("bordeVerde");
+				//alert('prediccion guardada');
+				toastr.success('', 'Prediccion Guardada');
 			}, function errorCallback(response) {
 			    if(response.status == 401){
 			    	auth.logOut();
@@ -834,7 +879,7 @@ angular.module('miQuinielaApp')
 	    		idPartidoEquipo1: Number($scope.nuevoPartido.equipo1),
 	    		idPartidoEquipo2: Number($scope.nuevoPartido.equipo2),
 	    		marcadorEquipo1: 0,
-	    		marcadorEquipo1: 0,
+	    		marcadorEquipo2: 0,
 	    		fecha: convertDateHora($scope.picker.date)
 	    	}
     	};
@@ -1231,6 +1276,7 @@ angular.module('miQuinielaApp')
     		$scope.act.buscar="";  
     		$scope.muestraTab=true;  		
     	}
+    	cambiaMensaje("");
     }
   	$scope.actualizarLista = function(grupoId){
   		$http({
@@ -1379,29 +1425,33 @@ angular.module('miQuinielaApp')
     	
     };
     $scope.unirGrupo=function(){
-    	$http({
-		  	url: "http://appquiniela.com/API/index.php/invitaciones/",
-			skipAuthorization: true,
-		  	method: "POST",
-		  	data: {
-		  		"usuarioGrupo":{
-		      		"usuario":$scope.usuario,
-		      		"grupo":$scope.grupoNuevo.grupoSelect.id,
-		      		"estado":"miembro"
-		  		}	
+    	console.log($scope.grupoNuevo.grupoSelect);
+    	if($scope.grupoNuevo.grupoSelect!==0 && typeof($scope.grupoNuevo.grupoSelect)!=="undefined"){
+	    	$http({
+			  	url: "http://appquiniela.com/API/index.php/invitaciones/",
+				skipAuthorization: true,
+			  	method: "POST",
+			  	data: {
+			  		"usuarioGrupo":{
+			      		"usuario":$scope.usuario,
+			      		"grupo":$scope.grupoNuevo.grupoSelect.id,
+			      		"estado":"miembro"
+			  		}	
 
-		   	}
-		}).then(function(response) {
-		   		//$scope.grupoNuevo.id=response.data.grupo.id;
-				$scope.grupoNuevo.grupoSelect=0;
-				actualizaGrupos();
-				alert("Ahora estás en este grupo");
-		   	},function(error){
-				console.log('error',error.data.error.error);
-				self.errorLogUp = error.data.error.error;
-		});
-    }
-  	actualizaGrupos();
+			   	}
+			}).then(function(response) {
+			   		//$scope.grupoNuevo.id=response.data.grupo.id;
+					$scope.grupoNuevo.grupoSelect=0;
+					actualizaGrupos();
+					alert("Ahora estás en este grupo");
+					cambiaMensaje("");
+			   	},function(error){
+					console.log('error',error.data.error.error);
+					self.errorLogUp = error.data.error.error;
+			});
+		}else cambiaMensaje("No ha seleccionado ningún Grupo");
+	  }
+	  actualizaGrupos();
     
   });
 
@@ -1415,8 +1465,147 @@ angular.module('miQuinielaApp')
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('indexCtrl', function () {
-  });
+  .controller('indexCtrl',['$scope','$rootScope','auth','$location',function ($scope,$rootScope,auth,$location) {
+  	// $('.btn-navbar').click(); //bootstrap 2.x
+   //  $('.navbar-toggle').click() //bootstrap 3.x by Richard
+
+  	var self = this;
+	$scope.user = {};
+
+	if(auth.isAuthenticated == false){
+		var needsToLog = auth.checkForLogin();
+		if(needsToLog){
+			$scope.displayLoginModal = true;
+			$scope.visible = false;
+			angular.element(".collapse").addClass('displayModalLogin');
+		}
+		else{
+			$scope.visible = true;
+		}
+	}
+	$scope.user = auth.loggedUser;
+
+	$scope.$watch(function(){return auth.isAuthenticated;}, function (v) {
+		$scope.isAuthenticated = v;
+		if(v == true && $scope.displayLoginModal == true){
+			$scope.displayLoginModal = false;
+			angular.element(".collapse").removeClass('displayModalLogin');
+		}
+		if(v == true){
+			$scope.user = auth.loggedUser;
+			$scope.visible = true;
+			$scope.displayLogUpModal = false;
+		}
+		if(auth.isFacebookAuth){
+			$scope.isFacebookAuth = auth.isFacebookAuth;
+		}
+		if(v == false){
+			$scope.visible = false;
+		}
+    },true);
+
+    $scope.$watch(function(){return auth.isFacebookAuth;}, function (v) {
+		$scope.isFacebookAuth = auth.isFacebookAuth;
+    },true);
+
+    $scope.$watch(function(){return auth.error;}, function (v) {
+    	console.log('changed',auth.error);	
+		$scope.error = auth.error;
+    },true);
+
+    $scope.$watch(function(){return auth.errorLogUp;}, function (v) {
+		$scope.errorLogUp = auth.errorLogUp;
+    },true);
+    
+
+    $scope.regularLogin = function(user){
+      	if(user){
+    		auth.regularLogin(user);
+    	}
+    }
+
+    $scope.regularLogup = function(user){
+    	if(user){
+	    	if(user.password == user.confirmPassword){
+	    		$scope.logupError = null
+	    		delete user.confirmPassword;
+		    	auth.regularLogup(user);
+	    	}
+	    	else{
+	    		$scope.logupError = "Por favor confirme su contraseña";
+	    	}
+	    }
+	    else{
+	    	$scope.logupError = "Por favor ingrese un usuario";
+	    }
+    }
+
+    $scope.showLogin = function(){
+    	$scope.displayLoginModal = true;
+    }
+
+    $scope.showLogup = function(){
+    	$scope.displayLogUpModal = true;
+    }
+
+    $scope.logoutBoth = function(){
+    	if($scope.isFacebookAuth){
+    		this.logout();
+    	}
+    	else{
+    		auth.logOut();
+    	}
+    }
+
+    $scope.activeLink = true;
+    $scope.$on('$routeChangeSuccess', function(locationPath) {
+    	var isSecondexpanded = $("#js-navbar-collapse-second").attr("aria-expanded");
+        var isFirstExpanded = $("#js-navbar-collapse").attr("aria-expanded");
+        if(isSecondexpanded == "true"){
+            $('.second-collapse').click();
+        }
+        if(isFirstExpanded == "true"){
+            console.log('expand menu 2');
+            $('.first-collapse').click();
+        }
+    	$scope.home = false;
+    	$scope.torneos = false;
+    	$scope.foro = false;
+    	$scope.grupos = false;
+    	$scope.configuracion = false;
+        switch($location.path()){
+        	case "/home": 
+        		$scope.home = true;
+        		break;
+        	case "/torneos": 
+        		$scope.torneos = true;
+        		break;
+        	case "/grupos": 
+        		$scope.grupos = true;
+        		break;
+        	case "/configuracion": 
+        		$scope.configuracion = true;
+        		break;
+        }
+    });
+
+
+    //-------------------------------------------//
+    //login
+
+
+	// Define user empty data :/
+	this.user = {};
+
+	var userIsConnected = false;
+
+	$scope.logout = function() {
+		auth.logOut();
+	}
+
+
+
+  }]);
 
 'use strict';
 
