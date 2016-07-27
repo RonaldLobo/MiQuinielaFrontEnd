@@ -217,6 +217,7 @@ overflow-y: auto;
 }
 .modal-header h4{
   text-align:center;
+  color: black;
 }
 .modal-header.modal-grupo .title-page.active{
   background-color:#ffffff;
@@ -394,7 +395,7 @@ overflow-y: auto;
 }
 
 .home-page >* {
-    margin-top: 53px;
+    margin-top: 58px;
 }
 
 .divisor-line{
@@ -469,7 +470,11 @@ overflow-y: auto;
 .modal-dialog select{
   max-width: 125px !important;
 }
-
+.home-page .btn-default.btnVerde{
+  background-color: green;
+  color: white;
+  border: 2px solid;
+}
 .modal-dialog input{
   max-width: 150px !important;
 }
