@@ -10,12 +10,13 @@
 	<div class="partido col-xs-12 no-padding-left no-padding-right encabezado-tabla">
 		<div class="col-md-9 muestra-partido col-xs-12 ">
 			<p class="col-xs-12 no-padding-left no-padding-right">
-				<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
+				<span class="titulo-linea col-xs-2 hidden-xs"></span>
 				<span class="nombre-equipo col-xs-2"> Casa</span>
 				<span class="campo-marcador col-xs-1"></span> 
 				<span class="col-xs-1">-</span> 
 				<span class="campo-marcador col-xs-1"></span>
 				<span class="nombre-equipo col-xs-2"> Visita</span>
+				<span class="nombre-equipo col-xs-2 hidden-xs"> Fecha</span>
 			</p>
 		</div>
 		<div class="col-md-2 col-xs-6 hidden-xs">
@@ -32,16 +33,12 @@
 				<span parse-fecha class="fecha col-xs-12 hidden-md hidden-lg hidden-sm no-padding-left no-padding-right" fecha="partido.fecha"></span>
 				<p class="col-xs-12 no-padding-left no-padding-right">
 					<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
-					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo1}}</span>
+					<span class="nombre-equipo col-xs-2 no-padding-left">{{partido.idPartidoEquipo1}}</span>
 					<input type="text" ng-change="guardarPartido(partido)" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador1" disabled> 
 					<span class="col-xs-1">-</span> 
 					<input type="text" ng-change="guardarPartido(partido)" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador2" disabled>
 					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
-					<span ng-if="isAdmin == true">
-						<!-- <span class="guardar-link col-xs-1 hidden-xs" ng-click="guardarPartido(partido)">
-							Actualizar
-						</span> -->
-					</span>
+					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
 				</p>
 				<p class="col-xs-12 no-padding-left no-padding-right">
 					<span class="titulo-linea col-xs-2 hidden-xs">Resultado</span>
@@ -65,8 +62,8 @@
 			<div class="col-md-2 col-xs-9">
 				<span class="hidden-md hidden-lg hidden-sm">Torneo: </span>{{partido.torneo.nombre}}
 			</div>
-			<div class="col-md-1 col-xs-3">
-				<span class="hidden-md hidden-lg hidden-sm">Pts: </span>{{partido.prediccion.puntaje}}
+			<div class="col-md-1 col-xs-3" ng-class="partido.prediccion.puntaje==3 ? 'ptosVerde' : (partido.prediccion.puntaje==1 ? 'ptosAmarillo' : '')">
+				<span class="hidden-md hidden-lg hidden-sm" >Pts: </span>{{partido.prediccion.puntaje}}
 			</div>
 		</div>
 	</div>
@@ -82,17 +79,12 @@
 				<span parse-fecha class="fecha col-xs-12 hidden-md hidden-lg hidden-sm no-padding-left no-padding-right" fecha="partido.fecha"></span>
 				<p class="col-xs-12 no-padding-left no-padding-right">
 					<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
-					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo1}}</span>
-					<input type="number" string-to-number ng-change="guardarPrediccion(partido)" class="campo-marcador col-xs-1 form-control" ng-model="partido.prediccion.marcador1"> 
+					<span class="nombre-equipo col-xs-2 no-padding-left">{{partido.idPartidoEquipo1}}</span>
+					<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class="campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador1"> 
 					<span class="col-xs-1">-</span> 
-					<input type="number" string-to-number ng-change="guardarPrediccion(partido)" class="campo-marcador col-xs-1 form-control" ng-model="partido.prediccion.marcador2">
+					<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class="campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador2" >
 					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
 					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
-				</p>
-				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="titulo-linea col-xs-2 hidden-xs">Resultado</span>
-					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
-					<span class="nombre-equipo col-xs-2 hidden-md hidden-lg hidden-sm"></span>
 				</p>
 			</div>
 			<div class="col-md-2 col-xs-9">

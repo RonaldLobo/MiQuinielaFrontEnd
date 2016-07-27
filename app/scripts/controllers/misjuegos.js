@@ -186,7 +186,7 @@ angular.module('miQuinielaApp')
 		}
 	};
 	 
-    $scope.guardarPrediccion = function(partido){
+    $scope.guardarPrediccion = function(partido,num){
     	if(!isNaN(partido.prediccion.marcador1) && !isNaN(partido.prediccion.marcador2)){
 	    	var prediccion = {
 	    		prediccion : {
@@ -203,7 +203,8 @@ angular.module('miQuinielaApp')
 			  data: prediccion,
 			  method: 'POST',
 			}).then(function successCallback(response) {
-				alert('prediccion guardada');
+				angular.element( document.getElementsByClassName( 'row-'+num ) ).addClass("bordeVerde");
+				//alert('prediccion guardada');
 			}, function errorCallback(response) {
 			    if(response.status == 401){
 			    	auth.logOut();
