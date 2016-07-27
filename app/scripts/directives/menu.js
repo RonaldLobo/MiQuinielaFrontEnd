@@ -86,6 +86,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 			    }
 
 			    $scope.logoutBoth = function(){
+			    	
 			    	if($scope.isFacebookAuth){
 			    		this.logout();
 			    	}
