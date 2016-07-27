@@ -71,6 +71,7 @@ angular.module('miQuinielaApp')
     		$scope.act.buscar="";  
     		$scope.muestraTab=true;  		
     	}
+    	cambiaMensaje("");
     }
   	$scope.actualizarLista = function(grupoId){
   		$http({
@@ -219,28 +220,32 @@ angular.module('miQuinielaApp')
     	
     };
     $scope.unirGrupo=function(){
-    	$http({
-		  	url: "http://appquiniela.com/API/index.php/invitaciones/",
-			skipAuthorization: true,
-		  	method: "POST",
-		  	data: {
-		  		"usuarioGrupo":{
-		      		"usuario":$scope.usuario,
-		      		"grupo":$scope.grupoNuevo.grupoSelect.id,
-		      		"estado":"miembro"
-		  		}	
+    	console.log($scope.grupoNuevo.grupoSelect);
+    	if($scope.grupoNuevo.grupoSelect!==0 && typeof($scope.grupoNuevo.grupoSelect)!=="undefined"){
+	    	$http({
+			  	url: "http://appquiniela.com/API/index.php/invitaciones/",
+				skipAuthorization: true,
+			  	method: "POST",
+			  	data: {
+			  		"usuarioGrupo":{
+			      		"usuario":$scope.usuario,
+			      		"grupo":$scope.grupoNuevo.grupoSelect.id,
+			      		"estado":"miembro"
+			  		}	
 
-		   	}
-		}).then(function(response) {
-		   		//$scope.grupoNuevo.id=response.data.grupo.id;
-				$scope.grupoNuevo.grupoSelect=0;
-				actualizaGrupos();
-				alert("Ahora estás en este grupo");
-		   	},function(error){
-				console.log('error',error.data.error.error);
-				self.errorLogUp = error.data.error.error;
-		});
-    }
-  	actualizaGrupos();
+			   	}
+			}).then(function(response) {
+			   		//$scope.grupoNuevo.id=response.data.grupo.id;
+					$scope.grupoNuevo.grupoSelect=0;
+					actualizaGrupos();
+					alert("Ahora estás en este grupo");
+					cambiaMensaje("");
+			   	},function(error){
+					console.log('error',error.data.error.error);
+					self.errorLogUp = error.data.error.error;
+			});
+		}else cambiaMensaje("No ha seleccionado ningún Grupo");
+	  }
+	  actualizaGrupos();
     
   });

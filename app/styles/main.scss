@@ -10,6 +10,10 @@
 .modal-dialog select{
   max-width: 100px !important;
 }
+
+.modal-dialog input{
+  max-width: 150px !important;
+}
 html{
   // background-color: #004d00;
 }
@@ -210,11 +214,6 @@ overflow-y: auto;
 .modal-header.modal-grupo .title-page.active{
   background-color:#ffffff;
   color:green;
-  font-weight:bold;
-}
-.modal-header.modal-grupo .title-page:hover{
-  font-weight:bold;
-
 }
 
 .modal-header.modal-grupo .title-page{
