@@ -97,12 +97,14 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
-                	console.log('watch',$('.collapse.in').length);
-                	if($('.collapse.in').length > 1 && $location.path() == "/home"){
-                		$('.navbar-toggle').click();
+                	var isSecondexpanded = $("#js-navbar-collapse-second").attr("aria-expanded");
+                	var isFirstExpanded = $("#js-navbar-collapse").attr("aria-expanded");
+                	if(isSecondexpanded == "true"){
+                		$('.second-collapse').click();
                 	}
-                	if($('.collapse.in').length > 0 && $location.path() != "/home"){
-                		$('.navbar-toggle').click();
+                	if(isFirstExpanded == "true"){
+                		console.log('expand menu 2');
+                		$('.first-collapse').click();
                 	}
                 	$scope.home = false;
                 	$scope.torneos = false;

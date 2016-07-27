@@ -102,10 +102,15 @@ angular.module('miQuinielaApp')
 
     $scope.activeLink = true;
     $scope.$on('$routeChangeSuccess', function(locationPath) {
-    	console.log('otro change')
-    	if($('.collapse.in').length > 1){
-    		$('.navbar-toggle').click();
-    	}
+    	var isSecondexpanded = $("#js-navbar-collapse-second").attr("aria-expanded");
+        var isFirstExpanded = $("#js-navbar-collapse").attr("aria-expanded");
+        if(isSecondexpanded == "true"){
+            $('.second-collapse').click();
+        }
+        if(isFirstExpanded == "true"){
+            console.log('expand menu 2');
+            $('.first-collapse').click();
+        }
     	$scope.home = false;
     	$scope.torneos = false;
     	$scope.foro = false;
