@@ -86,12 +86,30 @@ angular.module('miQuinielaApp')
 	    $scope.partidos = response.data.partido;
 		$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
-	    	return date >= new Date(o.fecha); 
+	    	var dateTime = o.fecha.split(" ");
+		    var dateOnly = dateTime[0];
+		    var timeOnly = dateTime[1];
+
+		    var temp = dateOnly + "T" + timeOnly;
+		    function dateFromString(str) {
+			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+			}
+	    	return date >= new Date(dateFromString(temp)); 
 	    });
 
 	    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
-	    	return date < new Date(o.fecha);  
+	    	var dateTime = o.fecha.split(" ");
+		    var dateOnly = dateTime[0];
+		    var timeOnly = dateTime[1];
+
+		    var temp = dateOnly + "T" + timeOnly;
+		    function dateFromString(str) {
+			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+			}
+	    	return date < new Date(dateFromString(temp));  
 	    });
 	    // set the location.hash to the id of
 	    // the element you wish to scroll to.
