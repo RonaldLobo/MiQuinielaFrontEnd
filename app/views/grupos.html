@@ -48,7 +48,7 @@
 					<span class="nombre-equipo col-md-2 hidden-xs">Puntos</span>
 				</p>
 			</div>
-	        <div ng-repeat="predic in predicciones.userPredictions">
+	        <div ng-repeat="predic in predicciones.userPredictions | reverse">
 				<div ng-show="predicciones.userPredictions[{{$index}}]!=null" class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
 					<p class="col-xs-12 no-padding-left no-padding-right">
 						<span class="titulo-linea col-md-3 col-xs-4">{{predic.idEquipo1}}</span>
