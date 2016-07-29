@@ -118,7 +118,12 @@ angular
   })
   .filter('reverse', function() {
     return function(items) {
-      return items.slice().reverse();
+      if(item){
+        return items.slice().reverse();
+      }
+      else{
+        return item;
+      }
     };
   })
   .run(function($rootScope, $location,auth) {
