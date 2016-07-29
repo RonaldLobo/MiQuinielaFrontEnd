@@ -25,7 +25,12 @@ angular
     'ui.bootstrap', 
     'ui.bootstrap.datetimepicker',
     'toastr'
-  ])  
+  ])
+  .constant('config', {
+    appName: 'AppQuiniela',
+    appVersion: '1.0.1',
+    apiUrl: 'localhost'
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -110,6 +115,11 @@ angular
       target: 'body',
       timeOut: 1000,
     });
+  })
+  .filter('reverse', function() {
+    return function(items) {
+      return items.slice().reverse();
+    };
   })
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
