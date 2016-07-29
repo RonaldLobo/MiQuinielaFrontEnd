@@ -118,11 +118,11 @@ angular
   })
   .filter('reverse', function() {
     return function(items) {
-      if(item){
+      if(items){
         return items.slice().reverse();
       }
       else{
-        return item;
+        return items;
       }
     };
   })
