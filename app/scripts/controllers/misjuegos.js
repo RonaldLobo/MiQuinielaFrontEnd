@@ -175,6 +175,7 @@ angular.module('miQuinielaApp')
 			  data: partido,
 			  method: 'POST',
 			}).then(function successCallback(response) {
+				toastr.success('', 'Partido Actualizado');
 				$http({
 				  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
 				  method: 'GET',
