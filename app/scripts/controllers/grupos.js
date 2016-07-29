@@ -8,18 +8,23 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('GruposCtrl', function ($scope,auth,$http) {
+.run(['$anchorScroll', function($anchorScroll) {
+  $anchorScroll.yOffset = 100;   // always scroll by 50 extra pixels
+}])
+  .controller('GruposCtrl',  function ($scope,auth,$http, $location, $anchorScroll) {
     //get user logged
-    $scope.usuario=auth.loggedUser.id
+    $scope.usuarioLog=auth.loggedUser.id
     $scope.ordenUsuarios='position';
     $scope.flecha="Desc";
 	$scope.usuarios=[];
 	$scope.usuariosTodos={};
 	$scope.grupos={};
     $scope.displayAddGrupoModal = false;
+    $scope.displayPredGrupoModal = false;
     $scope.grupoNuevo={};
     $scope.grupoNuevo.listaUsuarios=[];
     $scope.act={};
+    $scope.predicciones={};
     $scope.act.crear="active";
     $scope.muestraTab=true;
 
@@ -31,7 +36,7 @@ angular.module('miQuinielaApp')
     }
   	var actualizaGrupos = function(){
   		$http({
-		  url: "http://appquiniela.com/API/index.php/grupos/?userId="+$scope.usuario,
+		  url: "http://appquiniela.com/API/index.php/grupos/?userId="+$scope.usuarioLog,
 		  method: "GET",
 		}).then(function successCallback(response) {
 			$scope.grupos = response.data.grupos;
@@ -46,7 +51,7 @@ angular.module('miQuinielaApp')
 		});
 
 		$http({
-		  url: "http://appquiniela.com/API/index.php/grupos/?sinUserId="+$scope.usuario,
+		  url: "http://appquiniela.com/API/index.php/grupos/?sinUserId="+$scope.usuarioLog,
 		  method: "GET"
 		}).then(function successCallback(response) {
 	  		$scope.grupoNuevo.otrosGrupos=response.data.grupos;
@@ -86,7 +91,7 @@ angular.module('miQuinielaApp')
 		});
 
 		$http({
-		  url: "http://appquiniela.com/API/index.php/usuarios/?byUser="+$scope.usuario,
+		  url: "http://appquiniela.com/API/index.php/usuarios/?byUser="+$scope.usuarioLog,
 		  method: "GET"
 		}).then(function successCallback(response) {
 	  		$scope.usuariosTodos=response.data.usuarios;
@@ -114,7 +119,7 @@ angular.module('miQuinielaApp')
     	if(typeof($scope.grupoNuevo.user)!=="undefined" && $scope.grupoNuevo.user.usuario!=="" && $scope.grupoNuevo.user!==0){
 	  		//$scope.$apply(function() {
 	  			console.log($scope.grupoNuevo.user);
-	  			if($scope.usuario!==$scope.grupoNuevo.user.id && !usuarioRepetido($scope.grupoNuevo.user.usuario)){
+	  			if($scope.usuarioLog!==$scope.grupoNuevo.user.id && !usuarioRepetido($scope.grupoNuevo.user.usuario)){
 		  			$scope.grupoNuevo.listaUsuarios[$scope.grupoNuevo.listaUsuarios.length]={
 		  				usuario:$scope.grupoNuevo.user.usuario,
 		  				id:$scope.grupoNuevo.user.id,
@@ -165,7 +170,7 @@ angular.module('miQuinielaApp')
 					  	method: "POST",
 					  	data: {
 					  		"usuarioGrupo":{
-					      		"usuario":$scope.usuario,
+					      		"usuario":$scope.usuarioLog,
 					      		"grupo":response.data.grupo.id,
 					      		"estado":"miembro"
 					  		}	
@@ -228,7 +233,7 @@ angular.module('miQuinielaApp')
 			  	method: "POST",
 			  	data: {
 			  		"usuarioGrupo":{
-			      		"usuario":$scope.usuario,
+			      		"usuario":$scope.usuarioLog,
 			      		"grupo":$scope.grupoNuevo.grupoSelect.id,
 			      		"estado":"miembro"
 			  		}	
@@ -246,6 +251,40 @@ angular.module('miQuinielaApp')
 			});
 		}else cambiaMensaje("No ha seleccionado ningún Grupo");
 	  }
+	  $scope.gotoBottom = function() {
+	      // set the location.hash to the id of
+	      // the element you wish to scroll to.
+	      
+    		  var old = $location.hash();
+		      $location.hash('pos-'+$scope.usuarioLog);
+
+		      // call $anchorScroll()
+		      $anchorScroll();
+   			  $location.hash(old);
+	    };
+	    $scope.muestraPredicciones=function(userId){
+
+    		$scope.displayPredGrupoModal = true;
+	    	//alert($scope.grupoSeleccionado.idTorneo);
+	    	$http({
+				  url: "http://appquiniela.com/API/index.php/usuarios/"+userId,
+				  method: 'GET',
+				}).then(function successCallback(response) {
+				    $scope.predicciones.user=response.data.usuario;
+				}, function errorCallback(response) {
+
+				});
+	    	$http({
+				  url: "http://appquiniela.com/API/index.php/predicciones/?userId="+userId+'&torneoId='+$scope.grupoSeleccionado.idTorneo,
+				  method: 'GET',
+				}).then(function successCallback(response) {
+				    console.log('success',response.data.predicciones[3]);
+				    $scope.predicciones.userPredictions=response.data.predicciones;
+				}, function errorCallback(response) {
+
+				});
+	    }
+
 	  actualizaGrupos();
     
   });

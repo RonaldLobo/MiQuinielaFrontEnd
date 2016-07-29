@@ -16,23 +16,57 @@
 	<div class="partido col-xs-12 no-padding-left no-padding-right">
 		<p class="col-xs-12 no-padding-left no-padding-right encabezado-tabla">
 			<span class="titulo-linea col-xs-3">Posición</span>
-			<span class="titulo-linea col-xs-5">Usuario</span>
-			<span class="nombre-equipo col-xs-4">Puntos<span class="icono-orden {{flecha}}" ng-click="cambiarOrden()"></span></span>
+			<span class="titulo-linea col-xs-5">Usuario <span tittle="mi Usuario"class="glyphicon glyphicon-screenshot" ng-click="gotoBottom()"> </span></span>
+			<span class="nombre-equipo col-xs-4">Puntos <span class="icono-orden {{flecha}}" ng-click="cambiarOrden()"></span></span>
 		</p>
 	</div>
 
 	<div ng-repeat="usuario in usuarios | orderBy:ordenUsuarios">
-		<div class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
-			<p class="col-xs-12 no-padding-left no-padding-right">
+		<div id="pos-{{usuario.id}}"class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="{ 'row-par' : $even, 'mi-usuario' : usuario.id===usuarioLog}">
+			<p class="col-xs-12 no-padding-left no-padding-right" >
 				<span class="titulo-linea col-xs-3">{{usuario.position}}</span>
-				<span class="titulo-linea col-xs-5">{{usuario.nombre}}</span>
-				<span class="nombre-equipo col-xs-4">{{usuario.puntaje}}</span>
+				<span class="titulo-linea linea-usuario col-xs-7 col-md-5" ng-click="muestraPredicciones(usuario.id)">{{usuario.nombre}}</span>
+				<span class="puntos-usuario col-xs-2 col-md-3">{{usuario.puntaje}}</span>
 			</p>
 		</div>
 	</div>
 
+	<modal display="displayPredGrupoModal" elemento="addGrupoModal" data-ng-click-right-button="myRightButton()">
+		<div class="modal-header modal-grupo">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <div class="modal-body col-xs-12 no-padding">
+	        	<h4 class="modal-title title-page col-xs-12 active">{{predicciones.user.nombre}} {{predicciones.user.apellido}}</h4>
+	        </div>
+	    </div>
 
-	<modal display="displayAddGrupoModal" elemento="addGrupoModal" data-ng-click-right-button="myRightButton()">
+	    <div class="modal-body col-xs-12 no-padding-left">
+	    	<div class="partido col-xs-12 no-padding-left no-padding-right" ng-show="predicciones.userPredictions.length>0">
+				<p class="col-xs-12 no-padding-left no-padding-right encabezado-tabla">
+					<span class="titulo-linea col-md-2 col-xs-3">Casa</span>
+					<span class="titulo-linea col-md-5 col-xs-6">Predicción<span class="hidden-xs">(Resultado)</span></span>
+					<span class="nombre-equipo col-md-3 col-xs-3">Visita </span>
+					<span class="nombre-equipo col-md-2 hidden-xs">Puntos</span>
+				</p>
+			</div>
+	        <div ng-repeat="predic in predicciones.userPredictions">
+				<div ng-show="predicciones.userPredictions[{{$index}}]!=null" class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
+					<p class="col-xs-12 no-padding-left no-padding-right">
+						<span class="titulo-linea col-md-3 col-xs-4">{{predic.idEquipo1}}</span>
+						<span class="nombre-equipo col-md-4 col-xs-4 marcador-small">{{predic.marcador1}}-{{predic.marcador2}}</span>
+						<span class="correo-usuario col-md-3 col-xs-4">{{predic.idEquipo2}}</span>
+						<span class="nombre-equipo col-md-2  hidden-xs ng-class="predic.puntaje==3 ? 'ptosVerde' : (predic.puntaje==1 ? 'ptosAmarillo' : '')"">{{predic.puntaje}}</span>
+					</p>
+					<p class="col-xs-12 no-padding-left no-padding-right hidden-md hidden-lg hidden-xl">
+						<span class="titulo-linea col-xs-6"></span>
+						<span class="nombre-equipo col-xs-6" ng-class="predic.puntaje==3 ? 'ptosVerde' : (predic.puntaje==1 ? 'ptosAmarillo' : '')">Puntos: {{predic.puntaje}}</span>
+					</p>
+				</div>
+			</div>
+		</div>
+
+	</modal>
+
+	<modal display="displayAddGrupoModal" elemento="predGrupoModal" data-ng-click-right-button="myRightButton()">
 	    <div class="modal-header modal-grupo">
 	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 	        <div class="modal-body col-xs-12 no-padding">
@@ -74,7 +108,7 @@
 				</p>
 			</div>
 	        <div ng-repeat="usuario in grupoNuevo.listaUsuarios">
-				<div class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
+				<div  class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
 					<p class="col-xs-12 no-padding-left no-padding-right">
 						<span class="titulo-linea col-xs-3">{{usuario.usuario}}</span>
 						<span class="nombre-equipo col-xs-3">{{usuario.nombre}}</span>
