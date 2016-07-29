@@ -25,6 +25,9 @@ input:focus{
   border: 2px solid green;
   
 }
+.modal-content .modal-body {
+    overflow-y: auto !important;
+}
 .noPag{
   visibility: hidden;
 }
