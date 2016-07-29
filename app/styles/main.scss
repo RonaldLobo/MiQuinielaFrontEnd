@@ -25,6 +25,12 @@ input:focus{
   border: 2px solid green;
   
 }
+.noPag{
+  visibility: hidden;
+}
+.siPag{
+  visibility: visible;
+}
 .ptosVerde{
   color: green;
   font-weight: bold;
@@ -36,7 +42,16 @@ input:focus{
 .container{
   background-color: white !important;
 }
-.guardar-link{
+.puntos-usuario{
+  /*padding-left: 30px;*/
+}
+.linea-usuario{
+  text-decoration: underline;
+}
+.glyphicon-screenshot{
+  font-size: 15px;
+}
+.guardar-link,.mi-usuario{
   color:green;
   font-weight: bold;
 }
@@ -423,6 +438,7 @@ overflow-y: auto;
   padding-left: 6px;
   font-size: 23px;
   padding-top: 2px;
+  margin-top: 10px;
 }
 
 .chosen-container {
@@ -463,6 +479,9 @@ overflow-y: auto;
 @media (max-width: 768px) {
 .close{
   font-size:30px;
+}
+.marcador-small{
+  font-size:16px;
 }
 .modal-dialog select{
   max-width: 125px !important;

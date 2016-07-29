@@ -18,6 +18,7 @@ angular.module('miQuinielaApp')
     $scope.nuevoPartido = {};
 
     $scope.displayAddEquipo = false;
+	$scope.muestraPag="noPag";
 
     $scope.displayAgregarEquipo = function(){
     	if($scope.displayAddEquipo){
@@ -114,10 +115,15 @@ angular.module('miQuinielaApp')
 	    // set the location.hash to the id of
 	    // the element you wish to scroll to.
 	    $timeout(function(){
+
+    		var old = $location.hash();
 	    	$location.hash('hoy');
 
 		    // call $anchorScroll()
 		    $anchorScroll();
+			$location.hash(old);
+			$scope.muestraPag="siPag";
+
 		    angular.element('.scroll-icon').addClass('blink_me');
 		    $timeout(function(){
 			    angular.element('.scroll-icon').addClass('hide');
