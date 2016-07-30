@@ -47,7 +47,7 @@ select.grupoFilter{
 .modal-title.title-page{
   color:green;
 }
-.bordeVerde{
+.bordeVerde,.bordeVerde:focus{
   border: 2px solid green;
   
 }
@@ -373,6 +373,11 @@ overflow-y: auto;
   background-size: 100% 100%;
   display: inline-block;
 }
+.row.torneos{
+    padding-left: 10px;
+    padding-right: 0;
+    margin: 10px;
+}
 
 .icono-orden.Desc{
   background-image: url("../images/downArrow.png");
@@ -455,7 +460,9 @@ overflow-y: auto;
       max-width: 814px !important;
   }
 }
-
+span:focus,input:focus,p:focus{
+  outline: none;
+}
 .user-name-display{
   padding-top: 16px;
 }
