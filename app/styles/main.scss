@@ -11,19 +11,49 @@ html{
   // background-color: #004d00;
 }
 
-body {
+body,.footer .container {
   padding: 0;
-  // background-color: #004d00 !important;
+  background-color: #004620 !important;
+  background: url("/images/grass.jpg") repeat;
+}
+.footer .container,#configuracion {
+  color: white;
+}
+.btn.btn-blanco,.btn.btn-blanco:hover,.btn.btn-blanco:active{
+  color: green;
+  background-color: white;
+  border: none;
+  margin: 10px 0;
+}
+.static-header{
+  background: url("/images/grass.jpg") repeat;
+  z-index: 10;
+}
+
+.btn-default.btnVerde{
+  background-color: green;
+  color: white;
+  border: 2px solid white;
 }
 input:focus{
   outline:none;
 }
+select.grupoFilter{
+  color: black;
+}
 .error{
   color: red;
+}
+.modal-title.title-page{
+  color:green;
 }
 .bordeVerde{
   border: 2px solid green;
   
+}
+
+.tabla-pizarra{
+  background-color: white;
 }
 .modal-content .modal-body {
     overflow-y: auto !important;
@@ -41,9 +71,6 @@ input:focus{
 .ptosAmarillo{
   color:#ffdb4d;
   font-weight: bold;
-}
-.container{
-  background-color: white !important;
 }
 .puntos-usuario{
   /*padding-left: 30px;*/
@@ -79,7 +106,6 @@ input:focus{
     padding-bottom: 19px;
   }
 }
-
 /* Custom page footer */
 .footer {
   padding-top: 19px;
@@ -240,6 +266,7 @@ overflow-y: auto;
 .modal-header.modal-grupo .title-page.active{
   background-color:#ffffff;
   color:green;
+  font-weight: bold;
 }
 
 .modal-header.modal-grupo .title-page{
@@ -299,6 +326,7 @@ overflow-y: auto;
     font-size:20px;
     padding: 0px;
     max-height: 35px;
+    margin-bottom: 0;
   }
 
   .guardar-link{
@@ -310,9 +338,10 @@ overflow-y: auto;
 }
 
 .title-page{
-  font-size: 20px;
+  font-size: 19px;
+  font-weight: bold;
   padding: 14px;
-  color: green;
+  color: white;
 }
 
 .configuracion{
@@ -433,15 +462,16 @@ overflow-y: auto;
 .log-out-no-fb{
   padding-top: 11px;
 }
-
 .add-partido{
-  width: 36px;
-  border: 1px solid black;
-  border-radius: 18px;
-  padding-left: 6px;
+  background-color: white;
+  color:#004620;
+  width: 40px;
+  height: 40px;
+  border-radius: 22px;
+  padding-left: 9px;
   font-size: 23px;
-  padding-top: 2px;
-  margin-top: 10px;
+  padding-top: 6px;
+  margin-top: 15px;
 }
 
 .chosen-container {
@@ -489,10 +519,8 @@ overflow-y: auto;
 .modal-dialog select{
   max-width: 125px !important;
 }
-.home-page .btn-default.btnVerde{
-  background-color: green;
-  color: white;
-  border: 2px solid;
+.modal-dialog input.input-sm{
+  max-width: 150px !important;
 }
 #addGrupoModal .modal-dialog input, {
   max-width: 150px !important;
@@ -526,7 +554,16 @@ overflow-y: auto;
     z-index: 9999;
   }
   .view-display{
-    margin-top:60px;
+    margin-top:55px;
+  }
+  .static-header{
+    position: fixed;
+  }
+  .tabla-pizarra{
+    margin-top: 165px;
+  }
+  .tabla-pizarra.torneos{
+    margin-top: 80px;
   }
   .bg-image {
   }
@@ -553,6 +590,7 @@ overflow-y: auto;
   .home-page{
     background: rgba(0,0,0,0.7);
   }
+
 }
 
 form input.form-control{
@@ -601,3 +639,16 @@ form input.form-control{
   margin-top: 0px;
 }
 
+
+
+@media (max-width: 380px) {
+  .tabla-pizarra{
+    margin-top: 185px;
+  }
+  .pantalla-partidos .encabezado-tabla {
+    font-size: 17px;
+  }
+  .chosen-container {
+    width: 100px !important;
+}
+}
