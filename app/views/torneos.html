@@ -6,10 +6,10 @@
     <span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="addTorneo()"></span>
   </div>
 </div>
-<div class="row ">
+<div class="row torneos">
     <div class="col-xs-12 pantalla-partidos no-padding-left no-padding-right tabla-pizarra torneos">
         
-        <div class="col-xs-12 no-padding-right" ng-repeat="torneoUsuario in torneosUsuario">
+        <div class="col-xs-12 no-padding-right no-padding-left" ng-repeat="torneoUsuario in torneosUsuario">
            <div class="partido col-xs-9 no-padding-left no-padding-right">
              <p id="{{torneoUsuario.id}}" class="torneo-titulo-prin">{{torneoUsuario.torneo}}</p>
            </div>
