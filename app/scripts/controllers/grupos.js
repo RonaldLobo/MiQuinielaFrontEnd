@@ -9,7 +9,7 @@
  */
 angular.module('miQuinielaApp')
 .run(['$anchorScroll', function($anchorScroll) {
-  $anchorScroll.yOffset = 220;   // always scroll by 50 extra pixels
+  $anchorScroll.yOffset = 250;   // always scroll by 50 extra pixels
 }])
 
   .controller('GruposCtrl',  function ($scope,auth,$http, $location, $anchorScroll) {
