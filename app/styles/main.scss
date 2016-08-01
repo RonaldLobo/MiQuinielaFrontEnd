@@ -7,23 +7,84 @@
   color: #000;
   padding: 0.2em 0;
 }
-
 html{
   // background-color: #004d00;
 }
 
-body {
+body,.footer .container {
   padding: 0;
-  // background-color: #004d00 !important;
+  background-color: #004620 !important;
+  background: url("/images/grass.jpg") repeat;
+}
+.footer .container,#configuracion {
+  color: white;
+}
+.btn.btn-blanco,.btn.btn-blanco:hover,.btn.btn-blanco:active{
+  color: green;
+  background-color: white;
+  border: none;
+  margin: 10px 0;
+}
+.static-header{
+  background: url("/images/grass.jpg") repeat;
+  z-index: 10;
+}
+
+.btn-default.btnVerde{
+  background-color: green;
+  color: white;
+  border: 2px solid white;
+}
+input:focus{
+  outline:none;
+}
+select.grupoFilter{
+  color: black;
 }
 .error{
   color: red;
 }
-
-.container{
-  background-color: white !important;
+.modal-title.title-page{
+  color:green;
+}
+.bordeVerde,.bordeVerde:focus{
+  border: 2px solid green;
+  
 }
 
+.tabla-pizarra{
+  background-color: white;
+}
+.modal-content .modal-body {
+    overflow-y: auto !important;
+}
+.noPag{
+  visibility: hidden;
+}
+.siPag{
+  visibility: visible;
+}
+.ptosVerde{
+  color: green;
+  font-weight: bold;
+}
+.ptosAmarillo{
+  color:#ffdb4d;
+  font-weight: bold;
+}
+.puntos-usuario{
+  /*padding-left: 30px;*/
+}
+.linea-usuario{
+  text-decoration: underline;
+}
+.glyphicon-screenshot{
+  font-size: 15px;
+}
+.guardar-link,.mi-usuario{
+  color:green;
+  font-weight: bold;
+}
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -45,7 +106,6 @@ body {
     padding-bottom: 19px;
   }
 }
-
 /* Custom page footer */
 .footer {
   padding-top: 19px;
@@ -100,6 +160,9 @@ body {
   }
 }
 
+.navbar-header{
+  background: #f8f8f8;
+}
 
 .menu-holder{
   .navbar-nav {
@@ -188,21 +251,22 @@ overflow-y: auto;
 }
 .modal-body form div{ 
   margin: 5px 0;
+
+}
+.modal-body form div.chosen-container{
+  margin:0;
 }
 .modal-header,.modal-header .modal-body{
   padding:0;
 }
 .modal-header h4{
   text-align:center;
+  color: black;
 }
 .modal-header.modal-grupo .title-page.active{
   background-color:#ffffff;
   color:green;
-  font-weight:bold;
-}
-.modal-header.modal-grupo .title-page:hover{
-  font-weight:bold;
-
+  font-weight: bold;
 }
 
 .modal-header.modal-grupo .title-page{
@@ -227,7 +291,7 @@ overflow-y: auto;
       text-align: center;
     }
     .campo-marcador{
-      width: 45px !important;
+      width: 48px !important;
       display: inline-block;
       text-align: center;
     }
@@ -242,6 +306,9 @@ overflow-y: auto;
     border-top: 1px solid green;
     border-bottom: 1px solid green;
     text-align: center;
+    padding-top: 70px;
+    font-size: 24px;
+    font-weight: bold;
   }
 
   .partido{
@@ -257,6 +324,9 @@ overflow-y: auto;
     color:#ffffff;
     background-color:black;
     font-size:20px;
+    padding: 0px;
+    max-height: 35px;
+    margin-bottom: 0;
   }
 
   .guardar-link{
@@ -268,9 +338,10 @@ overflow-y: auto;
 }
 
 .title-page{
-  font-size: 20px;
+  font-size: 19px;
+  font-weight: bold;
   padding: 14px;
-  color: green;
+  color: white;
 }
 
 .configuracion{
@@ -302,6 +373,11 @@ overflow-y: auto;
   background-size: 100% 100%;
   display: inline-block;
 }
+.row.torneos{
+    padding-left: 10px;
+    padding-right: 0;
+    margin: 10px;
+}
 
 .icono-orden.Desc{
   background-image: url("../images/downArrow.png");
@@ -322,9 +398,6 @@ overflow-y: auto;
 .btn-agregar-torneo{
   padding: 2px 10px;
 }
-.search-torneo{
-  width:70%;
-}
 .search-torneo-container{
   margin-bottom:10px;
 }
@@ -335,7 +408,6 @@ overflow-y: auto;
   text-align:center;
 }
 /*** End Estilos Torneo ***/
-
 .navbar{
   .container{
     background: #f8f8f8 !important;
@@ -359,21 +431,20 @@ overflow-y: auto;
 
 
 .home-page{
-    background: transparent !important;
     position: relative;
     color: white;
 }
 .bg-image{
     position: absolute;
     width: 100%;
-    min-width: 1200px;
+    min-height: 100%;
 }
 .not-logged{
   float: right;
 }
 
 .home-page >* {
-    margin-top: 53px;
+    margin-top: 58px;
 }
 
 .divisor-line{
@@ -389,21 +460,25 @@ overflow-y: auto;
       max-width: 814px !important;
   }
 }
-
+span:focus,input:focus,p:focus{
+  outline: none;
+}
 .user-name-display{
   padding-top: 16px;
 }
 .log-out-no-fb{
   padding-top: 11px;
 }
-
 .add-partido{
-  width: 36px;
-  border: 1px solid black;
-  border-radius: 18px;
-  padding-left: 6px;
+  background-color: white;
+  color:#004620;
+  width: 40px;
+  height: 40px;
+  border-radius: 22px;
+  padding-left: 9px;
   font-size: 23px;
-  padding-top: 2px;
+  padding-top: 6px;
+  margin-top: 15px;
 }
 
 .chosen-container {
@@ -441,3 +516,146 @@ overflow-y: auto;
     margin-top: 14px;
 }
 
+@media (max-width: 768px) {
+.close{
+  font-size:30px;
+}
+.marcador-small{
+  font-size:16px;
+}
+.modal-dialog select{
+  max-width: 125px !important;
+}
+.modal-dialog input.input-sm{
+  max-width: 150px !important;
+}
+#addGrupoModal .modal-dialog input, {
+  max-width: 150px !important;
+}
+
+  body{
+    font-size: 20px;
+  }
+  .header {
+    position: fixed;
+    width: 100%;
+    z-index: 9000;
+    padding-left: 0;
+    background-color: white;
+    border-bottom: 2px solid gray;
+    .navbar {
+      margin-bottom: 1px;
+    }
+    .navbar-default {
+      border-color: transparent;
+    }
+  }
+  .dropdown-menu-left{
+    left: -118px !important;
+  }
+  .modal-body {
+    max-height: 400px;
+  }
+  .modal {
+    top: 11%;
+    z-index: 9999;
+  }
+  .view-display{
+    margin-top:55px;
+  }
+  .static-header{
+    position: fixed;
+  }
+  .tabla-pizarra{
+    margin-top: 165px;
+  }
+  .tabla-pizarra.torneos{
+    margin-top: 80px;
+  }
+  .bg-image {
+  }
+  .divisor-line{
+    border-right:none;
+  }
+  #nuevoUsuario{
+    margin-bottom: 9px;
+  }
+  #entrarForm{
+    margin-bottom: 15px;
+  }
+  .fecha{
+    text-align: center;
+    margin-bottom: 9px;
+  }
+  .guardar-icon{
+    font-size: 28px;
+    margin-left: 14px;
+  }
+  .navbar-brand{
+    padding-left: 30px;
+  }
+  .home-page{
+    background: rgba(0,0,0,0.7);
+  }
+
+}
+
+form input.form-control{
+  margin-bottom: 8px;
+}
+
+.arrow-up{
+  position: fixed;
+  left: 45%;
+  background: green;
+  width: 50px;
+  height: 50px;
+  border-radius: 29px;
+  top: 62px;
+  text-align: center;
+  padding-top: 12px;
+  color: white;
+}
+
+.arrow-down{
+  position: fixed;
+  left: 45%;
+  background: green;
+  width: 50px;
+  height: 50px;
+  border-radius: 29px;
+  bottom: 12px;
+  text-align: center;
+  padding-top: 12px;
+  color: white;
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {  
+  50% { opacity: 0.0; }
+}
+
+.hide{
+  display: none;
+}
+
+.no-margin-top{
+  margin-top: 0px;
+}
+
+
+
+@media (max-width: 380px) {
+  .tabla-pizarra{
+    margin-top: 185px;
+  }
+  .pantalla-partidos .encabezado-tabla {
+    font-size: 17px;
+  }
+  .chosen-container {
+    width: 100px !important;
+}
+}

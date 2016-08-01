@@ -1,9 +1,9 @@
-angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Facebook','$timeout',function () { 'use strict';
+angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Facebook','$timeout','$rootScope',function () { 'use strict';
 
         return {
             restrict: 'A',
             templateUrl: 'views/menu.html',
-            controller: function ($scope,$location,auth,Facebook,$timeout) {
+            controller: function ($scope,$location,auth,Facebook,$timeout,$rootScope) {
 
             	var self = this;
             	$scope.user = {};
@@ -45,6 +45,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	            },true);
 
 	            $scope.$watch(function(){return auth.error;}, function (v) {
+	            	console.log('changed',auth.error);	
 					$scope.error = auth.error;
 	            },true);
 
@@ -54,7 +55,9 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	            
 
 	            $scope.regularLogin = function(user){
-			    	auth.regularLogin(user);
+	            	if(user){
+			    		auth.regularLogin(user);
+			    	}
 			    }
 
 			    $scope.regularLogup = function(user){
@@ -74,6 +77,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 			    }
 
 			    $scope.showLogin = function(){
+			    	console.log('displayLogin');
 			    	$scope.displayLoginModal = true;
 			    }
 
@@ -82,6 +86,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 			    }
 
 			    $scope.logoutBoth = function(){
+			    	
 			    	if($scope.isFacebookAuth){
 			    		this.logout();
 			    	}
@@ -92,6 +97,15 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 
                 $scope.activeLink = true;
                 $scope.$on('$routeChangeSuccess', function(locationPath) {
+                	var isSecondexpanded = $("#js-navbar-collapse-second").attr("aria-expanded");
+                	var isFirstExpanded = $("#js-navbar-collapse").attr("aria-expanded");
+                	if(isSecondexpanded == "true"){
+                		$('.second-collapse').click();
+                	}
+                	if(isFirstExpanded == "true"){
+                		console.log('expand menu 2');
+                		$('.first-collapse').click();
+                	}
                 	$scope.home = false;
                 	$scope.torneos = false;
                 	$scope.foro = false;
@@ -204,13 +218,15 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 				* Logout
 				*/
 				$scope.logout = function() {
-				Facebook.logout(function() {
-				  $scope.$apply(function() {
-				    $scope.user   = {};
-				    $scope.logged = false;  
-				  });
-				  auth.logOut();
-				});
+					if(userIsConnected){
+						Facebook.logout(function() {
+						  $scope.$apply(function() {
+						    $scope.user   = {};
+						    $scope.logged = false;  
+						  });
+						});
+					}
+					auth.logOut();
 				}
 
 				/**

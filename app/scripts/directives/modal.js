@@ -24,6 +24,9 @@ angular.module('miQuinielaApp')
                 }
                 else{
                     angular.element("#"+scope.elemento).modal('hide');
+                    $("#"+scope.elemento).modal('hide');
+                    $('body').removeClass('modal-open');
+                    $('.modal-backdrop').remove();
                 }
             },true);
 

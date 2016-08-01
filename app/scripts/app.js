@@ -23,8 +23,14 @@ angular
     'ngLodash',
     'localytics.directives',
     'ui.bootstrap', 
-    'ui.bootstrap.datetimepicker'
-  ])  
+    'ui.bootstrap.datetimepicker',
+    'toastr'
+  ])
+  .constant('config', {
+    appName: 'AppQuiniela',
+    appVersion: '1.0.1',
+    apiUrl: 'localhost'
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -97,8 +103,35 @@ angular
       };
     }]);
   })
+  .config(function(toastrConfig) {
+    angular.extend(toastrConfig, {
+      autoDismiss: false,
+      containerId: 'toast-container',
+      maxOpened: 2,    
+      newestOnTop: true,
+      positionClass: 'toast-top-center',
+      preventDuplicates: false,
+      preventOpenDuplicates: false,
+      target: 'body',
+      timeOut: 1000,
+    });
+  })
+  .filter('reverse', function() {
+    return function(items) {
+      if(items){
+        return items.slice().reverse();
+      }
+      else{
+        return items;
+      }
+    };
+  })
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
+      $rootScope.actual = next.templateUrl;
+      // if ( next.templateUrl === "partials/index.html") {
+      //   $rootScope.actual = '/';
+      // }
       if (auth.isAuthenticated == false) {
         if ( next.templateUrl === "partials/index.html") {
         } else {

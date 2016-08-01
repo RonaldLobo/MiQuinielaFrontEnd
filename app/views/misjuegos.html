@@ -1,101 +1,105 @@
 <div class="col-xs-12">
-	<div class="col-xs-11">
+	<div class="col-md-11 col-xs-9">
 		<p class="title-page">Mis Partidos</p>
 	</div>
 	<div class="col-xs-1 no-padding-left no-padding-right add-partido" ng-if="isAdmin == true">
 		<span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="agregarPartido()"></span>
 	</div>
 </div>
-<div class="col-xs-12 pantalla-partidos no-padding-left no-padding-right">
-	<div class="partido col-xs-12 no-padding-left no-padding-right">
-		<div class="col-xs-9 muestra-partido">
+<div ng-class="muestraPag" class="col-xs-12 pantalla-partidos no-padding-left no-padding-right">
+	<div class="partido col-xs-12 no-padding-left no-padding-right encabezado-tabla">
+		<div class="col-md-9 muestra-partido col-xs-12 ">
 			<p class="col-xs-12 no-padding-left no-padding-right">
-				<span class="titulo-linea col-xs-2">Predicción</span>
-				<span class="nombre-equipo col-xs-2">Equipo Casa</span>
+				<span class="titulo-linea col-xs-2 hidden-xs"></span>
+				<span class="nombre-equipo col-xs-2"> Casa</span>
 				<span class="campo-marcador col-xs-1"></span> 
 				<span class="col-xs-1">-</span> 
 				<span class="campo-marcador col-xs-1"></span>
-				<span class="nombre-equipo col-xs-2">Equipo Visita</span>
+				<span class="nombre-equipo col-xs-2"> Visita</span>
+				<span class="nombre-equipo col-xs-2 hidden-xs"> Fecha</span>
 			</p>
 		</div>
-		<div class="col-xs-2">
+		<div class="col-md-2 col-xs-6 hidden-xs">
 			Torneo
 		</div>
-		<div class="col-xs-1">
+		<div class="col-md-1 col-xs-6 hidden-xs">
 			Pts
 		</div>
 	</div>
 
 	<div ng-repeat="partido in filtradosPasado">
 		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
-			<div class="col-xs-9 muestra-partido">
+			<div class="col-md-9 muestra-partido col-xs-12">
+				<span parse-fecha class="fecha col-xs-12 hidden-md hidden-lg hidden-sm no-padding-left no-padding-right" fecha="partido.fecha"></span>
 				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="titulo-linea col-xs-2">Predicción</span>
-					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo1}}</span>
-					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador1" disabled> 
+					<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
+					<span class="nombre-equipo col-xs-2 no-padding-left">{{partido.idPartidoEquipo1}}</span>
+					<input type="text" ng-change="guardarPartido(partido)" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador1" disabled> 
 					<span class="col-xs-1">-</span> 
-					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador2" disabled>
+					<input type="text" ng-change="guardarPartido(partido)" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador2" disabled>
 					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
-					<span ng-if="isAdmin == true">
-						<span class="guardar-link col-xs-1" ng-click="guardarPartido(partido)">Actualizar</span>
-					</span>
+					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
 				</p>
 				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="titulo-linea col-xs-2">Resultado</span>
-					<span parse-fecha class="nombre-equipo col-xs-2" fecha="partido.fecha"></span>
+					<span class="titulo-linea col-xs-2 hidden-xs">Resultado</span>
+					<span class="col-xs-2 hidden-xs"></span>
+					<span class="nombre-equipo col-xs-2 hidden-md hidden-lg hidden-sm"></span>
 					<span ng-if="isAdmin == true">
-						<input type="text" class="campo-marcador col-xs-1" ng-model="partido.marcadorEquipo1"> 
+						<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo1"> 
 						<span class="col-xs-1">-</span> 
-						<input type="text" class="campo-marcador col-xs-1" ng-model="partido.marcadorEquipo2">
+						<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo2">
 					</span>
 					<span ng-if="isAdmin == false">
 						<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo1}}</span> 
 						<span class="col-xs-1">-</span> 
 						<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo2}}</span>
 					</span>
+					<span ng-if="isAdmin == true" class="guardar-link col-xs-1 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPartido(partido)">
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+					</span>
 				</p>
 			</div>
-			<div class="col-xs-2">
-				{{partido.torneo.nombre}}
+			<div class="col-md-2 col-xs-9">
+				<span class="hidden-md hidden-lg hidden-sm">Torneo: </span>{{partido.torneo.nombre}}
 			</div>
-			<div class="col-xs-1">
-				{{partido.prediccion.puntaje}}
+			<div class="col-md-1 col-xs-3" ng-class="partido.prediccion.puntaje==3 ? 'ptosVerde' : (partido.prediccion.puntaje==1 ? 'ptosAmarillo' : '')">
+				<span class="hidden-md hidden-lg hidden-sm" >Pts: </span>{{partido.prediccion.puntaje}}
 			</div>
 		</div>
 	</div>
 	<div ng-hide="filtradosPasado.length">No tiene Juegos anteriores al día de hoy</div>
 
-	<div class="col-xs-12 linea-divisoria-hoy">
-		Sin jugarse aún!
+	<div class="col-xs-12 linea-divisoria-hoy" id="hoy">
+		Partidos sin jugarse aún!
 	</div>
 
 	<div ng-repeat="partido in filtradosFuturo">
 		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
-			<div class="col-xs-9 muestra-partido">
+			<div class="col-md-9 muestra-partido col-xs-12">
+				<span parse-fecha class="fecha col-xs-12 hidden-md hidden-lg hidden-sm no-padding-left no-padding-right" fecha="partido.fecha"></span>
 				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="titulo-linea col-xs-2">Predicción</span>
-					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo1}}</span>
-					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador1"> 
+					<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
+					<span class="nombre-equipo col-xs-2 no-padding-left">{{partido.idPartidoEquipo1}}</span>
+					<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class="campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador1"> 
 					<span class="col-xs-1">-</span> 
-					<input type="text" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador2">
+					<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class="campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador2" >
 					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
-					<span class="guardar-link col-xs-1" ng-click="guardarPrediccion(partido)">Guardar</span>
-				</p>
-				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="titulo-linea col-xs-2">Resultado</span>
-					<span parse-fecha class="nombre-equipo col-xs-2" fecha="partido.fecha"></span>
-					<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo1}}</span> 
-					<span class="col-xs-1">-</span> 
-					<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo2}}</span>
+					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
 				</p>
 			</div>
-			<div class="col-xs-2">
-				{{partido.torneo.nombre}}
+			<div class="col-md-2 col-xs-9">
+				<span class="hidden-md hidden-lg hidden-sm">Torneo: </span>{{partido.torneo.nombre}}
 			</div>
-			<div class="col-xs-1">
-				{{partido.prediccion.puntaje}}
-			</div>
+			<!-- <span class="guardar-link col-xs-1 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPrediccion(partido)">
+				<i class="glyphicon glyphicon-floppy-disk"></i>
+			</span> -->
 		</div>
+	</div>
+	<div class="arrow-up scroll-icon">
+		<i class="glyphicon glyphicon-chevron-up"></i>
+	</div>
+	<div class="arrow-down scroll-icon">
+		<i class="glyphicon glyphicon-chevron-down"></i>
 	</div>
 	<div ng-hide="filtradosFuturo.length">No tiene Juegos posteriores a hoy, por favor unase a un grupo</div>
 
@@ -106,16 +110,16 @@
 	    </div>
 	    <div class="modal-body col-xs-12">
 	        <form name="myForm">
-	          <div class="col-xs-6 partido-row">
-	          	<div class="col-xs-4 no-padding-right">
+	          <div class="col-md-6 col-xs-12 partido-row">
+	          	<div class="col-md-4 col-xs-12 no-padding-right">
 	          		<span>Equipo 1</span>
 	          	</div>
-	          	<div class="col-xs-6">
+	          	<div class="col-md-6 col-xs-8">
 		          	<select 
 		          		chosen
-			          	ng-init="nuevoPartido.equipo1 = nuevoPartido.equipo1 || equipos[0].id" 
 			          	ng-model="nuevoPartido.equipo1" 
 			          	ng-options="equipo.id as equipo.equipo for equipo in equipos">
+			          	<option value="">Seleccione</option>
 			         </select>
 			    </div>
 			    <div class="col-xs-1 add-equipo" ng-click="displayAgregarEquipo()">
@@ -127,16 +131,16 @@
 					</span>
 			    </div>
 	          </div>
-	          <div class="col-xs-6 partido-row">
-	          	<div class="col-xs-4 no-padding-right">
+	          <div class="col-md-6 col-xs-12 partido-row">
+	          	<div class="col-md-4 col-xs-12 no-padding-right">
 	          		<span>Equipo 2</span>
 	          	</div>
-	          	<div class="col-xs-6">
+	          	<div class="col-md-6 col-xs-8">
 		          	<select 
 		          		chosen
-		          		ng-init="nuevoPartido.equipo2 = nuevoPartido.equipo2 || equipos[0].id"
 			          	ng-model="nuevoPartido.equipo2" 
 			          	ng-options="equipo.id as equipo.equipo for equipo in equipos">
+			          	<option value="">Seleccione</option>
 			          </select>
 			    </div>
 			    <div class="col-xs-1 add-equipo" ng-click="displayAgregarEquipo()">
@@ -149,27 +153,29 @@
 			    </div>
 	          </div>
 	          <div class="col-xs-12 agregar-equipo-cont" ng-if="displayAddEquipo">
-	          	<input type="text" ng-model="nuevoEquipo.nombre" placeholder="nombre del equipo">
-	          	<button ng-click="agregarEquipo()">
-				  Agregar
-				</button>
+	          	<div class="col-xs-12">
+		          	<input type="text" ng-model="nuevoEquipo.nombre" placeholder="nombre del equipo" class="form-control">
+		          	<button ng-click="agregarEquipo()" class="btn btn-default">
+					  Agregar
+					</button>
+				</div>
 	          </div>
-	          <div class="col-xs-6 partido-row">
-	          	<div class="col-xs-4 no-padding-right">
+	          <div class="col-md-6 col-xs-12 partido-row">
+	          	<div class="col-md-4 col-xs-12 no-padding-right">
 	          		<span>Torneo</span>
 	          	</div>
-	          	<div class="col-xs-6">
+	          	<div class="col-md-6 col-xs-8">
 		          	<select 
 		          		chosen
-		          		ng-init="nuevoPartido.torneo = nuevoPartido.torneo || torneos[0].id" 
 			          	ng-model="nuevoPartido.torneo" 
 			          	ng-options="torneo.id as torneo.torneo for torneo in torneos">
+			          	<option value="">Seleccione</option>
 			          </select>
 			    </div>
 	          </div>
-	          <div class="col-xs-6 partido-row">
+	          <div class="col-md-6 col-xs-12 partido-row">
 	          	<div class="col-xs-4 no-padding-right">
-	          		<span>Torneo</span>
+	          		<span>Fecha</span>
 	          	</div>
 	          	<div class="col-xs-6">
 		          	<p class="input-group">
@@ -181,8 +187,10 @@
 			    </div>
 	          </div>
 	          <div class="col-xs-12 partido-row">
-		          <p class="error">{{error}}</p>
-		          <button ng-click="agregarPartidoNuevo()">ingresar</button>
+	          		<div class="col-xs-12">
+			          <p class="error">{{error}}</p>
+			          <button ng-click="agregarPartidoNuevo()" class="btn btn-primary">Agregar</button>
+	          		</div>
 		      </div>
 	        </form>
 	    </div>

@@ -8,11 +8,10 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('ConfiguracionCtrl', function ($scope,auth) {
+  .controller('ConfiguracionCtrl', function ($scope,auth,$http) {
     //get user logged
-    $scope.$watch( function () { return auth.loggedUser; }, function (loggedUser) {
-    	$scope.usuario = loggedUser;
-  	}, true);
+    $scope.usuario = auth.loggedUser;
+    console.log($scope.usuario);
 
   	$scope.actualizarUsuario = function(){
   		var usuario = {
@@ -20,9 +19,16 @@ angular.module('miQuinielaApp')
   		}
   		console.log(usuario);
   		$http({
-		  url: "http://localhost/API/index.php/usuarios/?method=PUT",
+		  url: "http://appquiniela.com/API/index.php/usuarios/?method=PUT",
 		  method: "POST",
 		  data: usuario
+		}).then(function successCallback(response) {
+		    $scope.usuario = response.data.usuario;
+		    localStorage.setItem('usuario', JSON.stringify($scope.usuario));	
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
 		});
   	};
 
@@ -30,7 +36,7 @@ angular.module('miQuinielaApp')
 
   	function obtenerInvitaciones(id){
   		$http({
-		  url: "http://localhost/API/index.php/invitaciones/"+id,
+		  url: "http://appquiniela.com/API/index.php/invitaciones/"+id,
 		  method: "GET",
 		}).then(function successCallback(response) {
 		    $scope.invitaciones = response.data.grupos;
@@ -44,7 +50,7 @@ angular.module('miQuinielaApp')
 
   	$scope.aceptarInvitacion = function(id){
   		$http({
-		  url: "http://localhost/API/index.php/invitaciones/?id="+id+"&method=PUT",
+		  url: "http://appquiniela.com/API/index.php/invitaciones/?id="+id+"&method=PUT",
 		  method: "POST",
 		  dataType: "text"
 		}).then(function successCallback(response) {
@@ -59,7 +65,10 @@ angular.module('miQuinielaApp')
 		    	auth.logOut();
 		    }
 		});
+  	}
 
+  	$scope.cancelarUsuario = function(){
+  		$scope.usuario = JSON.parse(localStorage.getItem('usuario'));
   	}
     
   });

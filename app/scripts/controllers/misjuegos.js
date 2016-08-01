@@ -8,13 +8,17 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth',function ($scope,lodash,$http,auth) {
+  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout','toastr',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout,toastr) {
+
+	// $('.btn-navbar').click(); //bootstrap 2.x
+ //    $('.navbar-toggle').click() //bootstrap 3.x by Richard
 
     $scope.nuevoEquipo = {};
 
     $scope.nuevoPartido = {};
 
     $scope.displayAddEquipo = false;
+	$scope.muestraPag="noPag";
 
     $scope.displayAgregarEquipo = function(){
     	if($scope.displayAddEquipo){
@@ -77,19 +81,55 @@ angular.module('miQuinielaApp')
 
     console.log($scope.initDate,$scope.finalDate);
     $http({
-	  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate),
+	  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate),
 	  method: 'GET',
 	}).then(function successCallback(response) {
 	    $scope.partidos = response.data.partido;
 		$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
-	    	return date >= new Date(o.fecha); 
+	    	var dateTime = o.fecha.split(" ");
+		    var dateOnly = dateTime[0];
+		    var timeOnly = dateTime[1];
+
+		    var temp = dateOnly + "T" + timeOnly;
+		    function dateFromString(str) {
+			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+			}
+	    	return date >= new Date(dateFromString(temp)); 
 	    });
 
 	    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
-	    	return date < new Date(o.fecha);  
+	    	var dateTime = o.fecha.split(" ");
+		    var dateOnly = dateTime[0];
+		    var timeOnly = dateTime[1];
+
+		    var temp = dateOnly + "T" + timeOnly;
+		    function dateFromString(str) {
+			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+			}
+	    	return date < new Date(dateFromString(temp));  
 	    });
+	    // set the location.hash to the id of
+	    // the element you wish to scroll to.
+	    $timeout(function(){
+
+    		var old = $location.hash();
+	    	$location.hash('hoy');
+
+		    // call $anchorScroll()
+		    $anchorScroll();
+			$location.hash(old);
+			$scope.muestraPag="siPag";
+
+		    angular.element('.scroll-icon').addClass('blink_me');
+		    $timeout(function(){
+			    angular.element('.scroll-icon').addClass('hide');
+		    }, 3000);
+	    }, 700);
+	    
 	}, function errorCallback(response) {
 	    if(response.status == 401){
 	    	auth.logOut();
@@ -99,7 +139,7 @@ angular.module('miQuinielaApp')
 	// traer equipos y torneos
 	if(auth.loggedUser.rol == 'admin'){
 		$http({
-		  url: "http://localhost/API/index.php/equipo/",
+		  url: "http://appquiniela.com/API/index.php/equipo/",
 		  method: 'GET',
 		}).then(function successCallback(response) {
 		    $scope.equipos = response.data.equipo;
@@ -110,7 +150,7 @@ angular.module('miQuinielaApp')
 		});
 
 		$http({
-		  url: "http://localhost/API/index.php/torneo/",
+		  url: "http://appquiniela.com/API/index.php/torneo/",
 		  method: 'GET',
 		}).then(function successCallback(response) {
 		    $scope.torneos = response.data.torneo;
@@ -131,12 +171,13 @@ angular.module('miQuinielaApp')
 	    		}
 	    	};
 	    	$http({
-			  url: "http://localhost/API/index.php/partidos/?method=PUT&XDEBUG_SESSION_START=netbeans-xdebug",
+			  url: "http://appquiniela.com/API/index.php/partidos/?method=PUT",
 			  data: partido,
 			  method: 'POST',
 			}).then(function successCallback(response) {
+				toastr.success('', 'Partido Actualizado');
 				$http({
-				  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
+				  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
 				  method: 'GET',
 				}).then(function successCallback(response) {
 				    console.log('success',response.data.partido);
@@ -170,7 +211,7 @@ angular.module('miQuinielaApp')
 		}
 	};
 	 
-    $scope.guardarPrediccion = function(partido){
+    $scope.guardarPrediccion = function(partido,num){
     	if(!isNaN(partido.prediccion.marcador1) && !isNaN(partido.prediccion.marcador2)){
 	    	var prediccion = {
 	    		prediccion : {
@@ -183,11 +224,13 @@ angular.module('miQuinielaApp')
 	    		}
 	    	};
 	    	$http({
-			  url: "http://localhost/API/index.php/predicciones/?method=PUT",
+			  url: "http://appquiniela.com/API/index.php/predicciones/?method=PUT",
 			  data: prediccion,
 			  method: 'POST',
 			}).then(function successCallback(response) {
-				alert('prediccion guardada');
+				angular.element( document.getElementsByClassName( 'row-'+num ) ).addClass("bordeVerde");
+				//alert('prediccion guardada');
+				toastr.success('', 'Prediccion Guardada');
 			}, function errorCallback(response) {
 			    if(response.status == 401){
 			    	auth.logOut();
@@ -211,17 +254,17 @@ angular.module('miQuinielaApp')
 	    		idPartidoEquipo1: Number($scope.nuevoPartido.equipo1),
 	    		idPartidoEquipo2: Number($scope.nuevoPartido.equipo2),
 	    		marcadorEquipo1: 0,
-	    		marcadorEquipo1: 0,
+	    		marcadorEquipo2: 0,
 	    		fecha: convertDateHora($scope.picker.date)
 	    	}
     	};
     	$http({
-		  url: "http://localhost/API/index.php/partidos/",
+		  url: "http://appquiniela.com/API/index.php/partidos/",
 		  data: partido,
 		  method: 'POST',
 		}).then(function successCallback(response) {
 		    $http({
-			  url: "http://localhost/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
+			  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
 			  method: 'GET',
 			}).then(function successCallback(response) {
 			    console.log('success',response.data.partido);
@@ -250,7 +293,7 @@ angular.module('miQuinielaApp')
 		});
 
 		$http({
-		  url: "http://localhost/API/index.php/torneo/",
+		  url: "http://appquiniela.com/API/index.php/torneo/",
 		  method: 'GET',
 		}).then(function successCallback(response) {
 		    $scope.torneos = response.data.torneo;
@@ -269,7 +312,7 @@ angular.module('miQuinielaApp')
     		}
     	};
     	$http({
-		  url: "http://localhost/API/index.php/equipo/",
+		  url: "http://appquiniela.com/API/index.php/equipo/",
 		  data: equipo,
 		  method: 'POST',
 		}).then(function successCallback(response) {
