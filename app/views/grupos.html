@@ -7,7 +7,7 @@
 	</div>
 	<div class="col-xs-2 no-padding-left no-padding-right add-partido">
 
-		<span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="agregarGrupo()"></span>
+		<span class="glyphicon glyphicon-plus-sign" aria-hidden="true" ng-click="agregarGrupo()"></span>
 	</div>
 	<h3 class="col-xs-12 title-page">Torneo: {{usuarios[0].torneo}}</h3> 
 	<div class=" col-xs-12 no-padding-left no-padding-right ">
@@ -26,8 +26,8 @@
 		<div id="pos-{{usuario.id}}"class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="{ 'row-par' : $even, 'mi-usuario' : usuario.id===usuarioLog}">
 			<p class="col-xs-12 no-padding-left no-padding-right" >
 				<span class="titulo-linea col-xs-3">{{usuario.position}}</span>
-				<span class="titulo-linea linea-usuario col-xs-6 col-md-5" ng-click="muestraPredicciones(usuario.id)">{{usuario.nombre}}</span>
-				<span class="puntos-usuario col-xs-2 col-md-3">{{usuario.puntaje}}</span>
+				<span class="titulo-linea linea-usuario col-xs-5 col-md-5" ng-click="muestraPredicciones(usuario.id)">{{usuario.nombre}}</span>
+				<span class="puntos-usuario col-xs-4 col-md-3">{{usuario.puntaje}}</span>
 			</p>
 		</div>
 	</div>
@@ -38,10 +38,7 @@
 	        <div class="modal-body col-xs-12 no-padding">
 	        	<h4 class="modal-title title-page col-xs-12 active">{{predicciones.user.nombre}} {{predicciones.user.apellido}}</h4>
 	        </div>
-	    </div>
-
-	    <div class="modal-body col-xs-12 no-padding-left">
-	    	<div class="partido col-xs-12 no-padding-left no-padding-right" ng-show="predicciones.userPredictions.length>0">
+	        <div class=" col-xs-12 no-padding-left no-padding-right" ng-show="predicciones.userPredictions.length>0">
 				<p class="col-xs-12 no-padding-left no-padding-right encabezado-tabla">
 					<span class="titulo-linea col-md-2 col-xs-3">Casa</span>
 					<span class="titulo-linea col-md-5 col-xs-6">Predicción<span class="hidden-xs">(Resultado)</span></span>
@@ -49,17 +46,31 @@
 					<span class="nombre-equipo col-md-2 hidden-xs">Puntos</span>
 				</p>
 			</div>
+	    </div>
+
+	    <div class="modal-body col-xs-12 no-padding-left">
+	    	
 	        <div ng-repeat="predic in predicciones.userPredictions | reverse">
 				<div ng-show="predicciones.userPredictions[{{$index}}]!=null" class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
 					<p class="col-xs-12 no-padding-left no-padding-right">
 						<span class="titulo-linea col-md-3 col-xs-4">{{predic.idEquipo1}}</span>
 						<span class="nombre-equipo col-md-4 col-xs-4 marcador-small">{{predic.marcador1}}-{{predic.marcador2}}</span>
 						<span class="correo-usuario col-md-3 col-xs-4 no-padding-left">{{predic.idEquipo2}}</span>
-						<span class="nombre-equipo col-md-2  hidden-xs" ng-class="predic.puntaje==3 ? 'ptosVerde' : (predic.puntaje==1) ? 'ptosAmarillo' : ''">{{predic.puntaje}}</span>
+						<span class="nombre-equipo col-md-2  hidden-xs" >
+							<span >{{predic.puntaje}} Pts</span>
+							<span ng-class="predic.puntaje==3 ? 'ptosVerde' : (predic.puntaje==1 ? 'ptosAmarillo' : '')" ng-show="predic.puntaje >0" class="glyphicon glyphicon-ok-sign"> </span>
+							<span  ng-show="predic.puntaje==0" class="glyphicon glyphicon-remove-sign "> </span>
+							
+						</span>
 					</p>
 					<p class="col-xs-12 no-padding-left no-padding-right hidden-md hidden-lg hidden-xl">
-						<span class="titulo-linea col-xs-6"></span>
-						<span class="nombre-equipo col-xs-6" ng-class="predic.puntaje==3 ? 'ptosVerde' : (predic.puntaje==1 ? 'ptosAmarillo' : '')">Puntos: {{predic.puntaje}}</span>
+						<span class="titulo-linea col-xs-8"></span>
+						
+						<span class="col-xs-4" >
+							<span >{{predic.puntaje}} Pts</span>
+							<span ng-class="predic.puntaje==3 ? 'ptosVerde' : (predic.puntaje==1 ? 'ptosAmarillo' : '')" ng-show="predic.puntaje >0" class="glyphicon glyphicon-ok-sign"> </span>
+							<span  ng-show="predic.puntaje==0" class="glyphicon glyphicon-remove-sign "> </span>
+						</span>
 					</p>
 				</div>
 			</div>
@@ -101,19 +112,17 @@
 		          </div>
 	          <p class="error col-xs-10">{{error}}</p>
 	        </form>
-	        <div class="partido col-xs-12 no-padding-left no-padding-right" ng-show="grupoNuevo.listaUsuarios.length>0">
+	        <div class=" col-xs-12 no-padding-left no-padding-right" ng-show="grupoNuevo.listaUsuarios.length>0">
 				<p class="col-xs-12 no-padding-left no-padding-right encabezado-tabla">
-					<span class="titulo-linea col-xs-3">Usuario</span>
-					<span class="titulo-linea col-xs-4">Nombre</span>
-					<span class="nombre-equipo col-xs-4">Correo </span>
+					<span class="titulo-linea col-xs-4">Usuario</span>
+					<span class="titulo-linea col-xs-8">Nombre</span>
 				</p>
 			</div>
 	        <div ng-repeat="usuario in grupoNuevo.listaUsuarios">
 				<div  class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
 					<p class="col-xs-12 no-padding-left no-padding-right">
-						<span class="titulo-linea col-xs-3">{{usuario.usuario}}</span>
-						<span class="nombre-equipo col-xs-3">{{usuario.nombre}}</span>
-						<span class="correo-usuario col-xs-4">{{usuario.correo}}</span>
+						<span class="titulo-linea col-xs-5">{{usuario.usuario}}</span>
+						<span class="nombre-equipo col-xs-5">{{usuario.nombre}}</span>
 						<span class="nombre-equipo col-xs-1" ng-click="removerUsuario($index)">x</span>
 					</p>
 				</div>
