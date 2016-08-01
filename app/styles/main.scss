@@ -14,6 +14,13 @@ html{
 body {
   padding: 0;
   // background-color: #004d00 !important;
+  background: #004620 !important;
+}
+.header{
+  position: fixed;
+  margin: 0 auto !important;
+  left: 0;
+  z-index: 10;
 }
 input:focus{
   outline:none;
@@ -287,7 +294,10 @@ overflow-y: auto;
   .partido{
     padding-bottom: 10px;
     padding-top: 10px;
-    border-bottom: 1px solid gray;
+    background-color: #f8f8f8;
+    border-radius: 11px;
+    border: 1px solid gray;
+    margin-top: 10px;
   }
 
   .row-par{
@@ -311,8 +321,10 @@ overflow-y: auto;
 
 .title-page{
   font-size: 20px;
-  padding: 14px;
-  color: green;
+  padding: 4px;
+  color: white;
+  letter-spacing: 1px;
+  font-weight: bold;
 }
 
 .configuracion{
@@ -479,6 +491,10 @@ overflow-y: auto;
     margin-top: 14px;
 }
 
+.navbar-default{
+  margin-bottom: 0 !important;
+}
+
 @media (max-width: 768px) {
 .close{
   font-size:30px;
@@ -599,5 +615,29 @@ form input.form-control{
 
 .no-margin-top{
   margin-top: 0px;
+}
+
+.header-bar{
+  position: fixed;
+  z-index: 9;
+  background: #004620 !important;
+  top: 52px;
+  border: 1px solid white;
+  color: white;
+}
+
+.pantalla-partidos{
+  background: #004620 !important;
+  margin-top: 130px;
+}
+
+.bg-card{
+  position: absolute;
+  font-size: 33px;
+  color: gray;
+  text-align: center;
+  width: 100%;
+  top: 35%;
+  text-shadow: 2px 2px 4px #000000;
 }
 
