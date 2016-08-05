@@ -55,9 +55,11 @@
 	        <div ng-repeat="predic in predicciones.userPredictions | reverse">
 				<div ng-show="predicciones.userPredictions[{{$index}}]!=null" class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
 					<p class="col-xs-12 no-padding-left no-padding-right">
-						<span class="titulo-linea col-md-3 col-xs-4">{{predic.idEquipo1.split("&")[0]}}</span>
-						<span class="nombre-equipo col-md-4 col-xs-4 marcador-small">{{predic.marcador1}}-{{predic.marcador2}}</span>
-						<span class="correo-usuario col-md-3 col-xs-4 no-padding-left">{{predic.idEquipo2}}</span>
+						<span class="titulo-linea col-md-3 col-xs-3 hidden-xs">{{predic.idEquipo1.split("&")[0]}}</span>
+						<span class="titulo-linea col-md-3 col-xs-3 hidden-sm hidden-md hidden-lg">{{predic.idEquipo1.split("&")[1]}}</span>
+						<span class=" col-md-4 col-xs-5 marcador-small">{{predic.marcador1}}-{{predic.marcador2}}</span>
+						<span class="correo-usuario col-md-3 col-xs-4 no-padding-left hidden-xs">{{predic.idEquipo2.split("&")[0]}}</span>
+						<span class="correo-usuario col-md-3 col-xs-4 no-padding-left hidden-sm hidden-md hidden-lg">{{predic.idEquipo2.split("&")[1]}}</span>
 						<span class="nombre-equipo col-md-2  hidden-xs" >
 							<span >{{predic.puntaje}} Pts</span>
 							<span ng-class="predic.puntaje==3 ? 'ptosVerde' : (predic.puntaje==1 ? 'ptosAmarillo' : '')" ng-show="predic.puntaje >0" class="glyphicon glyphicon-ok-sign"> </span>
