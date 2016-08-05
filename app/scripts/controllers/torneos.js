@@ -21,7 +21,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosPorUsuario(){
       $http({
-          url: "http://localhost/API/index.php/torneo/?usuario="+auth.loggedUser.id,
+          url: "http://appquiniela.com/API/index.php/torneo/?usuario="+auth.loggedUser.id,
           method: 'GET',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -33,7 +33,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosPorUsuarioAdmin(){
       $http({
-        url: "http://localhost/API/index.php/torneo/",
+        url: "http://appquiniela.com/API/index.php/torneo/",
         method: 'GET',
      }).then(function successCallback(response) {
          console.log('success',response);
@@ -45,7 +45,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosGlobal(){
       $http({
-        url: "http://localhost/API/index.php/torneo/",
+        url: "http://appquiniela.com/API/index.php/torneo/",
         method: 'GET',
      }).then(function successCallback(response) {
          console.log('success',response);
@@ -72,7 +72,7 @@ if(auth.loggedUser.rol == 'admin'){
         }
         if(torneo != undefined){
          $http({
-           url: "http://localhost/API/index.php/torneo/",
+           url: "http://appquiniela.com/API/index.php/torneo/",
            method: 'POST',
            data: JSON.stringify(torneoAdmin)
          }).then(function successCallback(response) {
@@ -80,7 +80,7 @@ if(auth.loggedUser.rol == 'admin'){
               $scope.torneosUsuario.push(response.data.torneoAdmin);
               ListarTorneosPorUsuarioAdmin();
              $http({
-                 url: "http://localhost/API/index.php/usuarioTorneos/",
+                 url: "http://appquiniela.com/API/index.php/usuarioTorneos/",
                  method: 'POST',
                  data: {
                   "usuarioTorneo": {
@@ -114,7 +114,7 @@ if(auth.loggedUser.rol == 'admin'){
          var validaTorneoLista = _.filter($scope.torneosUsuario,{ 'id': torneo.id }); 
          if(Object.keys(validaTorneoLista).length == 0){ 
             $http({
-                 url: "http://localhost/API/index.php/usuarioTorneos/",
+                 url: "http://appquiniela.com/API/index.php/usuarioTorneos/",
                  method: 'POST',
                  data: {
                   "usuarioTorneo": {
@@ -139,7 +139,7 @@ if(auth.loggedUser.rol == 'admin'){
       $scope.delTorneo = function(idTorneo) {
        if(auth.loggedUser.rol == 'admin'){
          $http({
-          url: "http://localhost/API/index.php/torneo/"+idTorneo,
+          url: "http://appquiniela.com/API/index.php/torneo/"+idTorneo,
           method: 'DELETE',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -153,7 +153,7 @@ if(auth.loggedUser.rol == 'admin'){
        });
         } else {
           $http({
-          url: "http://localhost/API/index.php/usuarioTorneos/"+idTorneo,
+          url: "http://appquiniela.com/API/index.php/usuarioTorneos/"+idTorneo,
           method: 'DELETE',
        }).then(function successCallback(response) {
            console.log('success',response);
