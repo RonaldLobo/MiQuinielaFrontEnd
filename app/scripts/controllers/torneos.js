@@ -21,7 +21,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosPorUsuario(){
       $http({
-          url: "http://appquiniela.com/API/index.php/torneo/?usuario="+auth.loggedUser.id,
+          url: "http://localhost/API/index.php/torneo/?usuario="+auth.loggedUser.id,
           method: 'GET',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -33,7 +33,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosPorUsuarioAdmin(){
       $http({
-        url: "http://appquiniela.com/API/index.php/torneo/",
+        url: "http://localhost/API/index.php/torneo/",
         method: 'GET',
      }).then(function successCallback(response) {
          console.log('success',response);
@@ -45,7 +45,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosGlobal(){
       $http({
-        url: "http://appquiniela.com/API/index.php/torneo/",
+        url: "http://localhost/API/index.php/torneo/",
         method: 'GET',
      }).then(function successCallback(response) {
          console.log('success',response);
@@ -72,13 +72,28 @@ if(auth.loggedUser.rol == 'admin'){
         }
         if(torneo != undefined){
          $http({
-           url: "http://appquiniela.com/API/index.php/torneo/",
+           url: "http://localhost/API/index.php/torneo/",
            method: 'POST',
            data: JSON.stringify(torneoAdmin)
          }).then(function successCallback(response) {
              $scope.showAgregarTorneo = false;
-             $scope.torneosUsuario.push(response.data.torneoAdmin);
-             ListarTorneosPorUsuarioAdmin();
+              $scope.torneosUsuario.push(response.data.torneoAdmin);
+              ListarTorneosPorUsuarioAdmin();
+             $http({
+                 url: "http://localhost/API/index.php/usuarioTorneos/",
+                 method: 'POST',
+                 data: {
+                  "usuarioTorneo": {
+                    "torneo": response.data.torneo.id,
+                    "usuario": auth.loggedUser.id
+                    }
+                   }
+               }).then(function successCallback(response) {
+                $timeout(function() {
+                });
+               }, function errorCallback(response) {
+                   alert( "Request failed: " + response );
+               });
          }, function errorCallback(response) {
              alert( "Request failed: " + response );
          });
@@ -99,9 +114,14 @@ if(auth.loggedUser.rol == 'admin'){
          var validaTorneoLista = _.filter($scope.torneosUsuario,{ 'id': torneo.id }); 
          if(Object.keys(validaTorneoLista).length == 0){ 
             $http({
-                 url: "http://appquiniela.com/API/index.php/usuarioTorneos/",
+                 url: "http://localhost/API/index.php/usuarioTorneos/",
                  method: 'POST',
-                 data: JSON.stringify(torneoUsuario)
+                 data: {
+                  "usuarioTorneo": {
+                    "torneo": torneo.id,
+                    "usuario": auth.loggedUser.id
+                    }
+                   }
                }).then(function successCallback(response) {
                    $scope.showAgregarTorneoUsuario = false;
                 $timeout(function() {
@@ -119,7 +139,7 @@ if(auth.loggedUser.rol == 'admin'){
       $scope.delTorneo = function(idTorneo) {
        if(auth.loggedUser.rol == 'admin'){
          $http({
-          url: "http://appquiniela.com/API/index.php/torneo/"+idTorneo,
+          url: "http://localhost/API/index.php/torneo/"+idTorneo,
           method: 'DELETE',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -133,7 +153,7 @@ if(auth.loggedUser.rol == 'admin'){
        });
         } else {
           $http({
-          url: "http://appquiniela.com/API/index.php/usuarioTorneos/"+idTorneo,
+          url: "http://localhost/API/index.php/usuarioTorneos/"+idTorneo,
           method: 'DELETE',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -143,7 +163,8 @@ if(auth.loggedUser.rol == 'admin'){
               });
            });
        }, function errorCallback(response) {
-           alert( "Request failed: " + response );
+           //alert( "Request failed: " + response );
+           alert( "Error al eliminar torneo");
        });
         }
       }

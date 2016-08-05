@@ -18,21 +18,33 @@
 			<div class="muestra-partido col-xs-12">
 				<span parse-fecha class="col-xs-12 fecha  no-padding-left no-padding-right" fecha="partido.fecha"></span>
 				
-					<span class="nombre-equipo col-xs-4 no-padding-left">{{partido.idPartidoEquipo1}}</span>
+					<div class="nombre-equipo col-xs-3 col-sm-4 no-padding-left">
+						<span class="col-sm-4 hidden-xs"></span>
+						<img class="col-xs-12 col-sm-4  no-padding-left image-equipo" ng-src='../images/escudos/{{partido.idPartidoEquipo1.split("&")[1]}}.png'>
+						<span class="col-sm-4  hidden-xs"></span>
+						<span class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-left hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
+					</div>
 					<span ng-if="isAdmin == true">
-						<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo1">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo1">
 					</span>
 					<span ng-if="isAdmin == false">
-						<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo1}}</span> 
+						<span class="campo-central campo-marcador col-xs-2  col-sm-1">{{partido.marcadorEquipo1}}</span> 
 					</span>
-					<span class=" col-xs-1">-</span> 
+					<span class=" col-xs-2 campo-central campo-guion">-</span> 
 					<span ng-if="isAdmin == true">
-						<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo2">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo2">
 					</span>
 					<span ng-if="isAdmin == false">
-						<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo2}}</span> 
+						<span class="campo-marcador col-xs-2 campo-central col-sm-1">{{partido.marcadorEquipo2}}</span> 
 					</span>
-					<span class="nombre-equipo col-xs-4">{{partido.idPartidoEquipo2}}</span>
+					<div class="nombre-equipo col-xs-3 col-sm-4 no-padding-left">
+						<span class="col-sm-4 hidden-xs"></span>
+						<img class="col-xs-12 col-sm-4  no-padding-right image-equipo" ng-src='../images/escudos/{{partido.idPartidoEquipo2.split("&")[1]}}.png'>
+						<span class="col-sm-4  hidden-xs"></span>
+						<span class="col-xs-12 col-sm-4 no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo2.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-right hidden-xs">{{partido.idPartidoEquipo2.split("&")[0]}}</span>
+					</div>
 				
 				<p class="col-xs-12 no-padding-left no-padding-right">
 					<span ng-if="isAdmin == true" class="guardar-link col-xs-12 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPartido(partido)">
@@ -44,6 +56,7 @@
 				{{partido.torneo.nombre}}
 			</div>
 			<div class=" muestra-partido col-xs-12 prediccion-row">
+
 				<span class="col-xs-8">Mi Predicción: <span>{{partido.prediccion.marcador1}}</span>-<span>{{partido.prediccion.marcador2}}</span></span>
 				<span class="col-xs-4" >
 					<span >{{partido.prediccion.puntaje}} Pts</span>
@@ -62,15 +75,35 @@
 	<div ng-repeat="partido in filtradosFuturo">
 		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
 			<div class="muestra-partido col-xs-12">
-				<span parse-fecha class="fecha col-xs-12 hidden-md hidden-lg hidden-sm no-padding-left no-padding-right" fecha="partido.fecha"></span>
-				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="nombre-equipo col-xs-2 no-padding-left">{{partido.idPartidoEquipo1}}</span>
-					<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class="campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador1"> 
-					<span class="col-xs-1">-</span> 
-					<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class="campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador2" >
-					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
-					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
-				</p>
+				<span parse-fecha class="fecha col-xs-12 no-padding-left no-padding-right" fecha="partido.fecha"></span>
+				<div class="nombre-equipo col-xs-3 col-sm-4 no-padding-left">
+						<span class="col-sm-4 hidden-xs"></span>
+						<img class="col-xs-12 col-sm-4  no-padding-left image-equipo" ng-src='../images/escudos/{{partido.idPartidoEquipo1.split("&")[1]}}.png'>
+						<span class="col-sm-4  hidden-xs"></span>
+						<span class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-left hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
+					</div>
+					<span ng-if="isAdmin == true">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo1">
+					</span>
+					<span ng-if="isAdmin == false">
+						<span class="campo-central campo-marcador col-xs-2  col-sm-1">{{partido.marcadorEquipo1}}</span> 
+					</span>
+					<span class=" col-xs-2 campo-central campo-guion">-</span> 
+					<span ng-if="isAdmin == true">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo2">
+					</span>
+					<span ng-if="isAdmin == false">
+						<span class="campo-marcador col-xs-2 campo-central col-sm-1">{{partido.marcadorEquipo2}}</span> 
+					</span>
+					<div class="nombre-equipo col-xs-3 col-sm-4 no-padding-left">
+						<span class="col-sm-4 hidden-xs"></span>
+						<img class="col-xs-12 col-sm-4  no-padding-right image-equipo" ng-src='../images/escudos/{{partido.idPartidoEquipo2.split("&")[1]}}.png'>
+						<span class="col-sm-4  hidden-xs"></span>
+						<span class="col-xs-12 col-sm-4 no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo2.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-right hidden-xs">{{partido.idPartidoEquipo2.split("&")[0]}}</span>
+					</div>
+
 			</div>
 			<div class="col-xs-12">
 				<span class="hidden-md hidden-lg hidden-sm">Torneo: </span>{{partido.torneo.nombre}}
@@ -140,6 +173,7 @@
 	          <div class="col-xs-12 agregar-equipo-cont" ng-if="displayAddEquipo">
 	          	<div class="col-xs-12">
 		          	<input type="text" ng-model="nuevoEquipo.nombre" placeholder="nombre del equipo" class="form-control">
+		          	<input type="text" ng-model="nuevoEquipo.acronimo" placeholder="acronimo" class="form-control">
 		          	<button ng-click="agregarEquipo()" class="btn btn-default">
 					  Agregar
 					</button>

@@ -26,7 +26,9 @@ body,.footer .container {
   border: none;
   margin: 10px 0;
 }
-
+.form-busca-grupo{
+  heigth:250px;
+}
 .btn-default.btnVerde{
   background-color: green;
   color: white;
@@ -289,7 +291,6 @@ overflow-y: auto;
 
   .muestra-partido{
     .nombre-equipo{
-      width: 100px;
       display: inline-block;
       text-align: center;
     }
@@ -319,7 +320,7 @@ overflow-y: auto;
   }
   .prediccion-row{
     background-color: #e6e6e6;
-    border: 2px solid gray;
+    border-top: 3px solid gray;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
     padding: 5px 0;
@@ -448,7 +449,14 @@ overflow-y: auto;
 .login-action{
   padding: 15px 16px !important;
 }
-
+.image-equipo
+{
+  width: 70px;
+  height: 60px
+}
+.campo-central{
+  margin-top:20px;
+}
 
 .home-page{
     position: relative;
@@ -457,7 +465,7 @@ overflow-y: auto;
 .bg-image{
     position: absolute;
     width: 100%;
-    min-height: 100%;
+    height: 100%;
 }
 .not-logged{
   float: right;
@@ -561,6 +569,9 @@ span:focus,input:focus,p:focus{
   body{
     font-size: 20px;
   }
+  select.grupoFilter{
+  max-width:160px;
+}
   .header {
     position: fixed;
     width: 100%;
@@ -677,19 +688,35 @@ form input.form-control{
   margin-top: 0px;
 }
 
-
-
+@media (max-width: 450px) {
+  .nombre-equipo{
+      max-width: 95px;
+    }
+}
 @media (max-width: 380px) {
   .tabla-pizarra{
     margin-top: 155px;
   }
+  .nombre-equipo{
+      max-width: 70px;
+    }
+  .nombre-equipo{
+      max-width: 80px;
+    }
   .pantalla-partidos .encabezado-tabla {
     font-size: 17px;
   }
   .chosen-container {
     width: 100px !important;
+  }
 }
-}
+
+
+@media (max-width: 325px) {
+   .campo-guion{
+    width: 10px;
+   }
+  }
 .header-bar{
   position: fixed;
   z-index: 9;
