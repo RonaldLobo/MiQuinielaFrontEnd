@@ -38,7 +38,7 @@ angular.module('miQuinielaApp')
     }
   	var actualizaGrupos = function(){
   		$http({
-		  url: "http://localhost/API/index.php/grupos/?userId="+$scope.usuarioLog,
+		  url: "http://appquiniela.com/API/index.php/grupos/?userId="+$scope.usuarioLog,
 		  method: "GET",
 		}).then(function successCallback(response) {
 			$scope.grupos = response.data.grupos;
@@ -73,7 +73,7 @@ angular.module('miQuinielaApp')
     }
   	$scope.actualizarLista = function(grupoId){
   		$http({
-		  url: "http://localhost/API/index.php/usuarios/?userPoints="+grupoId,
+		  url: "http://appquiniela.com/API/index.php/usuarios/?userPoints="+grupoId,
 		  method: "GET"
 		}).then(function successCallback(response) {
 	  		$scope.usuarios=response.data.usuarios;
@@ -84,7 +84,7 @@ angular.module('miQuinielaApp')
 		});
 
 		$http({
-		  url: "http://localhost/API/index.php/usuarios/?byUser="+$scope.usuarioLog,
+		  url: "http://appquiniela.com/API/index.php/usuarios/?byUser="+$scope.usuarioLog,
 		  method: "GET"
 		}).then(function successCallback(response) {
 	  		$scope.usuariosTodos=response.data.usuarios;
@@ -95,14 +95,14 @@ angular.module('miQuinielaApp')
 		});
 		$scope.grupoNuevo.otrosGrupos=[]; 
 		$http({
-		  url: "http://localhost/API/index.php/torneo/?usuario="+$scope.usuarioLog,
+		  url: "http://appquiniela.com/API/index.php/torneo/?usuario="+$scope.usuarioLog,
 		  method: "GET"
 		}).then(function successCallback(response) {
 	  		$scope.torneos=response.data.torneo;
 	  		console.log("torneos "+$scope.torneos.length);
 			for (var i = 0; i < $scope.torneos.length; i++) {
 				$http({
-				  url: "http://localhost/API/index.php/grupos/?sinUserId="+$scope.usuarioLog+"&torneo="+$scope.torneos[i].id,
+				  url: "http://appquiniela.com/API/index.php/grupos/?sinUserId="+$scope.usuarioLog+"&torneo="+$scope.torneos[i].id,
 				  method: "GET"
 				}).then(function successCallback(response) {
 			  		$scope.grupoNuevo.otrosGrupos.splice.apply($scope.grupoNuevo.otrosGrupos, [response.data.grupos.length, 0].concat(response.data.grupos));
@@ -156,7 +156,7 @@ angular.module('miQuinielaApp')
     $scope.crearGrupo=function(){    	
     	if(typeof($scope.grupoNuevo.torneoSelect)!=="undefined" && $scope.grupoNuevo.name!=="" && $scope.grupoNuevo.torneoSelect.id!=="" && $scope.grupoNuevo.torneoSelect!==0){
 	      	$http({
-			  	url: "http://localhost/API/index.php/grupos/",
+			  	url: "http://appquiniela.com/API/index.php/grupos/",
 				skipAuthorization: true,
 			  	method: "POST",
 			  	data: {
@@ -171,7 +171,7 @@ angular.module('miQuinielaApp')
 			}).then(function(response) {
 				var migrupo=response.data.grupo.id;
 					$http({
-					  	url: "http://localhost/API/index.php/invitaciones/",
+					  	url: "http://appquiniela.com/API/index.php/invitaciones/",
 						skipAuthorization: true,
 					  	method: "POST",
 					  	data: {
@@ -186,7 +186,7 @@ angular.module('miQuinielaApp')
 						if($scope.grupoNuevo.listaUsuarios.length>0){
 							for (var i = 0; i < $scope.grupoNuevo.listaUsuarios.length; i++) {
 								$http({
-								  	url: "http://localhost/API/index.php/invitaciones/",
+								  	url: "http://appquiniela.com/API/index.php/invitaciones/",
 									skipAuthorization: true,
 								  	method: "POST",
 								  	data: {
@@ -234,7 +234,7 @@ angular.module('miQuinielaApp')
     	console.log($scope.grupoNuevo.grupoSelect);
     	if($scope.grupoNuevo.grupoSelect!==0 && typeof($scope.grupoNuevo.grupoSelect)!=="undefined"){
 	    	$http({
-			  	url: "http://localhost/API/index.php/invitaciones/",
+			  	url: "http://appquiniela.com/API/index.php/invitaciones/",
 				skipAuthorization: true,
 			  	method: "POST",
 			  	data: {
@@ -273,7 +273,7 @@ angular.module('miQuinielaApp')
     		$scope.displayPredGrupoModal = true;
 	    	//alert($scope.grupoSeleccionado.idTorneo);
 	    	$http({
-				  url: "http://localhost/API/index.php/usuarios/"+userId,
+				  url: "http://appquiniela.com/API/index.php/usuarios/"+userId,
 				  method: 'GET',
 				}).then(function successCallback(response) {
 				    $scope.predicciones.user=response.data.usuario;
@@ -281,7 +281,7 @@ angular.module('miQuinielaApp')
 
 				});
 	    	$http({
-				  url: "http://localhost/API/index.php/predicciones/?userId="+userId+'&torneoId='+$scope.grupoSeleccionado.idTorneo,
+				  url: "http://appquiniela.com/API/index.php/predicciones/?userId="+userId+'&torneoId='+$scope.grupoSeleccionado.idTorneo,
 				  method: 'GET',
 				}).then(function successCallback(response) {
 				    console.log('success',response.data.predicciones[3]);
