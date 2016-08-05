@@ -76,26 +76,16 @@
 		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
 			<div class="muestra-partido col-xs-12">
 				<span parse-fecha class="fecha col-xs-12 no-padding-left no-padding-right" fecha="partido.fecha"></span>
-				<div class="nombre-equipo col-xs-3 col-sm-4 no-padding-left">
+					<div class="nombre-equipo col-xs-3 col-sm-4 no-padding-left">
 						<span class="col-sm-4 hidden-xs"></span>
 						<img class="col-xs-12 col-sm-4  no-padding-left image-equipo" ng-src='../images/escudos/{{partido.idPartidoEquipo1.split("&")[1]}}.png'>
 						<span class="col-sm-4  hidden-xs"></span>
 						<span class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
 						<span class="col-xs-12 no-padding-left hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
 					</div>
-					<span ng-if="isAdmin == true">
-						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo1">
-					</span>
-					<span ng-if="isAdmin == false">
-						<span class="campo-central campo-marcador col-xs-2  col-sm-1">{{partido.marcadorEquipo1}}</span> 
-					</span>
+						<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class=" campo-central campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador1"> 
 					<span class=" col-xs-2 campo-central campo-guion">-</span> 
-					<span ng-if="isAdmin == true">
-						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo2">
-					</span>
-					<span ng-if="isAdmin == false">
-						<span class="campo-marcador col-xs-2 campo-central col-sm-1">{{partido.marcadorEquipo2}}</span> 
-					</span>
+						<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class=" campo-central campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador2"> 
 					<div class="nombre-equipo col-xs-3 col-sm-4 no-padding-left">
 						<span class="col-sm-4 hidden-xs"></span>
 						<img class="col-xs-12 col-sm-4  no-padding-right image-equipo" ng-src='../images/escudos/{{partido.idPartidoEquipo2.split("&")[1]}}.png'>
