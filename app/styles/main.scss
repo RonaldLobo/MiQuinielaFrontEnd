@@ -295,7 +295,7 @@ overflow-y: auto;
       text-align: center;
     }
     .campo-marcador{
-      width: 48px !important;
+      width: 48px ;
       display: inline-block;
       text-align: center;
     }
@@ -451,7 +451,7 @@ overflow-y: auto;
 }
 .image-equipo
 {
-  width: 70px;
+  width: 55px;
   height: 60px
 }
 .campo-central{
@@ -709,6 +709,9 @@ form input.form-control{
   .chosen-container {
     width: 100px !important;
   }
+    .campo-central {
+      width: 38px !important;
+    }
 }
 
 
@@ -718,6 +721,9 @@ form input.form-control{
    }
    body {
     font-size: 18px;
+    }
+    .campo-central {
+      width: 32px !important;
     }
   }
 .header-bar{
