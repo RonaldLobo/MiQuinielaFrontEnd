@@ -318,6 +318,14 @@ overflow-y: auto;
   span.fecha{
     font-size: 15px;
   }
+  span.fecha.ahora{
+    color: green;
+    font-weight: bold;
+  }
+  .prediccion-row.ahora{
+    border-top: 3px solid green;
+
+  }
   .prediccion-row{
     background-color: #e6e6e6;
     border-top: 3px solid gray;
@@ -332,6 +340,11 @@ overflow-y: auto;
     border: 1px solid gray;
     margin: 5px 0;
     text-align: center;
+  }
+
+  .partido.ahora{
+    border: 2px solid green;
+
   }
 
   .row-par{

@@ -64,6 +64,64 @@
 	</div>
 	<div ng-hide="filtradosPasado.length">No tiene Juegos anteriores al día de hoy</div>
 
+	<div ng-show="filtradosAhora.length" class="col-xs-12 linea-divisoria-hoy" id="ahora">
+		Partidos en este momento
+	</div>
+
+	<div ng-repeat="partido in filtradosAhora">
+		<div class="partido ahora col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
+			<!-- <div class="bg-card"> -->
+				<!-- {{partido.torneo.nombre}} -->
+			<!-- </div> -->
+			<div class="muestra-partido col-xs-12">
+				<span parse-fecha class="col-xs-12 fecha ahora no-padding-left no-padding-right" fecha="partido.fecha"></span>
+				
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='../images/escudos/{{partido.idPartidoEquipo1.split("&")[1]}}.png'></div>
+						<span class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-left hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
+					</div>
+					<span ng-if="isAdmin == true">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control no-padding-right" ng-model="partido.marcadorEquipo1">
+					</span>
+					<span ng-if="isAdmin == false">
+						<span class="campo-central campo-marcador col-xs-1 no-padding-right">{{partido.marcadorEquipo1}}</span> 
+					</span>
+					<span class=" col-xs-2 col-sm-2 campo-central campo-guion">-</span> 
+					<span ng-if="isAdmin == true">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control no-padding-left" ng-model="partido.marcadorEquipo2">
+					</span>
+					<span ng-if="isAdmin == false">
+						<span class="campo-marcador col-xs-1 campo-central no-padding-left">{{partido.marcadorEquipo2}}</span> 
+					</span>
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='../images/escudos/{{partido.idPartidoEquipo2.split("&")[1]}}.png'></div>
+						<span class="col-xs-12 col-sm-4 no-padding-right no-padding-left hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo2.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-right hidden-xs">{{partido.idPartidoEquipo2.split("&")[0]}}</span>
+					</div>
+				
+				<p class="col-xs-12 no-padding-left no-padding-right">
+					<span ng-if="isAdmin == true" class="guardar-link col-xs-12 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPartido(partido)">
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+					</span>
+				</p>
+			</div>
+			<div class="col-xs-12 no-padding-left no-padding-right"> 
+				{{partido.torneo.nombre}}
+			</div>
+			<div class=" muestra-partido col-xs-12 prediccion-row ahora">
+
+				<span class="col-xs-8">Mi Predicción: <span>{{partido.prediccion.marcador1}}</span>-<span>{{partido.prediccion.marcador2}}</span></span>
+				<span class="col-xs-4" >
+					<span >{{partido.prediccion.puntaje}} Pts</span>
+					<span ng-class="partido.prediccion.puntaje==3 ? 'ptosVerde' : (partido.prediccion.puntaje==1 ? 'ptosAmarillo' : '')" ng-show="partido.prediccion.puntaje >0" class="glyphicon glyphicon-ok-sign"> </span>
+					<span  ng-show="partido.prediccion.puntaje==0" class="glyphicon glyphicon-remove-sign "> </span>
+				</span>
+			</div>
+		</div>
+	</div>
+
+
 	<div class="col-xs-12 linea-divisoria-hoy" id="hoy">
 		Partidos sin jugarse aún!
 	</div>

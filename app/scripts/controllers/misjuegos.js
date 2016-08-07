@@ -96,9 +96,22 @@ angular.module('miQuinielaApp')
 			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
 			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
 			}
-	    	return date >= new Date(dateFromString(temp)); 
+	    	return date >= new Date(dateFromString(temp).setHours(dateFromString(temp).getHours()+2)); 
 	    });
+		$scope.filtradosAhora = lodash.filter($scope.partidos, function(o) { 
+	    	var date = new Date();
+	    	var dateTime = o.fecha.split(" ");
+		    var dateOnly = dateTime[0];
+		    var timeOnly = dateTime[1];
 
+		    var temp = dateOnly + "T" + timeOnly;
+		    function dateFromString(str) {
+			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+			}
+	    	//console.log(date+" -- "+new Date(dateFromString(temp)));
+	    	return date >= new Date(dateFromString(temp)) && date< new Date(dateFromString(temp)).setHours(dateFromString(temp).getHours()+2); 
+	    });
 	    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
 	    	var dateTime = o.fecha.split(" ");
@@ -117,7 +130,8 @@ angular.module('miQuinielaApp')
 	    $timeout(function(){
 
     		var old = $location.hash();
-	    	$location.hash('hoy');
+    		if($scope.filtradosAhora.length)$location.hash('ahora');
+	    	else $location.hash('hoy');
 
 		    // call $anchorScroll()
 		    $anchorScroll();
@@ -180,12 +194,12 @@ angular.module('miQuinielaApp')
 				  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
 				  method: 'GET',
 				}).then(function successCallback(response) {
-				    console.log('success',response.data.partido);
+				    //console.log('success',response.data.partido);
 				    $scope.partidos = response.data.partido;
 					$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
 				    	var date = new Date();
-				    	console.log(date);
-				    	console.log(Date(o.fecha));
+				    	//console.log(date);
+				    	//console.log(Date(o.fecha));
 				    	return date >= new Date(o.fecha); 
 				    });
 
@@ -267,7 +281,7 @@ angular.module('miQuinielaApp')
 			  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
 			  method: 'GET',
 			}).then(function successCallback(response) {
-			    console.log('success',response.data.partido);
+			    //console.log('success',response.data.partido);
 			    $scope.partidos = response.data.partido;
 				$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
 			    	var date = new Date();
