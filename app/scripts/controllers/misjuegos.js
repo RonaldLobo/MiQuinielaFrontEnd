@@ -16,7 +16,7 @@ angular.module('miQuinielaApp')
     $scope.nuevoEquipo = {};
 
     $scope.nuevoPartido = {};
-
+	$scope.email={};
     $scope.displayAddEquipo = false;
 	$scope.muestraPag="noPag";
 
@@ -260,6 +260,9 @@ angular.module('miQuinielaApp')
     $scope.agregarPartido = function(){
     	$scope.displayAddPartidoModal = true;
     };
+    $scope.agregarEmail = function(){
+    	$scope.displayAddEmailModal = true;
+    };
 
     $scope.agregarPartidoNuevo = function(){
     	var partido = {
@@ -316,6 +319,32 @@ angular.module('miQuinielaApp')
 		    	auth.logOut();
 		    }
 		});
+    };
+
+    $scope.agregarEmailNuevo = function(){
+    	var txt;
+		var r = confirm("Desea realmente enviar el correo?");
+		if (r == true) {
+	    	var email = {
+	    		email: {
+		    		"subject" : $scope.email.titulo,
+		    		"body": $scope.email.contenido,
+		    		"user":""
+		    	},
+	    	};
+	    	$http({
+			  url: "http://appquiniela.com/API/index.php/email/",
+			   data: email,
+			  method: 'POST',
+			}).then(function successCallback(response) {
+			    $scope.email={};
+			}, function errorCallback(response) {
+			    if(response.status == 401){
+			    	auth.logOut();
+			    }
+			});
+
+		} 
     };
 
     $scope.agregarEquipo = function(){
