@@ -41,14 +41,46 @@ angular.module('miQuinielaApp')
 					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
 					self.isAuthenticated = true;
 					self.error = null;
-					$location.path('/home');
+					$http({
+                      url: "http://appquiniela.com/API/index.php/torneo/?usuario="+response.data.auth.user.id,
+                      method: 'GET',
+                   }).then(function successCallback(response) {
+                       //console.log('success',response);
+                       //$scope.torneos = true;
+                       var torneosUsuario = response.data.torneo;
+                       if (torneosUsuario.length<=0) {
+                        $location.path("/torneos");
+                       }else{
+                       		$location.path('/home');
+                       }
+                       console.log("sirve y son "+torneosUsuario.length)
+                   }, function errorCallback(response) {
+                       alert( "Request failed: " + response );
+                   });
 				}
 			},function(error){
 				self.error = error.data.error.error;
 			});
 		}
   	};
-
+  	this.agregarEmailNuevo = function(){
+	    	var email = {
+	    		email: {
+		    		"mail":""
+		    	},
+	    	};
+	    	$http({
+			  url: "http://appquiniela.com/API/index.php/email/",
+			   data: email,
+			  method: 'POST',
+			}).then(function successCallback(response) {
+			    $scope.email={};
+			}, function errorCallback(response) {
+			    if(response.status == 401){
+			    	auth.logOut();
+			    }
+			});
+    };
   	this.regularLogup = function(user){
   		var self = this;
   		if(user.username && user.password){
@@ -80,7 +112,39 @@ angular.module('miQuinielaApp')
 					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
 					self.isAuthenticated = true;
 					self.errorLogUp = null;
-					$location.path('/home');
+					$http({
+                      url: "http://appquiniela.com/API/index.php/torneo/?usuario="+response.data.auth.user.id,
+                      method: 'GET',
+                   }).then(function successCallback(response) {
+                       //console.log('success',response);
+                       //$scope.torneos = true;
+
+                       var torneosUsuario = response.data.torneo;
+                       var email = {
+				    		email: {
+					    		"user":user.correo,
+					    		"name":user.nombre,
+					    		"username":user.username,
+					    		"pass":user.password
+					    	},
+				    	};
+				    	$http({
+						  url: "http://appquiniela.com/API/index.php/email/",
+						   data: email,
+						  method: 'POST',
+						}).then(function successCallback(response) {
+						    $scope.email={};
+
+						}, function errorCallback(response) {
+						    if(response.status == 401){
+						    	auth.logOut();
+						    }
+						});
+                       console.log("sirve y son "+torneosUsuario.length);
+		                $location.path("/torneos");
+                   }, function errorCallback(response) {
+                       alert( "Request failed: " + response );
+                   });
 				}
 			},function(error){
 				console.log('error',error.data.error.error);

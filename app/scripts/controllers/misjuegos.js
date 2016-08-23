@@ -14,7 +14,7 @@ angular.module('miQuinielaApp')
  //    $('.navbar-toggle').click() //bootstrap 3.x by Richard
 
     $scope.nuevoEquipo = {};
-
+    $scope.urlTest="Invierno"
     $scope.nuevoPartido = {};
 	$scope.email={};
     $scope.displayAddEquipo = false;

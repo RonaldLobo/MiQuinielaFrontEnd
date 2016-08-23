@@ -57,7 +57,10 @@ select.grupoFilter{
   border: 2px solid green;
   
 }
-
+.pantalla-partidos .partido{
+  background: no-repeat;
+    background-size: 60px 60px;
+}
 .modal-content .modal-body {
     overflow-y: auto !important;
 }
