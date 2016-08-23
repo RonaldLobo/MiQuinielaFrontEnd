@@ -8,13 +8,28 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('indexCtrl',['$scope','$rootScope','auth','$location',function ($scope,$rootScope,auth,$location) {
+  .controller('indexCtrl',['$http','$scope','$rootScope','auth','$location',function ($http,$scope,$rootScope,auth,$location) {
   	// $('.btn-navbar').click(); //bootstrap 2.x
    //  $('.navbar-toggle').click() //bootstrap 3.x by Richard
 
   	var self = this;
 	$scope.user = {};
-
+    function ListarTorneosPorUsuario(){
+                  $http({
+                      url: "http://appquiniela.com/API/index.php/torneo/?usuario="+auth.loggedUser.id,
+                      method: 'GET',
+                   }).then(function successCallback(response) {
+                       //console.log('success',response);
+                       //$scope.torneos = true;
+                       $scope.torneosUsuario = response.data.torneo;
+                       if ($scope.torneosUsuario.length<=0) {
+                        $location.path("/torneos");
+                       };
+                   }, function errorCallback(response) {
+                       alert( "Request failed: " + response );
+                   });
+                }
+                ListarTorneosPorUsuario();
 	if(auth.isAuthenticated == false){
 		var needsToLog = auth.checkForLogin();
 		if(needsToLog){
@@ -81,6 +96,7 @@ angular.module('miQuinielaApp')
 	    else{
 	    	$scope.logupError = "Por favor ingrese un usuario";
 	    }
+        ListarTorneosPorUsuario();
     }
 
     $scope.showLogin = function(){
