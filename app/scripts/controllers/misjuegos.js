@@ -28,7 +28,9 @@ angular.module('miQuinielaApp')
     		$scope.displayAddEquipo = true;
     	}
     };
-
+    $scope.onTextClick = function ($event) {
+	    $event.target.select();
+	};
     $scope.picker = {
         date: new Date()
     };
