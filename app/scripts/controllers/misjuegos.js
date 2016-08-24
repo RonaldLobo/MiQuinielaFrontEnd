@@ -77,11 +77,30 @@ angular.module('miQuinielaApp')
 	    } 
 	    return yyyy+'-'+mm+'-'+dd+' '+hours+':'+minutes+':'+seconds;
     }
+// var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
 
+//     var offset = date.getTimezoneOffset() / 60;
+//     var hours = date.getHours();
+
+//     newDate.setHours(hours - offset);
+var dd = $scope.todayDate.getDate();
+	    var mm = $scope.todayDate.getMonth()+1; //January is 0!
+	    var hours = $scope.todayDate.getHours();
+		var minutes = $scope.todayDate.getMinutes();
+		var seconds = $scope.todayDate.getSeconds();
+
+	    var yyyy = $scope.todayDate.getFullYear();
+	    if(dd<10){
+	        dd='0'+dd
+	    } 
+	    if(mm<10){
+	        mm='0'+mm
+	    } 
+//alert(hours+':'+minutes+':'+seconds);
 
     console.log($scope.initDate,$scope.finalDate);
     $http({
-	  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate),
+	  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&fechaLocal='+hours+':'+minutes+':'+seconds,
 	  method: 'GET',
 	}).then(function successCallback(response) {
 	    $scope.partidos = response.data.partido;
