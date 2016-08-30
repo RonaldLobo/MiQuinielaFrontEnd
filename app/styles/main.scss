@@ -1,0 +1,763 @@
+// bower:scss
+// endbower
+
+.browsehappy {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+html{
+  // background-color: #004d00;
+}
+
+body,.footer .container {
+  background-color: #004620 !important;
+  background: url("/images/grass.jpg") repeat;
+  background-attachment: fixed;
+}
+.footer .container,#configuracion,.white-text {
+  color: white;
+}
+
+.btn.btn-blanco,.btn.btn-blanco:hover,.btn.btn-blanco:active{
+  color: green;
+  background-color: white;
+  border: none;
+  margin: 10px 0;
+}
+.form-busca-grupo{
+  heigth:250px;
+}
+.btn-default.btnVerde{
+  background-color: green;
+  color: white;
+  border: 2px solid white;
+   /*background-color: #004d00 !important;*/
+  background: #004620 !important;
+}
+.header{
+  margin: 0 auto !important;
+  left: 0;
+  z-index: 10;
+}
+input:focus{
+  outline:none;
+}
+select.grupoFilter{
+  color: black;
+}
+.error{
+  color: red;
+}
+.modal-title.title-page{
+  color:green;
+}
+.bordeVerde,.bordeVerde:focus{
+  border: 2px solid green;
+  
+}
+.pantalla-partidos .partido{
+  background: no-repeat;
+    background-size: 60px 60px;
+}
+.modal-content .modal-body {
+    overflow-y: auto !important;
+}
+.noPag{
+  visibility: hidden;
+}
+.siPag{
+  visibility: visible;
+}
+.ptosRojo{
+  color: red;
+}
+.ptosVerde{
+  color: green;
+}
+.ptosAmarillo{
+  color:#ffdb4d;
+}
+.puntos-usuario{
+  /*padding-left: 30px;*/
+}
+.linea-usuario{
+  text-decoration: underline;
+}
+.glyphicon-screenshot{
+  font-size: 15px;
+}
+.guardar-link,.mi-usuario{
+  color:green;
+  font-weight: bold;
+}
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 10px;
+
+  /* Make the masthead heading the same height as the navigation */
+  h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+  }
+}
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  border-bottom: 1px solid #e5e5e5;
+
+  .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+  }
+}
+/* Supporting marketing content */
+.marketing {
+  margin: 40px 0;
+
+  p + h4 {
+    margin-top: 28px;
+  }
+}
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  .container {
+    max-width: 730px;
+}
+.navbar .container,.container.homepage{
+  padding-top: 0;
+}
+
+  /* Remove the padding we set earlier */
+  .header,
+  .marketing,
+  .footer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  /* Space out the masthead */
+  .header {
+    margin-bottom: 30px;
+  }
+  /* Remove the bottom border on the jumbotron for visual effect */
+  .jumbotron {
+    border-bottom: 0;
+  }
+}
+
+.navbar-header{
+  background: #f8f8f8;
+}
+
+.menu-holder{
+  .navbar-nav {
+    background-color: #f8f8f8;
+    li > div {
+    }
+    &.nav li{
+      &.active{
+        a{
+          color: #555;
+        }
+      }
+    }
+    &.nav a{
+      color: black;
+      &:hover{
+        color: black;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.nav > li {
+  a {
+    display: block;
+    padding: 5px 31px !important;
+    position: relative;
+    line-height: 40px;
+  }
+  .logout{
+    a{
+      padding-left: 0px !important;
+      padding-right: 0px !important;
+    }
+  }
+}
+.btnGuardar{
+  margin-top:10px;
+}
+.menu-space{
+  height: 116px;
+}
+
+.fb-picture{
+  border-radius: 23px;
+}
+
+.no-padding-left{
+  padding-left: 0px;
+}
+
+.no-padding-right{
+  padding-right: 0px;
+}
+
+.navbar-brand{
+  padding-top: 3px;
+}
+
+.navbar-brand > img {
+    width: 55px;
+    background-color:#f8f8f8;
+}
+.navbar-default .navbar-collapse, .navbar-default .navbar-form,.navbar-brand,.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus{
+    background-color:#f8f8f8;
+}
+
+.modal { 
+position: fixed; 
+top: 3%; 
+right: 3%; 
+left: 3%; 
+bottom: 3%; 
+width: auto; 
+margin: 0; 
+}
+.modal-body { 
+height: 60%; 
+}
+.modal-body { 
+max-height: 350px; 
+padding: 15px; 
+overflow-y: auto; 
+-webkit-overflow-scrolling: touch; 
+}
+.modal-body form div{ 
+  margin: 5px 0;
+
+}
+.modal-body form div.chosen-container{
+  margin:0;
+}
+.modal-header,.modal-header .modal-body{
+  padding:0;
+}
+.modal-header h4{
+  text-align:center;
+  color: black;
+}
+.modal-header.modal-grupo .title-page.active{
+  background-color:#ffffff;
+  color:green;
+  font-weight: bold;
+}
+
+.modal-header.modal-grupo .title-page{
+  background-color:#e5e5e5;
+  color: gray;
+  font-weight: normal;
+}
+
+.modal-header button{
+  padding:5px;
+}
+.displayModalLogin{
+  display: block !important;
+}
+
+.pantalla-partidos{
+
+  .muestra-partido{
+    .nombre-equipo{
+      display: inline-block;
+      text-align: center;
+    }
+    .campo-marcador{
+      width: 48px ;
+      display: inline-block;
+      text-align: center;
+    }
+    .titulo-linea{
+      width: 100px;
+      display: inline-block;
+      text-decoration: underline;
+    }
+  }
+
+  .linea-divisoria-hoy{
+    border-top: 1px solid green;
+    border-bottom: 1px solid green;
+    text-align: center;
+    padding-top: 70px;
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+  span.fecha{
+    font-size: 15px;
+  }
+  span.fecha.ahora{
+    color: green;
+    font-weight: bold;
+  }
+  .prediccion-row.ahora{
+    border-top: 3px solid green;
+
+  }
+  .prediccion-row{
+    background-color: #e6e6e6;
+    border-top: 3px solid gray;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    padding: 5px 0;
+  }
+  .partido{
+    padding-top: 10px;
+    background-color: #f8f8f8;
+    border-radius: 11px;
+    border: 1px solid gray;
+    margin: 5px 0;
+    text-align: center;
+  }
+
+  .partido.ahora{
+    border: 2px solid green;
+
+  }
+
+  .row-par{
+    background-color: #f8f8f8;
+  }
+  .encabezado-tabla{
+    color:#ffffff;
+    background-color:black;
+    font-size:20px;
+    padding: 0px;
+    max-height: 35px;
+    margin-bottom: 0;
+    text-align: center;
+  }
+
+  .guardar-link{
+    &:hover{
+      text-decoration:underline;
+      cursor: pointer;
+    }
+  }
+}
+
+.title-page{
+  font-size: 19px;
+  font-weight: bold;
+  padding: 14px;
+  color: white;
+  padding: 4px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.configuracion{
+  &>div{
+    margin-bottom: 15px;
+    &>input{
+      width: 75%;
+    }
+  }
+}
+
+.invitacion-cont{
+  padding-left: 12px;
+  span{
+    border: 1px solid black;
+    padding: 4px 4px 4px 5px;
+    border-radius: 13px;
+    margin-left: 24px;
+    cursor: pointer;
+  }
+  &:hover{
+    text-decoration: underline;
+  }
+}
+.icono-orden{
+  outline: none;
+  width: 15px;
+  height: 15px;
+  background-size: 100% 100%;
+  display: inline-block;
+}
+.torneos-container{
+    padding-left: 10px;
+    padding-right: 0;
+    margin: 0 10px;
+}
+
+.icono-orden.Desc{
+  background-image: url("../images/downArrow.png");
+}
+.icono-orden.Asc{
+  background-image: url("../images/upArrow.png");
+}
+/*** Start Estilos Torneo ***/
+.pantalla-partidos .partido .torneo-titulo-prin{
+  text-align: center;
+}
+.pantalla-partidos .partido .plus-icon-prin{
+  text-align: center;
+}
+ .plus-icon-prin a i{
+  color: gray;
+}
+.btn-agregar-torneo{
+  padding: 2px 10px;
+}
+.search-torneo-container{
+  margin-bottom:10px;
+}
+.txt-add-torneo{
+  width:100%;
+}
+.btn-agregar-torneo{
+  text-align:center;
+}
+/*** End Estilos Torneo ***/
+.navbar{
+  .container{
+    background: #f8f8f8 !important;
+  }
+}
+
+.nav .login-info{
+  padding: 0 20px;
+  text-align: center;
+  p{
+    margin: 0;
+  }
+  a{
+    line-height:19px;
+  }
+}
+
+.login-action{
+  padding: 15px 16px !important;
+}
+.image-equipo
+{
+  width: 55px;
+  height: 60px
+}
+.campo-central{
+  margin-top:20px;
+}
+
+.home-page{
+    position: relative;
+    color: white;
+}
+.bg-image{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.not-logged{
+  float: right;
+}
+
+.home-page >* {
+    margin-top: 58px;
+}
+
+.divisor-line{
+  border-right: 1px solid black;
+  input{
+    margin-bottom: 10px;
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 768px){
+  .container {
+      max-width: 814px !important;
+  }
+}
+span:focus,input:focus,p:focus{
+  outline: none;
+}
+.user-name-display{
+  padding-top: 16px;
+}
+.log-out-no-fb{
+  padding-top: 11px;
+}
+.add-partido{
+  color:white;
+  height: 40px;
+  border-radius: 22px;
+  font-size: 40px;
+  margin-top: 10px;
+}
+
+.chosen-container {
+  width: 120px !important;
+}
+
+.modal-content{
+  .modal-body {
+    overflow-y: initial;
+  }
+}
+
+.partido-row{
+  margin-top: 15px;
+}
+
+.date-picker-input{
+  width: 97px !important;
+}
+
+.add-equipo{
+  font-size: 17px;
+  font-weight: bold;
+  border: 1px solid;
+  margin-left: 15px;
+  padding-left: 7px;
+  border-radius: 21px;
+  padding-right: 17px;
+  line-height: 1;
+  padding-bottom: 5px;
+}
+
+.agregar-equipo-cont{
+    margin-left: 14px;
+    margin-top: 14px;
+}
+
+.navbar-default{
+  margin-bottom: 0 !important;
+}
+
+@media (max-width: 768px) {
+  .close{
+    font-size:30px;
+  }
+  .marcador-small{
+    font-size:16px;
+  }
+  .modal-dialog select{
+    max-width: 125px !important;
+  }
+  .modal-dialog input.input-sm{
+    max-width: 150px !important;
+  }
+  #addGrupoModal .modal-dialog input, {
+    max-width: 150px !important;
+  }
+
+  .static-header{
+    background: url("/images/grass.jpg") repeat;
+    z-index: 10;
+  }
+  body{
+    font-size: 20px;
+  }
+  select.grupoFilter{
+  max-width:160px;
+}
+  .header {
+    position: fixed;
+    width: 100%;
+    z-index: 9000;
+    padding-left: 0;
+    background-color: white;
+    border-bottom: 4px solid gray;
+    .navbar {
+      margin-bottom: 1px;
+    }
+    .navbar-default {
+      border-color: transparent;
+    }
+  }
+  .dropdown-menu-left{
+    left: -118px !important;
+  }
+  .modal-body {
+    max-height: 400px;
+  }
+  .modal {
+    top: 11%;
+    z-index: 9999;
+  }
+  .view-display{
+    margin-top:55px;
+  }
+  .static-header{
+    position: fixed;
+  }
+  .tabla-pizarra{
+    margin-top: 145px;
+    padding: 0 10px 10px;
+  }
+  .tabla-pizarra.torneos{
+    margin-top: 80px;
+  }
+  .bg-image {
+  }
+  .divisor-line{
+    border-right:none;
+  }
+  #nuevoUsuario{
+    margin-bottom: 9px;
+  }
+  #entrarForm{
+    margin-bottom: 15px;
+  }
+  .fecha{
+    text-align: center;
+    margin-bottom: 9px;
+  }
+  .guardar-icon{
+    font-size: 28px;
+    margin-left: 14px;
+  }
+  .navbar-brand{
+    padding-left: 30px;
+  }
+  .home-page{
+    background: rgba(0,0,0,0.7);
+  }
+
+  .partidos-container{
+    margin-top: 50px !important;
+  }
+}
+
+form input.form-control{
+  margin-bottom: 8px;
+}
+.arrow-up,.arrow-down{
+  z-index: 100;
+}
+.arrow-up{
+  position: fixed;
+  left: 45%;
+  background: green;
+  width: 50px;
+  height: 50px;
+  border-radius: 29px;
+  top: 62px;
+  text-align: center;
+  padding-top: 12px;
+  color: white;
+}
+
+.arrow-down{
+  position: fixed;
+  left: 45%;
+  background: green;
+  width: 50px;
+  height: 50px;
+  border-radius: 29px;
+  bottom: 12px;
+  text-align: center;
+  padding-top: 12px;
+  color: white;
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {  
+  50% { opacity: 0.0; }
+}
+
+.hide{
+  display: none;
+}
+
+.no-margin-top{
+  margin-top: 0px;
+}
+
+@media (max-width: 450px) {
+  .nombre-equipo{
+      max-width: 95px;
+    }
+}
+@media (max-width: 380px) {
+  .tabla-pizarra{
+    margin-top: 155px;
+  }
+  .nombre-equipo{
+      max-width: 70px;
+    }
+  .nombre-equipo{
+      max-width: 80px;
+    }
+  .pantalla-partidos .encabezado-tabla {
+    font-size: 17px;
+  }
+  .chosen-container {
+    width: 100px !important;
+  }
+    .campo-central {
+      width: 38px !important;
+    }
+}
+
+
+@media (max-width: 325px) {
+   .campo-guion{
+    width: 10px;
+   }
+   body {
+    font-size: 18px;
+    }
+    .campo-central {
+      width: 32px !important;
+    }
+  }
+.header-bar{
+  position: fixed;
+  z-index: 9;
+  background: #004620 !important;
+  top: 52px;
+  border: 1px solid white;
+  color: white;
+}
+
+
+.bg-card{
+  position: absolute;
+  font-size: 33px;
+  color: gray;
+  text-align: center;
+  width: 100%;
+  top: 35%;
+  text-shadow: 2px 2px 4px #000000;
+}
+
