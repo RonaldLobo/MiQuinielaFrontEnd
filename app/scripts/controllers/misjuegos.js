@@ -8,7 +8,7 @@
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout','toastr',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout,toastr) {
+  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout','toastr','config',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout,toastr,config) {
 
 	// $('.btn-navbar').click(); //bootstrap 2.x
  //    $('.navbar-toggle').click() //bootstrap 3.x by Richard
@@ -19,6 +19,52 @@ angular.module('miQuinielaApp')
 	$scope.email={};
     $scope.displayAddEquipo = false;
 	$scope.muestraPag="noPag";
+	function cmpVersions (a, b) {
+	    var i, diff;
+	    var regExStrip0 = /(\.0+)+$/;
+	    var segmentsA = a.replace(regExStrip0, '').split('.');
+	    var segmentsB = b.replace(regExStrip0, '').split('.');
+	    var l = Math.min(segmentsA.length, segmentsB.length);
+
+	    for (i = 0; i < l; i++) {
+	        diff = parseInt(segmentsA[i], 10) - parseInt(segmentsB[i], 10);
+	        if (diff) {
+	            return diff;
+	        }
+	    }
+	    return segmentsA.length - segmentsB.length;
+	}
+
+	//verificar version del APP
+	var tipoApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+	if ( tipoApp ) {
+	    // PhoneGap application
+	    $http({
+		  url: "http://appquiniela.com/API/index.php/versiones/",
+		  method: 'GET',
+		}).then(function successCallback(response) {
+			console.log(response.data);
+		}, function errorCallback(response) {
+	    if(response.status == 401){
+	    	auth.logOut();
+	    }
+	});
+
+	} else {
+		//Web version
+	    $http({
+		  url: "http://appquiniela.com/API/index.php/versiones/",
+		  method: 'GET',
+		}).then(function successCallback(response) {
+			if(cmpVersions(config.appVersion,response.data) < 0){
+				$scope.actualizaModal = true;
+			}
+		}, function errorCallback(response) {
+	    if(response.status == 401){
+	    	auth.logOut();
+	    }
+	});
+	}
 
     $scope.displayAgregarEquipo = function(){
     	if($scope.displayAddEquipo){
