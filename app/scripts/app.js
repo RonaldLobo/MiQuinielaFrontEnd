@@ -28,7 +28,7 @@ angular
   ])
   .constant('config', {
     appName: 'AppQuiniela',
-    appVersion: '1.0.1',
+    appVersion: '1.0.2',
     apiUrl: 'localhost'
   })
   .config(function ($routeProvider) {
