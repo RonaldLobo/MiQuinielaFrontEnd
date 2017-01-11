@@ -8,7 +8,7 @@
  * Service in the miQuinielaApp.
  */
 angular.module('miQuinielaApp')
-  .service('auth', ['$http','$location',function ($http,$location) {
+  .service('auth', ['$rootScope','$http','$location',function ($rootScope,$http,$location) {
   	// public variables
   	this.loggedUser = {};
   	this.isAuthenticated = false,
@@ -20,7 +20,7 @@ angular.module('miQuinielaApp')
   		var self = this;
   		if(user.username && user.password){
 	      	$http({
-				url: 'http://appquiniela.com/API/index.php/login',
+				url: $rootScope.apiUrl+"/API/index.php/login?XDEBUG_SESSION_START=netbeans-xdebug",
 				skipAuthorization: true,
 				method: 'POST',
 				data: {
@@ -29,6 +29,7 @@ angular.module('miQuinielaApp')
 					tipo: "normal"
 				}
 			}).then(function(response) {
+                console.log('got response',response);
 				if(response.data.error){
 					self.error = response.data.error.error;
 				}
@@ -41,10 +42,11 @@ angular.module('miQuinielaApp')
 					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
 					self.isAuthenticated = true;
 					self.error = null;
+                    console.log('va a traer torneos');
 					$http({
-                      url: "http://appquiniela.com/API/index.php/torneo/?usuario="+response.data.auth.user.id,
+                      url: $rootScope.apiUrl+"/API/index.php/torneo/?usuario="+response.data.auth.user.id,
                       method: 'GET',
-                   }).then(function successCallback(response) {
+                    }).then(function successCallback(response) {
                        //console.log('success',response);
                        //$scope.torneos = true;
                        var torneosUsuario = response.data.torneo;
@@ -70,7 +72,7 @@ angular.module('miQuinielaApp')
 		    	},
 	    	};
 	    	$http({
-			  url: "http://appquiniela.com/API/index.php/email/",
+			  url: $rootScope.apiUrl+"/API/index.php/email/",
 			   data: email,
 			  method: 'POST',
 			}).then(function successCallback(response) {
@@ -95,7 +97,7 @@ angular.module('miQuinielaApp')
   				}
   			}
 	      	$http({
-				url: 'http://appquiniela.com/API/index.php/signup',
+				url: $rootScope.apiUrl+"/API/index.php/signup",
 				skipAuthorization: true,
 				method: 'POST',
 				data: usuario
@@ -113,7 +115,7 @@ angular.module('miQuinielaApp')
 					self.isAuthenticated = true;
 					self.errorLogUp = null;
 					$http({
-                      url: "http://appquiniela.com/API/index.php/torneo/?usuario="+response.data.auth.user.id,
+                      url: $rootScope.apiUrl+"/API/index.php/torneo/?usuario="+response.data.auth.user.id,
                       method: 'GET',
                    }).then(function successCallback(response) {
                        //console.log('success',response);
@@ -129,7 +131,7 @@ angular.module('miQuinielaApp')
 					    	},
 				    	};
 				    	$http({
-						  url: "http://appquiniela.com/API/index.php/email/",
+						  url: $rootScope.apiUrl+"/API/index.php/email/",
 						   data: email,
 						  method: 'POST',
 						}).then(function successCallback(response) {
@@ -170,7 +172,7 @@ angular.module('miQuinielaApp')
 		}
   		if(user.id){
 	      	$http({
-				url: 'http://appquiniela.com/API/index.php/signup',
+				url: $rootScope.apiUrl+"/API/index.php/signup",
 				skipAuthorization: true,
 				method: 'POST',
 				data: usuario
@@ -194,7 +196,7 @@ angular.module('miQuinielaApp')
   		var self = this;
   		if(user.id){
 	      	$http({
-				url: 'http://appquiniela.com/API/index.php/login?XDEBUG_SESSION_START=netbeans-xdebug',
+				url: $rootScope.apiUrl+"/API/index.php/login",
 				skipAuthorization: true,
 				method: 'POST',
 				data: {

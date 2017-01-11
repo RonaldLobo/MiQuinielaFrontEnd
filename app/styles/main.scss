@@ -13,7 +13,7 @@ html{
 
 body,.footer .container {
   background-color: #004620 !important;
-  background: url("/images/grass.jpg") repeat;
+  background: url("http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/grass.jpg") repeat;
   background-attachment: fixed;
 }
 .footer .container,#configuracion,.white-text {
@@ -560,7 +560,14 @@ span:focus,input:focus,p:focus{
   margin-bottom: 0 !important;
 }
 
+
+// phone
 @media (max-width: 768px) {
+  .loading-img{
+    img{
+      width: 40% !important;
+    }
+  }
   .close{
     font-size:30px;
   }
@@ -578,7 +585,7 @@ span:focus,input:focus,p:focus{
   }
 
   .static-header{
-    background: url("/images/grass.jpg") repeat;
+    background: url("http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/grass.jpg") repeat;
     z-index: 10;
   }
   body{
@@ -760,4 +767,44 @@ form input.form-control{
   top: 35%;
   text-shadow: 2px 2px 4px #000000;
 }
+
+.loading-bg{
+  display: none;
+  position:fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity:0.5;
+  background-color: black;
+  z-index: 9998;
+}
+
+.loading-img{
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  img{
+    width: 20%;
+    -webkit-animation:spin 3s linear infinite;
+    -moz-animation:spin 3s linear infinite;
+    animation:spin 3s linear infinite;
+  }
+  p{
+    color: white;
+  }
+}
+
+.displayLoading{
+  display: block;
+}
+
+@-moz-keyframes spin { 100% { -moz-transform: rotate(360deg); } }
+@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
+@keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+
 

@@ -2,8 +2,8 @@
 <widget xmlns   = "http://www.w3.org/ns/widgets"
     xmlns:gap   = "http://phonegap.com/ns/1.0"
     id          = "com.appquiniela.echo"
-    versionCode = "11"
-    version     = "1.0.1" >
+    versionCode = "17"
+    version     = "1.0.7" >
 
 <!-- versionCode is optional and Android only -->
 
@@ -40,5 +40,9 @@
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
     </platform>
+
+    <plugin name="phonegap-plugin-push" spec="2.0.0">
+      <variable name="SENDER_ID" value="892357189512" />
+    </plugin>
 
 </widget>

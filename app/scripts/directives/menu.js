@@ -20,20 +20,6 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth',
             		}
             	}
             	$scope.user = auth.loggedUser;
-            	$scope.torneosUsuario={};	
-	            function ListarTorneosPorUsuario(){
-			      $http({
-			          url: "http://appquiniela.com/API/index.php/torneo/?usuario="+auth.loggedUser.id,
-			          method: 'GET',
-			       }).then(function successCallback(response) {
-			           //console.log('success',response);
-			           //$scope.torneos = true;
-			           $scope.torneosUsuario = response.data.torneo;
-			       }, function errorCallback(response) {
-			           alert( "Request failed: " + response );
-			       });
-			    }
-			    ListarTorneosPorUsuario();
             	$scope.$watch(function(){return auth.isAuthenticated;}, function (v) {
 					$scope.isAuthenticated = v;
 					if(v == true && $scope.displayLoginModal == true){
@@ -122,7 +108,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth',
                 	$scope.home = false;
                 	$scope.torneos = false;
                 	$scope.foro = false;
-                	$scope.grupos = false;
+                	$scope.tablas = false;
                 	$scope.configuracion = false;
 	                switch($location.path()){
 	                	case "/home": 
@@ -131,8 +117,8 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth',
 	                	case "/torneos": 
 	                		$scope.torneos = true;
 	                		break;
-	                	case "/grupos": 
-	                		$scope.grupos = true;
+	                	case "/tablas": 
+	                		$scope.tablas = true;
 	                		break;
 	                	case "/configuracion": 
 	                		$scope.configuracion = true;

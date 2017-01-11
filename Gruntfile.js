@@ -70,7 +70,7 @@ module.exports = function (grunt) {
     // The actual grunt server settings
     connect: {
       options: {
-        port: 4200,
+        port: 9002,
         hostname:'0.0.0.0',
         //hostname: 'localhost',
         livereload: 35729
@@ -96,7 +96,7 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
-          port: 9001,
+          port: 9002,
           middleware: function (connect) {
             return [
               connect.static('.tmp'),

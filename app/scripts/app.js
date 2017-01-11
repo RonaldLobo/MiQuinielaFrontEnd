@@ -28,8 +28,9 @@ angular
   ])
   .constant('config', {
     appName: 'AppQuiniela',
-    appVersion: '1.0.2',
-    apiUrl: 'localhost'
+    appVersion: '1.0.6',
+    apiUrl: 'localhost',
+    prod: 'http://appquiniela.com'
   })
   .config(function ($routeProvider) {
     $routeProvider
@@ -58,7 +59,7 @@ angular
         controller: 'TorneosCtrl',
         controllerAs: 'torneos'
       })
-      .when('/grupos', {
+      .when('/tablas', {
         templateUrl: 'views/grupos.html',
         controller: 'GruposCtrl',
         controllerAs: 'grupos'
@@ -129,9 +130,6 @@ angular
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
       $rootScope.actual = next.templateUrl;
-      // if ( next.templateUrl === "partials/index.html") {
-      //   $rootScope.actual = '/';
-      // }
       if (auth.isAuthenticated == false) {
         if ( next.templateUrl === "partials/index.html") {
         } else {
@@ -139,4 +137,7 @@ angular
         }
       }
     });
+    console.log('host',window.location.hostname);
+    $rootScope.apiUrl = (window.location.hostname === "0.0.0.0")? 'http://0.0.0.0:82':"http://appquiniela.com";
+    $rootScope.isLoading = false;
   });
