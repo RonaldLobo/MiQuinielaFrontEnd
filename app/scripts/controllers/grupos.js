@@ -197,7 +197,7 @@ angular.module('miQuinielaApp')
 								  		"usuarioGrupo":{
 								      		"usuario":$scope.grupoNuevo.listaUsuarios[i].id,
 								      		"grupo":migrupo,
-								      		"estado":"invitado"
+								      		"estado":"miembro"
 								  		}	
 
 								   	}
