@@ -2,7 +2,7 @@
   "name": "mi-quiniela",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "^1.5.7",
+    "angular": "1.5.7",
     "bootstrap": "^3.2.0",
     "angular-animate": "^1.4.0",
     "angular-aria": "^1.4.0",

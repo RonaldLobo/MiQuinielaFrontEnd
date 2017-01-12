@@ -292,6 +292,10 @@ overflow-y: auto;
 
 .pantalla-partidos{
 
+  .usuario-cont-list{
+    margin-top: 23px;
+  }
+
   .muestra-partido{
     .nombre-equipo{
       display: inline-block;
@@ -341,7 +345,7 @@ overflow-y: auto;
     background-color: #f8f8f8;
     border-radius: 11px;
     border: 1px solid gray;
-    margin: 45px 0 5px;
+    margin: 5px 0 5px;
     text-align: center;
   }
 
@@ -559,7 +563,23 @@ span:focus,input:focus,p:focus{
 .navbar-default{
   margin-bottom: 0 !important;
 }
+@media (max-width: 640px) and (min-width: 510px)  {
+  .nombre-equipo.col-xs-4.no-padding-left.no-padding-right{
+    width: 30%;
+  }
+}
 
+@media (max-width: 510px) and (min-width: 480px)  {
+  .nombre-equipo.col-xs-4.no-padding-left.no-padding-right{
+    width: 27%;
+  }
+}
+
+@media (max-width: 480px) and (min-width: 450px)  {
+  .nombre-equipo.col-xs-4.no-padding-left.no-padding-right{
+    width: 23%;
+  }
+}
 
 // phone
 @media (max-width: 768px) {

@@ -41,7 +41,7 @@
         <allow-intent href="itms-apps:*" />
     </platform>
 
-    <plugin name="phonegap-plugin-push" spec="2.0.0">
+    <plugin name="phonegap-plugin-push" spec="https://github.com/phonegap/phonegap-plugin-push#3a1806aaec5d3c76f7fcd30ddfd85d576fb6d197">
       <variable name="SENDER_ID" value="892357189512" />
     </plugin>
 

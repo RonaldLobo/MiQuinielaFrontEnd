@@ -32,7 +32,7 @@
 <div class="col-xs-12 pantalla-partidos no-padding-left no-padding-right tabla-pizarra">
 	
 
-	<div ng-repeat="usuario in usuarios | orderBy:ordenUsuarios">
+	<div class="usuario-cont-list" ng-repeat="usuario in usuarios | orderBy:ordenUsuarios">
 		<div id="pos-{{usuario.id}}"class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="{ 'row-par' : $even, 'mi-usuario' : usuario.id===usuarioLog}">
 			<p class="col-xs-12 no-padding-left no-padding-right" >
 				<span class="titulo-linea col-xs-3">{{usuario.position}}</span>
