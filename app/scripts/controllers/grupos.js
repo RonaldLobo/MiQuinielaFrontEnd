@@ -20,6 +20,8 @@ angular.module('miQuinielaApp')
 	$scope.usuarios=[];
 	$scope.usuariosTodos={};
 	$scope.grupos={};
+	$scope.partidos={};
+	$scope.jornadas={};
     $scope.displayAddGrupoModal = false;
     $scope.displayPredGrupoModal = false;
     $scope.grupoNuevo={};
@@ -47,8 +49,25 @@ angular.module('miQuinielaApp')
 	  		if($scope.grupos.length > 0){
 		  		$scope.grupoSeleccionado=$scope.grupos[0];
 		  		$scope.actualizarLista($scope.grupoSeleccionado.id);
+		  		$scope.actualizaJornadas($scope.grupoSeleccionado.idTorneo);
 		  	}
 
+		}, function errorCallback(response) {
+            $rootScope.isLoading = false;
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
+		});
+
+  	};
+  	$scope.actualizaJornadas = function(idTorneo){
+        $rootScope.isLoading = true;
+  		$http({
+		  url: $rootScope.apiUrl+"/API/index.php/partidos/?torneo="+idTorneo,
+		  method: "GET",
+		}).then(function successCallback(response) {
+            $rootScope.isLoading = false;
+			$scope.partidos = response.data.partido;
 		}, function errorCallback(response) {
             $rootScope.isLoading = false;
 		    if(response.status == 401){
@@ -74,10 +93,11 @@ angular.module('miQuinielaApp')
     	}
     	cambiaMensaje("");
     }
-  	$scope.actualizarLista = function(grupoId){
+  	$scope.actualizarLista = function(grupoId, jornada){
+  		if(jornada==undefined)jornada=0;
         $rootScope.isLoading = true;
   		$http({
-		  url: $rootScope.apiUrl+"/API/index.php/usuarios/?userPoints="+grupoId,
+		  url: $rootScope.apiUrl+"/API/index.php/usuarios/?userPoints="+grupoId+"&jornada="+jornada,
 		  method: "GET"
 		}).then(function successCallback(response) {
             $rootScope.isLoading = false;
