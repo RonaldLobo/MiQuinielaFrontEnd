@@ -1,94 +1,156 @@
-<div class="col-xs-12">
-	<div class="col-md-11 col-xs-9">
-		<p class="title-page">Mis Partidos</p>
-	</div>
-	<div class="col-xs-1 no-padding-left no-padding-right add-partido" ng-if="isAdmin == true">
-		<span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="agregarPartido()"></span>
+<div class="col-xs-12 static-header no-padding-left no-padding-right pantalla-partidos">
+	<div class="col-xs-12">
+		<div class="col-xs-8">
+			<p class="title-page">Mis Partidos</p>
+		</div>
+		<div ng-if="isAdmin == true" class="col-xs-2 no-padding-left  add-partido">
+			<span class="glyphicon glyphicon-envelope" aria-hidden="true" ng-click="agregarEmail()"></span>
+		</div>
+		<div ng-if="isAdmin == true" class="col-xs-2 no-padding-left no-padding-right add-partido">
+			<span class="glyphicon glyphicon-plus-sign" aria-hidden="true" ng-click="agregarPartido()"></span>
+		</div>
 	</div>
 </div>
-<div class="col-xs-12 pantalla-partidos no-padding-left no-padding-right">
-	<div class="partido col-xs-12 no-padding-left no-padding-right encabezado-tabla">
-		<div class="col-md-9 muestra-partido col-xs-12 ">
-			<p class="col-xs-12 no-padding-left no-padding-right">
-				<span class="titulo-linea col-xs-2 hidden-xs"></span>
-				<span class="nombre-equipo col-xs-2"> Casa</span>
-				<span class="campo-marcador col-xs-1"></span> 
-				<span class="col-xs-1">-</span> 
-				<span class="campo-marcador col-xs-1"></span>
-				<span class="nombre-equipo col-xs-2"> Visita</span>
-				<span class="nombre-equipo col-xs-2 hidden-xs"> Fecha</span>
-			</p>
-		</div>
-		<div class="col-md-2 col-xs-6 hidden-xs">
-			Torneo
-		</div>
-		<div class="col-md-1 col-xs-6 hidden-xs">
-			Pts
-		</div>
-	</div>
-
+<div ng-class="muestraPag" class="col-xs-12 pantalla-partidos partidos-container">
 	<div ng-repeat="partido in filtradosPasado">
-		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
-			<div class="col-md-9 muestra-partido col-xs-12">
-				<span parse-fecha class="fecha col-xs-12 hidden-md hidden-lg hidden-sm no-padding-left no-padding-right" fecha="partido.fecha"></span>
-				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
-					<span class="nombre-equipo col-xs-2 no-padding-left">{{partido.idPartidoEquipo1}}</span>
-					<input type="text" ng-change="guardarPartido(partido)" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador1" disabled> 
-					<span class="col-xs-1">-</span> 
-					<input type="text" ng-change="guardarPartido(partido)" class="campo-marcador col-xs-1" ng-model="partido.prediccion.marcador2" disabled>
-					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
-					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
-				</p>
-				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="titulo-linea col-xs-2 hidden-xs">Resultado</span>
-					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
-					<span class="nombre-equipo col-xs-2 hidden-md hidden-lg hidden-sm"></span>
+		<div class="partido col-xs-12 no-padding-left no-padding-right"  ng-style="{'background-image': 'url(\'../images/listones/{{partido.torneo.nombre}}.png\')'}" ng-class="$even ? 'row-par' : 'inpar'">
+			<!-- <div class="bg-card"> -->
+				<!-- {{partido.torneo.nombre}} -->
+			<!-- </div> -->
+			<div class="muestra-partido col-xs-12">
+				<span parse-fecha class="col-xs-12 fecha  no-padding-left no-padding-right" fecha="partido.fecha"></span>
+				
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo1.split("&")[1]}}.png'></div>
+						<span class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-left hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
+					</div>
 					<span ng-if="isAdmin == true">
-						<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo1"> 
-						<span class="col-xs-1">-</span> 
-						<input type="number" string-to-number class="campo-marcador col-xs-1 form-control" ng-model="partido.marcadorEquipo2">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control no-padding-right" ng-model="partido.marcadorEquipo1">
 					</span>
 					<span ng-if="isAdmin == false">
-						<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo1}}</span> 
-						<span class="col-xs-1">-</span> 
-						<span class="campo-marcador col-xs-1">{{partido.marcadorEquipo2}}</span>
+						<span class="campo-central campo-marcador col-xs-1 no-padding-right">{{partido.marcadorEquipo1}}</span> 
 					</span>
-					<span ng-if="isAdmin == true" class="guardar-link col-xs-1 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPrediccion(partido)">
+					<span class=" col-xs-2 col-sm-2 campo-central campo-guion">-</span> 
+					<span ng-if="isAdmin == true">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control no-padding-left" ng-model="partido.marcadorEquipo2">
+					</span>
+					<span ng-if="isAdmin == false">
+						<span class="campo-marcador col-xs-1 campo-central no-padding-left">{{partido.marcadorEquipo2}}</span> 
+					</span>
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo2.split("&")[1]}}.png'></div>
+						<span class="col-xs-12 col-sm-4 no-padding-right no-padding-left hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo2.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-right hidden-xs">{{partido.idPartidoEquipo2.split("&")[0]}}</span>
+					</div>
+				
+				<p class="col-xs-12 no-padding-left no-padding-right">
+					<span ng-if="isAdmin == true" class="guardar-link col-xs-12 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPartido(partido)">
 						<i class="glyphicon glyphicon-floppy-disk"></i>
 					</span>
 				</p>
 			</div>
-			<div class="col-md-2 col-xs-9">
-				<span class="hidden-md hidden-lg hidden-sm">Torneo: </span>{{partido.torneo.nombre}}
+			<div class="col-xs-12 no-padding-left no-padding-right"> 
+				<span class="hidden-xs">Torneo: </span>{{partido.torneo.nombre}} - Jornada: {{partido.jornada}}
 			</div>
-			<div class="col-md-1 col-xs-3" ng-class="partido.prediccion.puntaje==3 ? 'ptosVerde' : (partido.prediccion.puntaje==1 ? 'ptosAmarillo' : '')">
-				<span class="hidden-md hidden-lg hidden-sm" >Pts: </span>{{partido.prediccion.puntaje}}
+			<div class=" muestra-partido col-xs-12 prediccion-row">
+
+				<span class="col-xs-8">Mi Predicción: <span>{{partido.prediccion.marcador1}}</span>-<span>{{partido.prediccion.marcador2}}</span></span>
+				<span class="col-xs-4" >
+					<span >{{partido.prediccion.puntaje}} Pts</span>
+					<span ng-class="partido.prediccion.puntaje==3 ? 'ptosVerde' : (partido.prediccion.puntaje==1 ? 'ptosAmarillo' : '')" ng-show="partido.prediccion.puntaje >0" class="glyphicon glyphicon-ok-sign"> </span>
+					<span  ng-show="partido.prediccion.puntaje==0" class="glyphicon glyphicon-remove-sign "> </span>
+				</span>
 			</div>
 		</div>
 	</div>
 	<div ng-hide="filtradosPasado.length">No tiene Juegos anteriores al día de hoy</div>
+
+	<div ng-show="filtradosAhora.length" class="col-xs-12 linea-divisoria-hoy" id="ahora">
+		Partidos en este momento
+	</div>
+
+	<div ng-repeat="partido in filtradosAhora">
+		<div class="partido ahora col-xs-12 no-padding-left no-padding-right" ng-style="{'background-image': 'url(\'../images/listones/{{partido.torneo.nombre}}.png\')'}" ng-class="$even ? 'row-par' : 'inpar'">
+			<!-- <div class="bg-card"> -->
+				<!-- {{partido.torneo.nombre}} -->
+			<!-- </div> -->
+			<div class="muestra-partido col-xs-12">
+				<span parse-fecha class="col-xs-12 fecha ahora no-padding-left no-padding-right" fecha="partido.fecha"></span>
+				
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo1.split("&")[1]}}.png'></div>
+						<span class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-left hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
+					</div>
+					<span ng-if="isAdmin == true">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control no-padding-right" ng-model="partido.marcadorEquipo1">
+					</span>
+					<span ng-if="isAdmin == false">
+						<span class="campo-central campo-marcador col-xs-1 no-padding-right">{{partido.marcadorEquipo1}}</span> 
+					</span>
+					<span class=" col-xs-2 col-sm-2 campo-central campo-guion">-</span> 
+					<span ng-if="isAdmin == true">
+						<input type="number" string-to-number class="campo-central campo-marcador col-xs-1 form-control no-padding-left" ng-model="partido.marcadorEquipo2">
+					</span>
+					<span ng-if="isAdmin == false">
+						<span class="campo-marcador col-xs-1 campo-central no-padding-left">{{partido.marcadorEquipo2}}</span> 
+					</span>
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo2.split("&")[1]}}.png'></div>
+						<span class="col-xs-12 col-sm-4 no-padding-right no-padding-left hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo2.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-right hidden-xs">{{partido.idPartidoEquipo2.split("&")[0]}}</span>
+					</div>
+				
+				<p class="col-xs-12 no-padding-left no-padding-right">
+					<span ng-if="isAdmin == true" class="guardar-link col-xs-12 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPartido(partido)">
+						<i class="glyphicon glyphicon-floppy-disk"></i>
+					</span>
+				</p>
+			</div>
+			<div class="col-xs-12 no-padding-left no-padding-right"> 
+				{{partido.torneo.nombre}} - Jornada: {{partido.jornada}}
+			</div>
+			<div class=" muestra-partido col-xs-12 prediccion-row ahora">
+
+				<span class="col-xs-8">Mi Predicción: <span>{{partido.prediccion.marcador1}}</span>-<span>{{partido.prediccion.marcador2}}</span></span>
+				<span class="col-xs-4" >
+					<span >{{partido.prediccion.puntaje}} Pts</span>
+					<span ng-class="partido.prediccion.puntaje==3 ? 'ptosVerde' : (partido.prediccion.puntaje==1 ? 'ptosAmarillo' : '')" ng-show="partido.prediccion.puntaje >0" class="glyphicon glyphicon-ok-sign"> </span>
+					<span  ng-show="partido.prediccion.puntaje==0" class="glyphicon glyphicon-remove-sign "> </span>
+				</span>
+			</div>
+		</div>
+	</div>
+
 
 	<div class="col-xs-12 linea-divisoria-hoy" id="hoy">
 		Partidos sin jugarse aún!
 	</div>
 
 	<div ng-repeat="partido in filtradosFuturo">
-		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-class="$even ? 'row-par' : 'inpar'">
-			<div class="col-md-9 muestra-partido col-xs-12">
-				<span parse-fecha class="fecha col-xs-12 hidden-md hidden-lg hidden-sm no-padding-left no-padding-right" fecha="partido.fecha"></span>
-				<p class="col-xs-12 no-padding-left no-padding-right">
-					<span class="titulo-linea col-xs-2 hidden-xs">Predicción</span>
-					<span class="nombre-equipo col-xs-2 no-padding-left">{{partido.idPartidoEquipo1}}</span>
-					<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class="campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador1"> 
-					<span class="col-xs-1">-</span> 
-					<input type="number" string-to-number ng-change="guardarPrediccion(partido,{{$index}})" class="campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador2" >
-					<span class="nombre-equipo col-xs-2">{{partido.idPartidoEquipo2}}</span>
-					<span parse-fecha class="nombre-equipo col-xs-2 hidden-xs" fecha="partido.fecha"></span>
-				</p>
+		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-style="{'background-image': 'url(\'../images/listones/{{partido.torneo.nombre}}.png\')'}"ng-class="$even ? 'row-par' : 'inpar'">
+			<div class="muestra-partido col-xs-12">
+				<span parse-fecha class="fecha col-xs-12 no-padding-left no-padding-right" fecha="partido.fecha"></span>
+					
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo1.split("&")[1]}}.png'></div>
+						<span class="col-xs-12 col-sm-4 no-padding-right no-padding-left hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-right hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
+					</div>
+						<input type="number" string-to-number ng-click="onTextClick($event)" ng-change="guardarPrediccion(partido,{{$index}})" class=" campo-central campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador1"> 
+					<span class=" col-xs-2 col-sm-2 campo-central campo-guion">-</span> 
+						<input type="number" string-to-number ng-click="onTextClick($event)" ng-change="guardarPrediccion(partido,{{$index}});onTextClick($event) " class=" campo-central campo-marcador col-xs-1 form-control row-{{$index}}" ng-model="partido.prediccion.marcador2"> 
+					
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo2.split("&")[1]}}.png'></div>
+						<span class="col-xs-12 col-sm-4 no-padding-right no-padding-left hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo2.split("&")[1]}}</span>
+						<span class="col-xs-12 no-padding-right hidden-xs">{{partido.idPartidoEquipo2.split("&")[0]}}</span>
+					</div>
+
 			</div>
-			<div class="col-md-2 col-xs-9">
-				<span class="hidden-md hidden-lg hidden-sm">Torneo: </span>{{partido.torneo.nombre}}
+			<div class="col-xs-12">
+				<span class="hidden-xs">Torneo: </span>{{partido.torneo.nombre}} - Jornada: {{partido.jornada}}
 			</div>
 			<!-- <span class="guardar-link col-xs-1 hidden-md hidden-lg hidden-sm guardar-icon" ng-click="guardarPrediccion(partido)">
 				<i class="glyphicon glyphicon-floppy-disk"></i>
@@ -101,7 +163,7 @@
 	<div class="arrow-down scroll-icon">
 		<i class="glyphicon glyphicon-chevron-down"></i>
 	</div>
-	<div ng-hide="filtradosFuturo.length">No tiene Juegos posteriores a hoy, por favor unase a un grupo</div>
+	<div ng-hide="filtradosFuturo.length" class="white-text">No tiene Juegos posteriores a hoy</div>
 
 	<modal display="displayAddPartidoModal" elemento="addPartidoModal" data-ng-click-right-button="myRightButton()">
 	    <div class="modal-header">
@@ -155,6 +217,7 @@
 	          <div class="col-xs-12 agregar-equipo-cont" ng-if="displayAddEquipo">
 	          	<div class="col-xs-12">
 		          	<input type="text" ng-model="nuevoEquipo.nombre" placeholder="nombre del equipo" class="form-control">
+		          	<input type="text" ng-model="nuevoEquipo.acronimo" placeholder="acronimo" class="form-control">
 		          	<button ng-click="agregarEquipo()" class="btn btn-default">
 					  Agregar
 					</button>
@@ -186,6 +249,14 @@
 	                </p>
 			    </div>
 	          </div>
+	          <div class="col-md-6 col-xs-12 partido-row">
+	          	<div class="col-md-4 col-xs-12 no-padding-right">
+	          		<span>Jornada</span>
+	          	</div>
+	          	<div class="col-md-6 col-xs-8">
+			          <input type="number" ng-model="nuevoPartido.jornada">
+			    </div>
+	          </div>
 	          <div class="col-xs-12 partido-row">
 	          		<div class="col-xs-12">
 			          <p class="error">{{error}}</p>
@@ -193,6 +264,39 @@
 	          		</div>
 		      </div>
 	        </form>
+	    </div>
+	</modal>
+	<modal display="displayAddEmailModal" elemento="addEmailModal" data-ng-click-right-button="myRightButton()">
+	    <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title">Email</h4>
+	    </div>
+	    <div class="modal-body col-xs-12">
+	        <form name="myForm">
+	          <div class="col-xs-12 partido-row">
+	          	<div class="col-xs-12 no-padding-right">
+	          		<input type="text" placeholder="Titulo" ng-model="email.titulo"/>
+	          	</div>
+	          	<div class="col-xs-12">
+		          	<textarea rows="10"class="col-xs-12" placeholder="pegar email aqui" ng-model="email.contenido"></textarea>
+			    </div>
+
+	          <div class="col-xs-12 partido-row">
+	          		<div class="col-xs-12">
+			          <button ng-click="agregarEmailNuevo()" class="btn btn-primary">Agregar</button>
+	          		</div>
+		      </div>
+	          </div>
+	        </form>
+	    </div>
+	</modal>
+	<modal display="actualizaModal" elemento="actualizaModal" data-ng-click-right-button="myRightButton()">
+	    <div class="modal-header">
+	        <h4 class="modal-title">Nueva versión disponible!</h4>
+	    </div>
+	    <div class="modal-body col-xs-12">
+	        <p>Por favor actualiza la versión de la applicaión desde <a href="https://play.google.com/store/apps/details?id=com.appquiniela.echo">aquí</a> para poder seguir utilizandola!
+	        </p>
 	    </div>
 	</modal>
 </div>
