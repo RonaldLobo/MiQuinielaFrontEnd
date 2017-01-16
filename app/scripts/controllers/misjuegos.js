@@ -16,6 +16,7 @@ angular.module('miQuinielaApp')
 	$scope.email={};
     $scope.displayAddEquipo = false;
 	$scope.muestraPag="noPag";
+	$scope.isToday=true;
 	function cmpVersions (a, b) {
 	    var i, diff;
 	    var regExStrip0 = /(\.0+)+$/;
@@ -231,7 +232,15 @@ var dd = $scope.todayDate.getDate();
 		    }
 		});
 	}
+	$scope.irHoy=function(){
+		var old = $location.hash();
+    		if($scope.filtradosAhora.length)$location.hash('ahora');
+	    	else $location.hash('hoy');
 
+		    // call $anchorScroll()
+		    $anchorScroll();
+			$location.hash(old);
+	}
 	$scope.guardarPartido = function(partido){
 		if(!isNaN(partido.marcadorEquipo1) && !isNaN(partido.marcadorEquipo2)){
 	    	var partido = {
@@ -387,7 +396,7 @@ var dd = $scope.todayDate.getDate();
 	    		email: {
 		    		"subject" : $scope.email.titulo,
 		    		"body": $scope.email.contenido,
-		    		"user":""
+		    		"user":$scope.email.correo
 		    	},
 	    	};
 	    	$http({
