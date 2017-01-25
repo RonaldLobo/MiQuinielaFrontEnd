@@ -17,6 +17,7 @@ angular.module('miQuinielaApp')
     $scope.displayAddEquipo = false;
 	$scope.muestraPag="noPag";
 	$scope.isToday=true;
+	$scope.showPerc=-1;
 	function cmpVersions (a, b) {
 	    var i, diff;
 	    var regExStrip0 = /(\.0+)+$/;
@@ -53,7 +54,9 @@ angular.module('miQuinielaApp')
 	} else {
 		//Web version
 	}
-
+	$scope.showPercDiv=function(id){
+		$scope.showPerc=id;
+	}
     $scope.displayAgregarEquipo = function(){
     	if($scope.displayAddEquipo){
     		$scope.displayAddEquipo = false;
