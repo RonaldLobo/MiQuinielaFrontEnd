@@ -1,6 +1,13 @@
 // bower:scss
 // endbower
 
+$main-background: "http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/grass.jpg";
+$red-color:#e60000;
+$green-color:#339933;
+$light-gray-color:#f8f8f8;
+$dark-gray-color: #333333;
+
+
 .browsehappy {
   margin: 0.2em 0;
   background: #ccc;
@@ -13,7 +20,7 @@ html{
 
 body,.footer .container {
   background-color: #004620 !important;
-  background: url("http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/grass.jpg") repeat;
+  background: url($main-background) repeat;
   background-attachment: fixed;
 }
 .footer .container,#configuracion,.white-text {
@@ -21,7 +28,7 @@ body,.footer .container {
 }
 
 .btn.btn-blanco,.btn.btn-blanco:hover,.btn.btn-blanco:active{
-  color: green;
+  color: $green-color;
   background-color: white;
   border: none;
   margin: 10px 0;
@@ -30,7 +37,7 @@ body,.footer .container {
   heigth:250px;
 }
 .btn-default.btnVerde{
-  background-color: green;
+  background-color: $green-color;
   color: white;
   border: 2px solid white;
    /*background-color: #004d00 !important;*/
@@ -51,7 +58,7 @@ select.grupoFilter{
   color: red;
 }
 .percContainer{
-  padding: 20px;
+  padding: 5px 0 20px;
 }
 .prevGames{
   color: white;
@@ -68,13 +75,13 @@ select.grupoFilter{
     background-color: gray;
   }
   .prevG{
-    background-color: #009933;
+    background-color: $green-color;
   }
   .prevE{
     background-color: #ffdb4d;
   }
   .prevP{
-    background-color: #e60000;
+    background-color: $red-color;
   }
 }
 .padding-bottom{
@@ -82,7 +89,7 @@ select.grupoFilter{
 }
 .exitPerc span{
   font-size: 12px;
-  background-color: #e60000;
+  background-color: $red-color;
   color: white;
   width: 20px;
   height: 20px;
@@ -110,21 +117,21 @@ select.grupoFilter{
 .add-partido.todayIcon{
   width: 45px;
   height: 45px;
-  font-size: 15px;
+  font-size: 24px;
   background-color: white;
-  border: 2px solid green;
-  color: green;
+  border: 2px solid $green-color;
+  color: $green-color;
   border-radius: 25px;
   text-align: center;
-  padding-top: 10px;
+  padding-top: 5px;
   outline: none;
   z-index: 100;
 }
 .modal-title.title-page{
-  color:green;
+  color:$green-color;
 }
 .bordeVerde,.bordeVerde:focus{
-  border: 2px solid green;
+  border: 2px solid $green-color;
   
 }
 .pantalla-partidos .partido{
@@ -144,7 +151,7 @@ select.grupoFilter{
   color: red;
 }
 .ptosVerde{
-  color: green;
+  color: $green-color;
 }
 .ptosAmarillo{
   color:#ffdb4d;
@@ -159,7 +166,7 @@ select.grupoFilter{
   font-size: 15px;
 }
 .guardar-link,.mi-usuario{
-  color:green;
+  color:$green-color;
   font-weight: bold;
 }
 /* Everything but the jumbotron gets side spacing for mobile first views */
@@ -240,12 +247,12 @@ select.grupoFilter{
 }
 
 .navbar-header{
-  background: #f8f8f8;
+  background: $light-gray-color;
 }
 
 .menu-holder{
   .navbar-nav {
-    background-color: #f8f8f8;
+    background-color: $light-gray-color;
     li > div {
     }
     &.nav li{
@@ -304,10 +311,10 @@ select.grupoFilter{
 
 .navbar-brand > img {
     width: 55px;
-    background-color:#f8f8f8;
+    background-color:$light-gray-color;
 }
 .navbar-default .navbar-collapse, .navbar-default .navbar-form,.navbar-brand,.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus{
-    background-color:#f8f8f8;
+    background-color:$light-gray-color;
 }
 
 .modal { 
@@ -344,7 +351,7 @@ overflow-y: auto;
 }
 .modal-header.modal-grupo .title-page.active{
   background-color:#ffffff;
-  color:green;
+  color:$green-color;
   font-weight: bold;
 }
 
@@ -381,8 +388,8 @@ overflow-y: auto;
   }
 
   .linea-divisoria-hoy{
-    border-top: 1px solid green;
-    border-bottom: 1px solid green;
+    border-top: 1px solid $green-color;
+    border-bottom: 1px solid $green-color;
     text-align: center;
     padding-top: 70px;
     font-size: 24px;
@@ -391,13 +398,14 @@ overflow-y: auto;
   }
   span.fecha{
     font-size: 15px;
+    text-align: center;
   }
   span.fecha.ahora{
-    color: green;
+    color: $green-color;
     font-weight: bold;
   }
   .prediccion-row.ahora{
-    border-top: 3px solid green;
+    border-top: 3px solid $green-color;
 
   }
   .prediccion-row{
@@ -409,20 +417,21 @@ overflow-y: auto;
   }
   .partido{
     padding-top: 10px;
-    background-color: #f8f8f8;
+    background-color: $light-gray-color;
     border-radius: 11px;
-    border: 1px solid gray;
+    border: 2px solid gray;
     margin: 5px 0;
     text-align: center;
+    box-shadow: 3px 3px 10px black;
   }
 
   .partido.ahora{
-    border: 2px solid green;
+    border: 2px solid $green-color;
 
   }
 
   .row-par{
-    background-color: #f8f8f8;
+    background-color: $light-gray-color;
   }
   .encabezado-tabla{
     color:#ffffff;
@@ -518,7 +527,7 @@ overflow-y: auto;
 /*** End Estilos Torneo ***/
 .navbar{
   .container{
-    background: #f8f8f8 !important;
+    background: $light-gray-color !important;
   }
 }
 
@@ -601,7 +610,9 @@ span:focus,input:focus,p:focus{
     overflow-y: initial;
   }
 }
-
+span.smallerTxt {
+    font-size: 14px;
+}
 .partido-row{
   margin-top: 15px;
 }
@@ -609,7 +620,11 @@ span:focus,input:focus,p:focus{
 .date-picker-input{
   width: 97px !important;
 }
-
+.campo-guion.fecha{
+  font-weight: bold;
+  padding-left: 12px;
+  margin-top: 25px;
+}
 .add-equipo{
   font-size: 17px;
   font-weight: bold;
@@ -661,7 +676,9 @@ span:focus,input:focus,p:focus{
   }
 
   .static-header{
-    background: url("http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/grass.jpg") repeat;
+
+  background-color: #004620;
+    background: url($main-background) repeat;
     z-index: 10;
   }
   body{
@@ -675,7 +692,7 @@ span:focus,input:focus,p:focus{
   .header {
     position: fixed;
     width: 100%;
-    z-index: 9000;
+    z-index: 99999;
     padding-left: 0;
     background-color: white;
     border-bottom: 4px solid gray;
@@ -706,6 +723,7 @@ span:focus,input:focus,p:focus{
     margin-top: 185px;
     padding: 0 10px 10px;
   }
+
   .tabla-pizarra.torneos{
     margin-top: 80px;
   }
@@ -736,7 +754,7 @@ span:focus,input:focus,p:focus{
   }
 
   .partidos-container{
-    margin-top: 50px !important;
+    margin-top: 52px !important;
   }
 }
 
@@ -749,7 +767,7 @@ form input.form-control{
 .arrow-up{
   position: fixed;
   left: 45%;
-  background: green;
+  background: $green-color;
   width: 50px;
   height: 50px;
   border-radius: 29px;
@@ -762,7 +780,7 @@ form input.form-control{
 .arrow-down{
   position: fixed;
   left: 45%;
-  background: green;
+  background: $green-color;
   width: 50px;
   height: 50px;
   border-radius: 29px;
@@ -771,7 +789,11 @@ form input.form-control{
   padding-top: 12px;
   color: white;
 }
-
+.match-date{
+  font-size: 16px;
+  color: white;
+  margin-left: 15px;
+}
 .blink_me {
   animation: blinker 1s linear infinite;
 }
@@ -824,6 +846,13 @@ form input.form-control{
     }
     .campo-central {
       width: 32px !important;
+      padding: 0;
+    }
+
+    span.campo-guion.fecha{
+      font-size: 11px;
+      padding-left: 2px;
+      margin-top: 25px;
     }
   }
 .header-bar{

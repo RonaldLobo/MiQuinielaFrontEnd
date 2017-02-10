@@ -50,10 +50,11 @@
 	        </div>
 	        <div class=" col-xs-12 no-padding-left no-padding-right" ng-show="predicciones.userPredictions.length>0">
 				<p class="col-xs-12 no-padding-left no-padding-right encabezado-tabla">
-					<span class="titulo-linea col-md-2 col-xs-3">Casa</span>
-					<span class="titulo-linea col-md-5 col-xs-6">Predicción<span class="hidden-xs">(Resultado)</span></span>
-					<span class="nombre-equipo col-md-3 col-xs-3">Visita </span>
-					<span class=" col-md-2 hidden-xs">Puntos</span>
+					<span class="titulo-linea col-sm-2 col-xs-3">Casa</span>
+					<span class="titulo-linea col-sm-4 col-xs-6">Predicción<span class="hidden-xs">(Resultado)</span></span>
+					<span class="nombre-equipo col-sm-2 col-xs-3">Visita </span>
+					<span class=" col-sm-2 hidden-xs">Puntos</span>
+					<span class=" col-sm-2 hidden-xs">Jornada</span>
 				</p>
 			</div>
 	    </div>
@@ -63,10 +64,10 @@
 	        <div ng-repeat="predic in predicciones.userPredictions | reverse">
 				<div ng-show="predicciones.userPredictions[{{$index}}]!=null" class="partido col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
 					<p class="col-xs-12 no-padding-left no-padding-right">
-						<span class="titulo-linea col-md-3 col-xs-3 hidden-xs">{{predic.idEquipo1.split("&")[0]}}</span>
+						<span class="titulo-linea col-md-3 col-xs-2 hidden-xs">{{predic.idEquipo1.split("&")[0]}}</span>
 						<span class="titulo-linea col-md-3 col-xs-3 hidden-sm hidden-md hidden-lg">{{predic.idEquipo1.split("&")[1]}}</span>
-						<span class=" col-md-4 col-xs-5 marcador-small">{{predic.marcador1}}-{{predic.marcador2}}</span>
-						<span class="correo-usuario col-md-3 col-xs-4 no-padding-left hidden-xs">{{predic.idEquipo2.split("&")[0]}}</span>
+						<span class=" col-sm-3 col-xs-5 marcador-small">{{predic.marcador1}}-{{predic.marcador2}}</span>
+						<span class="correo-usuario col-md-2 col-xs-4 no-padding-left hidden-xs">{{predic.idEquipo2.split("&")[0]}}</span>
 						<span class="correo-usuario col-md-3 col-xs-4 no-padding-left hidden-sm hidden-md hidden-lg">{{predic.idEquipo2.split("&")[1]}}</span>
 						<span class="nombre-equipo col-md-2  hidden-xs" >
 							<span >{{predic.puntaje}} Pts</span>
@@ -74,9 +75,11 @@
 							<span  ng-show="predic.puntaje==0" class="glyphicon glyphicon-remove-sign "> </span>
 							
 						</span>
+						<span class="titulo-linea col-md-2  hidden-xs">{{predic.idPartido}}</span>
 					</p>
-					<p class="col-xs-12 no-padding-left no-padding-right hidden-md hidden-lg hidden-xl">
-						<span class="titulo-linea col-xs-8"></span>
+					<p class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg hidden-xl">
+						<span class="titulo-linea col-xs-5">Jornada {{predic.idPartido}}</span>
+						<span class="titulo-linea col-xs-3"></span>
 						
 						<span class="col-xs-4" >
 							<span >{{predic.puntaje}} Pts</span>

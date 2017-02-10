@@ -244,6 +244,14 @@ var dd = $scope.todayDate.getDate();
 		    $anchorScroll();
 			$location.hash(old);
 	}
+	$scope.lastMatchDate="";
+	$scope.sameDate=function(date){
+		if(date!=$scope.lastMatchDate){
+			$scope.lastMatchDate=date;
+			return true;
+		}
+		return false;
+	}
 	$scope.guardarPartido = function(partido){
 		if(!isNaN(partido.marcadorEquipo1) && !isNaN(partido.marcadorEquipo2)){
 	    	var partido = {
@@ -341,7 +349,7 @@ var dd = $scope.todayDate.getDate();
 	    		idPartidoEquipo2: Number($scope.nuevoPartido.equipo2),
 	    		marcadorEquipo1: 0,
 	    		marcadorEquipo2: 0,
-	    		jornada: Number($scope.nuevoPartido.jornada),
+	    		jornada: $scope.nuevoPartido.jornada,
 	    		fecha: convertDateHora($scope.picker.date)
 	    	}
     	};
