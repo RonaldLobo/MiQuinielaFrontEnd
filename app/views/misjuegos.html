@@ -80,7 +80,7 @@
 	</div>
 
 	<div ng-repeat="partido in filtradosAhora">
-		<div class="partido ahora col-xs-12 no-padding-left no-padding-right"  ng-class="$even ? 'row-par' : 'inpar'">
+		<div class="partido col-xs-12 no-padding-left no-padding-right"  ng-style="{'background-image': 'url(\'http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.torneo.nombre}}.png\')'}" ng-class="$even ? 'row-par' : 'inpar'">
 			<!-- <div class="bg-card"> -->
 				<!-- {{partido.torneo.nombre}} -->
 			<!-- </div> -->

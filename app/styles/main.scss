@@ -97,6 +97,9 @@ select.grupoFilter{
   border-radius: 10px;
   padding: 2px 5px;
 }
+.muestra-partido {
+    margin-bottom: 5px;
+}
 .percContainer .percIcon{
   width: 40px;
   padding-top: 10px;
@@ -646,7 +649,16 @@ span.smallerTxt {
   margin-bottom: 0 !important;
 }
 
-
+@media (max-width: 640px) {
+  .pantalla-partidos .muestra-partido .nombre-equipo {
+    max-width: 30%;
+  }
+}
+@media (max-width: 480px) {
+  .pantalla-partidos .muestra-partido .nombre-equipo {
+    max-width: 26%;
+  }
+}
 @media (max-width: 760px)and (min-width: 638px) {
   .pantalla-partidos .muestra-partido .nombre-equipo {
     max-width: 177px;
@@ -833,6 +845,10 @@ form input.form-control{
   }
     .campo-central {
       width: 38px !important;
+    }
+    .pantalla-partidos span.fecha {
+      padding: 0;
+      font-size: 14px;
     }
 }
 
