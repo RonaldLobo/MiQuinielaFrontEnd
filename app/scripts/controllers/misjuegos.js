@@ -83,7 +83,7 @@ angular.module('miQuinielaApp')
     $scope.todayDate = new Date();
     $scope.initDate = new Date();
     $scope.finalDate = new Date()
-    $scope.finalDate.setDate($scope.todayDate.getDate() + 7);
+    $scope.finalDate.setDate($scope.todayDate.getDate() + 8);
     $scope.initDate.setDate($scope.todayDate.getDate() - 7);
 
     function convertDate(date){

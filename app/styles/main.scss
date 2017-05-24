@@ -63,6 +63,7 @@ select.grupoFilter{
 .prevGames{
   color: white;
    div{
+    line-height: 14px;
     display: inline-block;
     font-size: 10px;
     width: 15px;
@@ -98,7 +99,7 @@ select.grupoFilter{
   padding: 2px 5px;
 }
 .muestra-partido {
-    margin-bottom: 5px;
+    padding-bottom: 5px;
 }
 .percContainer .percIcon{
   width: 40px;
@@ -829,7 +830,7 @@ form input.form-control{
 }
 @media (max-width: 380px) {
   .tabla-pizarra{
-    margin-top: 155px;
+    margin-top: 182px;
   }
   .nombre-equipo{
       max-width: 70px;
