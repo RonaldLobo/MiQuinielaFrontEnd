@@ -27,10 +27,10 @@ angular
     'toastr'
   ])
   .constant('config', {
-    appName: 'AppQuiniela',
-    appVersion: '1.0.6',
+    appName: 'QuinielaGalactica',
+    appVersion: '1.0.0',
     apiUrl: 'localhost',
-    prod: 'http://appquiniela.com'
+    prod: 'http://tucanoquiniela.com'
   })
   .config(function ($routeProvider) {
     $routeProvider
@@ -127,6 +127,14 @@ angular
       }
     };
   })
+  .filter('removeSpaces', [function() {
+    return function(string) {
+        if (!angular.isString(string)) {
+            return string;
+        }
+        return string.replace(/[\s]/g, '');
+    };
+  }])
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
       $rootScope.actual = next.templateUrl;
@@ -138,6 +146,6 @@ angular
       }
     });
     console.log('host',window.location.hostname);
-    $rootScope.apiUrl = (window.location.hostname === "0.0.0.0")? 'http://0.0.0.0:82':"http://appquiniela.com";
+    $rootScope.apiUrl = (window.location.hostname === "0.0.0.0")? 'http://0.0.0.0:9005':"http://tucanoquiniela.com";
     $rootScope.isLoading = false;
   });

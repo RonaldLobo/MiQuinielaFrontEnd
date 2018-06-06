@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "892357189512",
+    "firebase_url": "https://appquiniela-e99ef.firebaseio.com",
+    "project_id": "appquiniela-e99ef",
+    "storage_bucket": "appquiniela-e99ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892357189512:android:101b089267a66282",
+        "android_client_info": {
+          "package_name": "com.appquiniela.echo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "892357189512-fscoh7ivoa6tl87h5v9d4ib91bi7bgfr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNzkG3P_DvQqNPTxkpqAaHoPmOkGur-zI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

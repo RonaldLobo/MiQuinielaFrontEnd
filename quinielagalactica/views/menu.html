@@ -1,0 +1,33 @@
+<div class="menu-holder">
+	<ul class="nav navbar-nav" ng-if="visible">
+      <li ng-class="{'active': home }" ><a href="#/home">Partidos</a></li>
+      <li ng-class="{'active': torneos }" ><a ng-href="#/torneos">Torneos</a></li>
+      <li ng-class="{'active': tablas }" ><a ng-href="#/tablas">Tablas</a></li>
+      <li ng-class="{'active': configuracion }" ><a ng-href="#/configuracion">Configuración</a></li>
+      <li class="login-info">
+      	<div ng-if="isAuthenticated == true">
+		    <p ng-if="isFacebookAuth" class="col-xs-6 user-name-display">{{user.nombre}}</p>
+        <p ng-if="isFacebookAuth == false" class="col-xs-6 user-name-display">{{user.usuario}}</p>
+		    <div class="col-xs-5 no-padding-left no-padding-right">
+		    	<div class="col-xs-12 no-padding-left" ng-if="isFacebookAuth == true">
+		    		<div><img class="fb-picture" src="http://graph.facebook.com/{{user.usuario}}/picture"/></div>
+		    	</div>
+		    </div>
+        <div class="logout no-padding-left no-padding-right" ng-class="isFacebookAuth == true ? 'col-xs-12' : 'col-xs-6 log-out-no-fb' ">
+          <a data-ng-disabled="!facebookReady" data-ng-click="logoutBoth()">Salir</a>
+        </div>
+		</div>
+		<div ng-if="isAuthenticated == false" class="login-action">
+      		<a ng-click="showLogin()">Entrar</a>
+		</div>
+      </li>
+	</ul>
+  <div ng-if="visible == false" class="login-action col-xs-12 hidden-xs">
+    <a class="col-md-4 col-xs-12" ng-click="showLogin()">Entrar</a>
+    <a class="col-md-8 col-xs-12" ng-click="showLogup()">Nuevo Usuario</a>
+  </div>
+  <ul ng-if="visible == false" class="nav navbar-nav hidden-md hidden-lg hidden-sm">
+      <li ><a class="col-md-4 col-xs-12" ng-click="showLogin()">Entrar</a></li>
+      <li ><a class="col-md-8 col-xs-12" ng-click="showLogup()">Nuevo Usuario</a></li>
+  </ul>
+</div>
