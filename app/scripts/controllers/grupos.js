@@ -49,6 +49,7 @@ angular.module('miQuinielaApp')
 	  		if($scope.grupos.length > 0){
 		  		$scope.grupoSeleccionado=$scope.grupos[0];
 		  		$scope.actualizarLista($scope.grupoSeleccionado.id,0);
+		  		$scope.actualizaJornadas($scope.grupoSeleccionado.idTorneo);
 		  	}
 
 		}, function errorCallback(response) {
@@ -94,7 +95,7 @@ angular.module('miQuinielaApp')
     }
   	$scope.actualizarLista = function(grupoId, jornada){
 
-  		if(jornada==0)$scope.actualizaJornadas($scope.grupoSeleccionado.idTorneo);
+  		// if(jornada==0)$scope.actualizaJornadas($scope.grupoSeleccionado.idTorneo);
   		if(jornada==undefined)jornada=0;
         $rootScope.isLoading = true;
   		$http({

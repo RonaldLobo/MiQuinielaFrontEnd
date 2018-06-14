@@ -28,9 +28,9 @@ angular
   ])
   .constant('config', {
     appName: 'QuinielaGalactica',
-    appVersion: '1.0.0',
+    appVersion: '2.0.0',
     apiUrl: 'localhost',
-    prod: 'http://tucanoquiniela.com'
+    prod: 'http://quinielagalactica.com'
   })
   .config(function ($routeProvider) {
     $routeProvider
@@ -38,6 +38,11 @@ angular
         templateUrl: 'views/index.html',
         controller: 'indexCtrl',
         controllerAs: 'index'
+      })
+      .when('/jugar', {
+        templateUrl: 'views/jugar.html',
+        controller: 'JugarCtrl',
+        controllerAs: 'jugar'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
@@ -146,6 +151,6 @@ angular
       }
     });
     console.log('host',window.location.hostname);
-    $rootScope.apiUrl = (window.location.hostname === "0.0.0.0")? 'http://0.0.0.0:9005':"http://tucanoquiniela.com";
+    $rootScope.apiUrl = (window.location.hostname === "0.0.0.0")? 'http://0.0.0.0:82':"http://quinielagalactica.com";
     $rootScope.isLoading = false;
   });

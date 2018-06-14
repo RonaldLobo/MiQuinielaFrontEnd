@@ -7,6 +7,8 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth',
 
             	var self = this;
             	$scope.user = {};
+				this.user = {};
+            	var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 
             	if(auth.isAuthenticated == false){
             		var needsToLog = auth.checkForLogin();
@@ -109,6 +111,7 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth',
                 	$scope.torneos = false;
                 	$scope.foro = false;
                 	$scope.tablas = false;
+                	$scope.jugar = false;
                 	$scope.configuracion = false;
 	                switch($location.path()){
 	                	case "/home": 
@@ -116,6 +119,9 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth',
 	                		break;
 	                	case "/torneos": 
 	                		$scope.torneos = true;
+	                		break;
+	                	case "/jugar": 
+	                		$scope.jugar = true;
 	                		break;
 	                	case "/tablas": 
 	                		$scope.tablas = true;
@@ -126,18 +132,6 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth',
 	                }
 	            });
 
-
-                //-------------------------------------------//
-			    //login
-
-
-				// Define user empty data :/
-				this.user = {};
-
-				/**
-				* Watch for Facebook to be ready.
-				* There's also the event that could be used
-				*/
 				$scope.$watch(
 					function() {
 					  return Facebook.isReady();
@@ -156,103 +150,77 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth',
 					}
 				});
 
-				/**
-				* IntentLogin
-				*/
 				$scope.IntentLogin = function() {
-					//if(!userIsConnected) {
-					  $scope.login();
-					//}
+					$scope.login();
 				};
 
 				$scope.IntentLoginUp = function() {
-					//if(!userIsConnected) {
+					$scope.login();
+				};
+
+				$scope.login = function() {
+					if(app){
+						window.facebookConnectPlugin.getLoginStatus((success)=>{
+			                if(success.status === 'connected'){
+			                    $scope.me();
+			                } else {
+			                    window.facebookConnectPlugin.login(['email','public_profile'],(response) => {
+		                            $scope.me();
+		                        },(error)=>{
+		                            console.log('error get user info ' + JSON.stringify(error));
+		                        });
+			                }
+			            },(error)=> {
+			                console.log('error check status');
+			                console.log(error);
+			            });
+					} else {
 						Facebook.login(function(response) {
 							if (response.status == 'connected') {
 								$scope.logged = true;
-								Facebook.api('/me', function(response) {
-									console.log('response',response);
-								    $scope.$apply(function() {
-								      $scope.user = response;
-								      auth.fbLoginUp(response);
-								    });
-								    
-								  });
+								$scope.me();
 							}
-
 						});
-					//}
+					}
 				};
 
-				/**
-				* Login
-				*/
-				$scope.login = function() {
-					Facebook.login(function(response) {
-						if (response.status == 'connected') {
-							$scope.logged = true;
-							$scope.me();
-						}
-
-					});
-				};
-
-				/**
-				* me 
-				*/
 				$scope.me = function() {
-				  Facebook.api('/me', function(response) {
-				    /**
-				     * Using $scope.$apply since this happens outside angular framework.
-				     */
-				    $scope.$apply(function() {
-				      $scope.user = response;
-				      auth.fbLogin(response);
-				    });
-				    
-				  });
+					if(app){
+						window.facebookConnectPlugin.api("/me?fields=email,first_name,last_name,picture", null,(res)=>{
+						    $scope.$apply(function() {
+						    	$scope.user = res;
+						    	auth.fbLogin(res);
+						    });
+				        },(error)=>{
+				            console.log('error get user info ' + JSON.stringify(error));
+				        });
+					} else {
+						Facebook.api('/me?fields=email,first_name,last_name,picture', function(response) {
+							$scope.$apply(function() {
+							  $scope.user = response;
+							  auth.fbLogin(response);
+							});
+						});
+					}
 				};
 
-				/**
-				* Logout
-				*/
 				$scope.logout = function() {
-					if(userIsConnected){
+					if(this.isApp){
+			            window.facebookConnectPlugin.logout((success) => {
+			                console.log('success logout');
+			            }, (failure) => {
+			                console.log('fail login');
+			            });
+			        } else {
 						Facebook.logout(function() {
 						  $scope.$apply(function() {
 						    $scope.user   = {};
 						    $scope.logged = false;  
 						  });
 						});
-					}
-					auth.logOut();
+			        }
+			        auth.logOut();
 				}
-
-				/**
-				* Taking approach of Events :D
-				*/
-				$scope.$on('Facebook:statusChange', function(ev, data) {
-					if (data.status == 'connected') {
-
-						$scope.$apply(function() {
-							$scope.salutation = true;
-							$scope.byebye     = false;    
-						});
-					} else {
-					  $scope.$apply(function() {
-					    $scope.salutation = false;
-					    $scope.byebye     = true;
-					    
-					    // Dismiss byebye message after two seconds
-					    $timeout(function() {
-					      $scope.byebye = false;
-					    }, 2000)
-					  });
-					}
-				});
- 
-
-
             }
         };
     }]);

@@ -1,0 +1,32 @@
+{
+	"ads" : [
+		{
+			"imgxs": "http://res.cloudinary.com/tucano-digital/image/upload/v1528990291/appquiniela/uniformesAM.png",
+			"imgsm": "http://res.cloudinary.com/tucano-digital/image/upload/v1528990291/appquiniela/uniformesAM.png",
+			"imgmd": "http://res.cloudinary.com/tucano-digital/image/upload/v1528990291/appquiniela/uniformesAM.png",
+			"imgls": "http://res.cloudinary.com/tucano-digital/image/upload/v1528990291/appquiniela/uniformesAM.png",
+			"link": "https://www.facebook.com/Uniformes-AM-284444698568560/"
+		},
+		{
+			"imgxs": "http://res.cloudinary.com/tucano-digital/image/upload/v1528595092/appquiniela/3dgeekad.jpg",
+			"imgsm": "http://res.cloudinary.com/tucano-digital/image/upload/v1528595092/appquiniela/3dgeekad.jpg",
+			"imgmd": "http://res.cloudinary.com/tucano-digital/image/upload/v1528595092/appquiniela/3dgeekad.jpg",
+			"imgls": "http://res.cloudinary.com/tucano-digital/image/upload/v1528595092/appquiniela/3dgeekad.jpg",
+			"link": "https://www.facebook.com/3DGEEKSTORECR/"
+		},
+		{
+			"imgxs": "http://res.cloudinary.com/tucano-digital/image/upload/v1528492985/appquiniela/click_aqui.png",
+			"imgsm": "http://res.cloudinary.com/tucano-digital/image/upload/v1528492985/appquiniela/click_aqui.png",
+			"imgmd": "http://res.cloudinary.com/tucano-digital/image/upload/v1528492985/appquiniela/click_aqui.png",
+			"imgls": "http://res.cloudinary.com/tucano-digital/image/upload/v1528492985/appquiniela/click_aqui.png",
+			"link": "https://www.facebook.com/appquinielacr/"
+		},
+		{
+			"imgxs": "http://res.cloudinary.com/tucano-digital/image/upload/v1528990864/appquiniela/tucano.jpg",
+			"imgsm": "http://res.cloudinary.com/tucano-digital/image/upload/v1528990864/appquiniela/tucano.jpg",
+			"imgmd": "http://res.cloudinary.com/tucano-digital/image/upload/v1528990864/appquiniela/tucano.jpg",
+			"imgls": "http://res.cloudinary.com/tucano-digital/image/upload/v1528990864/appquiniela/tucano.jpg",
+			"link": "https://www.facebook.com/tucanodigital/"
+		}
+	]
+}

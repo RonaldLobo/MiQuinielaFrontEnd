@@ -1,48 +1,85 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <widget xmlns   = "http://www.w3.org/ns/widgets"
-    xmlns:gap   = "http://phonegap.com/ns/1.0"
-    id          = "com.quinielagalactica.echo"
-    versionCode = "1"
-    version     = "1.0.0" >
+	xmlns:gap   = "http://phonegap.com/ns/1.0"
+	id          = "com.quinielagalactica.echo"
+	versionCode = "2"
+	version     = "2.1.0" >
 
-<!-- versionCode is optional and Android only -->
+	<!-- versionCode is optional and Android only -->
 
-  <name>QuinielaGalactica</name>
+	<name>Quiniela Galactica</name>
 
-  <description>
-      Quiniela Galactica
-  </description>
+	<description>
+		Quiniela Galactica
+	</description>
 
-  <author href="https://build.phonegap.com" email="ronald_lb2@hotmail.com">
-      Tucano Digital
-  </author>
+	<author href="https://build.phonegap.com" email="ronald_lb2@hotmail.com">
+		Tucano Digital
+	</author>
+	<icon src="res/icon/appquinielalogoapp.png"   gap:platform="android"    gap:qualifier="ldpi" />
+	<icon src="res/icon/appquinielalogoapp.png"   gap:platform="android"    gap:qualifier="mdpi" />
+	<icon src="res/icon/appquinielalogoapp.png"   gap:platform="android"    gap:qualifier="hdpi" />
+	<icon src="res/icon/appquinielalogoapp.png"  gap:platform="android"    gap:qualifier="xhdpi" />
 
-  <icon src="icon.png" />
-    <icon src="res/icon/quinielagalactica.png"   gap:platform="android"    gap:qualifier="ldpi" />
-    <icon src="res/icon/quinielagalactica.png"   gap:platform="android"    gap:qualifier="mdpi" />
-    <icon src="res/icon/quinielagalactica.png"   gap:platform="android"    gap:qualifier="hdpi" />
-    <icon src="res/icon/quinielagalactica.png"  gap:platform="android"    gap:qualifier="xhdpi" />
+	<preference name="android-build-tool" value="gradle" />
+	<platform name="android">
+		<resource-file src="google-services.json" target="/google-services.json" />
+	</platform>
+    <!--
+        If you do not want any permissions to be added to your app, add the
+        following tag to your config.xml; you will still have the INTERNET
+        permission on your app, which PhoneGap requires.
+    -->
+    <preference name="permissions"                value="none"/>
 
-  <access origin="*"/>
-  <!-- Added the following intents to support the removal of whitelist code from base cordova to a plugin -->
-  <!-- Whitelist configuration. Refer to https://cordova.apache.org/docs/en/edge/guide_appdev_whitelist_index.md.html -->
-  <plugin name="cordova-plugin-whitelist" version="1" />
-  <allow-intent href="http://*/*" />
-  <allow-intent href="https://*/*" />
-  <allow-intent href="tel:*" />
-  <allow-intent href="sms:*" />
-  <allow-intent href="mailto:*" />
-  <allow-intent href="geo:*" />
-  <platform name="android">
-      <allow-intent href="market:*" />
-  </platform>
-  <platform name="ios">
-      <allow-intent href="itms:*" />
-      <allow-intent href="itms-apps:*" />
-  </platform>
+    <!-- Customize your app and platform with the preference element. -->
+    <preference name="phonegap-version" value="cli-7.1.0" />
+    <preference name="orientation"                value="default" />        <!-- all: default means both landscape and portrait are enabled -->
+    <preference name="fullscreen"                 value="false" />          <!-- all: hides the status bar at the top of the screen -->
+    <preference name="EnableViewportScale"        value="true"/>            <!-- ios: EnableViewportScale (boolean, defaults to false): Set to true to allow a viewport meta tag to either disable or restrict the range of user scaling, which is enabled by default. -->
+    <preference name="target-device"              value="universal" />      <!-- ios: possible values handset, tablet, or universal -->
+    <preference name="prerendered-icon"           value="false" />          <!-- ios: if icon is prerendered, iOS will not apply it's gloss to the app's icon on the user's home screen -->
+    <preference name="detect-data-types"          value="false" />          <!-- ios: controls whether data types (such as phone no. and dates) are automatically turned into links by the system -->
+    <preference name="exit-on-suspend"            value="false" />          <!-- ios: if set to true, app will terminate when home button is pressed -->
+    <preference name="deployment-target"          value="7.0" />            <!-- ios: This sets the IPHONEOS_DEPLOYMENT_TARGET in the build, which tranlsates to the MinimumOSVersion in the ipa Propertly List. -->
+    <preference name="webviewbounce"              value="false" />          <!-- ios: control whether the screen 'bounces' when scrolled beyond the top -->
+    <preference name="DisallowOverscroll"         value="true" />           <!-- both: stop UIWebView bouncing vertically -->
+    <preference name="stay-in-webview"            value="false" />          <!-- ios: external links should open in the default browser, 'true' would use the webview the app lives in -->
+    <preference name="ios-statusbarstyle"         value="black-opaque" />   <!-- ios: black-translucent will appear black because the PhoneGap webview doesn't go beneath the status bar -->
+    <preference name="android-minSdkVersion"      value="15" />             <!-- android: API level 15 is Android 4.0.3, ICE_CREAM_SANDWICH_MR1. MIN SDK version supported on the target device. MAX version is blank by default. -->
+    <preference name="android-targetSdkVersion"   value="15" />             <!-- To hide the "..." (overflow menu) on Android, see http://stackoverflow.com/questions/20375626/disabling-android-menu-button-in-phonegap-build -->
+    <preference name="android-installLocation"    value="auto" />           <!-- android: app install location. 'auto' will choose. 'internalOnly' is device memory. 'preferExternal' is SDCard. -->
 
-  <plugin name="phonegap-plugin-push" spec="1.6.0">
-    <param name="SENDER_ID" value="892357189512" />
-</plugin>
+
+    <plugin name="phonegap-plugin-push" spec="2.0.0">
+    	<variable name="SENDER_ID" value="762237495513" />
+    </plugin>
+
+    <plugin name="cordova-plugin-inappbrowser" />
+
+    <plugin spec="https://github.com/RonaldLobo/cordova-plugin-facebook6.git" source="git" >
+    	<param name="APP_ID" value="1809018326033062" />
+    	<param name="APP_NAME" value="Los Peluqueros" />
+    </plugin>
+
+    
+
+    <access origin="*"/>
+    <!-- Added the following intents to support the removal of whitelist code from base cordova to a plugin -->
+    <!-- Whitelist configuration. Refer to https://cordova.apache.org/docs/en/edge/guide_appdev_whitelist_index.md.html -->
+    <plugin name="cordova-plugin-whitelist" version="1" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+    	<allow-intent href="market:*" />
+    </platform>
+    <platform name="ios">
+    	<allow-intent href="itms:*" />
+    	<allow-intent href="itms-apps:*" />
+    </platform>
 
 </widget>

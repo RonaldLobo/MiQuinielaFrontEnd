@@ -314,7 +314,7 @@ select.grupoFilter{
 }
 
 .navbar-brand > img {
-    width: 46px;
+    width: 61px;
     background-color:$light-gray-color;
 }
 .navbar-default .navbar-collapse, .navbar-default .navbar-form,.navbar-brand,.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus{
@@ -552,7 +552,9 @@ overflow-y: auto;
 .image-equipo
 {
   width: 55px;
-  height: 60px
+  height: 60px;
+  border-radius: 9px;
+  background: darkgray;
 }
 .campo-central{
   margin-top:20px;
@@ -659,7 +661,18 @@ span.smallerTxt {
   .pantalla-partidos .muestra-partido .nombre-equipo {
     max-width: 26%;
   }
+
+  .equipo-casa{
+    padding-left: 0;
+  }
 }
+
+@media (max-width: 350px) {
+  .equipo-casa .col-xs-12{
+    padding-left: 0;
+  }
+}
+
 @media (max-width: 760px)and (min-width: 638px) {
   .pantalla-partidos .muestra-partido .nombre-equipo {
     max-width: 177px;
@@ -931,4 +944,36 @@ form input.form-control{
 @-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }
 @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
 
+.banner-pub{
+  width:100%;
+  position: fixed;
+  bottom:0;
+  left:0;
+  height:60px;
+  background:transparent;
+  z-index:9999;
+  span {
+      width: 100%;
+      height: 60px;
+      display: inline-block;
+      text-align: center;
+      img{
+        max-width: 100%;
+        max-height: 100%;
+      }
+  }
+}
 
+html,body {
+  width: 100%;
+  max-width: 100%;
+}
+
+.reglas-container{
+  ul {
+    margin-bottom: 140px;
+      li{
+      margin-bottom: 10px;
+    }
+  }
+}

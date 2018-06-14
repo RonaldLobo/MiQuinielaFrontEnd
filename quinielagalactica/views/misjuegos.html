@@ -13,14 +13,14 @@
 </div>
 <div ng-class="muestraPag" class="col-xs-12 pantalla-partidos partidos-container">
 	<div ng-repeat="partido in filtradosPasado">
-		<div class="partido col-xs-12 no-padding-left no-padding-right"  ng-style="{'background-image': 'url(\'../images/{{partido.torneo.nombre | removeSpaces}}.png\')'}" ng-class="$even ? 'row-par' : 'inpar'">
+		<div class="partido col-xs-12 no-padding-left no-padding-right"  ng-style="{'background-image': 'url(\'http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.torneo.nombre | removeSpaces}}.png\')'}"  ng-class="$even ? 'row-par' : 'inpar'">
 			<!-- <div class="bg-card"> -->
 				<!-- {{partido.torneo.nombre}} -->
 			<!-- </div> -->
 			<div class="muestra-partido col-xs-12">
 				<span parse-fecha class="col-xs-12 fecha  no-padding-left no-padding-right" fecha="partido.fecha"></span>
 				
-					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right equipo-casa">
 						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo1.split("&")[1]}}.png'></div>
 						<span class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
 						<span class="col-xs-12 no-padding-left hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
@@ -71,14 +71,14 @@
 	</div>
 
 	<div ng-repeat="partido in filtradosAhora">
-		<div class="partido ahora col-xs-12 no-padding-left no-padding-right" ng-style="{'background-image': 'url(\'../images/{{partido.torneo.nombre | removeSpaces}}.png\')'}" ng-class="$even ? 'row-par' : 'inpar'">
+		<div class="partido ahora col-xs-12 no-padding-left no-padding-right" ng-style="{'background-image': 'url(\'http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.torneo.nombre | removeSpaces}}.png\')'}"  ng-class="$even ? 'row-par' : 'inpar'">
 			<!-- <div class="bg-card"> -->
 				<!-- {{partido.torneo.nombre}} -->
 			<!-- </div> -->
 			<div class="muestra-partido col-xs-12">
 				<span parse-fecha class="col-xs-12 fecha ahora no-padding-left no-padding-right" fecha="partido.fecha"></span>
 				
-					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right equipo-casa">
 						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo1.split("&")[1]}}.png'></div>
 						<span class="col-xs-12 no-padding-left no-padding-right hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
 						<span class="col-xs-12 no-padding-left hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
@@ -129,11 +129,11 @@
 	</div>
 
 	<div ng-repeat="partido in filtradosFuturo">
-		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-style="{'background-image': 'url(\'../images/{{partido.torneo.nombre | removeSpaces}}.png\')'}"ng-class="$even ? 'row-par' : 'inpar'">
+		<div class="partido col-xs-12 no-padding-left no-padding-right" ng-style="{'background-image': 'url(\'http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.torneo.nombre | removeSpaces}}.png\')'}" ng-class="$even ? 'row-par' : 'inpar'">
 			<div class="muestra-partido col-xs-12">
 				<span parse-fecha class="fecha col-xs-12 no-padding-left no-padding-right" fecha="partido.fecha"></span>
 					
-					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right">
+					<div class="nombre-equipo col-xs-4 no-padding-left  no-padding-right equipo-casa">
 						<div class="col-xs-12"><img class="no-padding-left image-equipo" ng-src='http://res.cloudinary.com/tucano-digital/image/upload/v1473109608/appquiniela/{{partido.idPartidoEquipo1.split("&")[1]}}.png'></div>
 						<span class="col-xs-12 col-sm-4 no-padding-right no-padding-left hidden-sm hidden-md hidden-lg">{{partido.idPartidoEquipo1.split("&")[1]}}</span>
 						<span class="col-xs-12 no-padding-right hidden-xs">{{partido.idPartidoEquipo1.split("&")[0]}}</span>
@@ -254,7 +254,7 @@
 	          		<span>Jornada</span>
 	          	</div>
 	          	<div class="col-md-6 col-xs-8">
-			          <input type="number" ng-model="nuevoPartido.jornada">
+			          <input type="text" ng-model="nuevoPartido.jornada">
 			    </div>
 	          </div>
 	          <div class="col-xs-12 partido-row">
@@ -295,7 +295,7 @@
 	        <h4 class="modal-title">Nueva versión disponible!</h4>
 	    </div>
 	    <div class="modal-body col-xs-12">
-	        <p>Por favor actualiza la versión de la applicaión desde <a href="https://play.google.com/store/apps/details?id=com.appquiniela.echo">aquí</a> para poder seguir utilizandola!
+	        <p>Por favor actualiza la versión de la applicaión desde <a href="https://play.google.com/store/apps/details?id=com.quinielagalactica.echo">aquí</a> para poder seguir utilizandola!
 	        </p>
 	    </div>
 	</modal>

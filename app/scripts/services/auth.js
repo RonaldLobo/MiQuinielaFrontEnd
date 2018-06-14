@@ -8,11 +8,12 @@
  * Service in the miQuinielaApp.
  */
 angular.module('miQuinielaApp')
-  .service('auth', ['$rootScope','$http','$location',function ($rootScope,$http,$location) {
+  .service('auth', ['$rootScope','$http','$location','Facebook',function ($rootScope,$http,$location,Facebook) {
   	// public variables
   	this.loggedUser = {};
   	this.isAuthenticated = false,
   	this.isFacebookAuth = false,
+  	this.app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 
   	//private variables
 
@@ -194,16 +195,22 @@ angular.module('miQuinielaApp')
 
   	this.fbLogin = function(user){
   		var self = this;
+  		console.log('user',user);
+  		var fbUser = {};
+  		fbUser.usuario = user.id
+  		fbUser.nombre = user.first_name;
+        fbUser.apellido1 = user.last_name.split(' ')[0];
+        if(user.last_name.split(' ').length > 1){
+            fbUser.apellido2 = user.last_name.split(' ')[1]
+        }
+        fbUser.contrasenna = 'facebook';
+        fbUser.tipo = 'fb';
   		if(user.id){
 	      	$http({
 				url: $rootScope.apiUrl+"/API/index.php/login",
 				skipAuthorization: true,
 				method: 'POST',
-				data: {
-					usuario: user.id,
-					contrasenna: "",
-					tipo: "fb"
-				}
+				data: fbUser
 			}).then(function(response) {
 				self.isFacebookAuth = true;
 				localStorage.setItem('JWT', response.data.auth.token);
@@ -224,6 +231,32 @@ angular.module('miQuinielaApp')
   		if(localStorage.getItem('JWT')){
   			this.loggedUser = JSON.parse(localStorage.getItem('usuario'));
   			this.isFacebookAuth = localStorage.getItem('isFacebookAuth');
+  			if(this.isFacebookAuth){
+  				// $rootScope.$apply(function() {
+  					setTimeout(function(){ 
+  						if(app){
+  							window.facebookConnectPlugin.getLoginStatus((success)=>{
+				                if(success.status === 'connected'){
+				                } else {
+				                    window.facebookConnectPlugin.login(['email','public_profile'],(response) => {
+				                    	
+				                    },(error)=>{
+				                        console.log('error get user info ' + JSON.stringify(error));
+				                    });
+				                }
+				            },(error)=> {
+				                console.log('error check status');
+				                console.log(error);
+				            });
+  						} else {
+			    			Facebook.login(function(response) {
+					    		console.log('logged fb');
+					    	});
+			    		}
+				    }, 3000);
+	    		// });
+  				
+  			}
   			this.isAuthenticated = true;
   			return false;
   		}

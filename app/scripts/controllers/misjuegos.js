@@ -40,7 +40,7 @@ angular.module('miQuinielaApp')
 	    // PhoneGap application
 	    $http({
 		  url: $rootScope.apiUrl+"/API/index.php/versiones/",
-		  method: 'GET',
+		  method: 'GET'
 		}).then(function successCallback(response) {
 			if(cmpVersions(config.appVersion,response.data) < 0){
 				$scope.actualizaModal = true;
@@ -342,6 +342,8 @@ var dd = $scope.todayDate.getDate();
     };
 
     $scope.agregarPartidoNuevo = function(){
+    	console.log($scope.nuevoPartido.jornada);
+    	console.log('jornada');
     	var partido = {
     		partido: {
 	    		idPartidoTorneo : Number($scope.nuevoPartido.torneo),

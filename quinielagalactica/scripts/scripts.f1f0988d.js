@@ -25,13 +25,24 @@ angular
     'ui.bootstrap', 
     'ui.bootstrap.datetimepicker',
     'toastr'
-  ])  
+  ])
+  .constant('config', {
+    appName: 'QuinielaGalactica',
+    appVersion: '2.0.0',
+    apiUrl: 'localhost',
+    prod: 'http://quinielagalactica.com'
+  })
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/index.html',
         controller: 'indexCtrl',
         controllerAs: 'index'
+      })
+      .when('/jugar', {
+        templateUrl: 'views/jugar.html',
+        controller: 'JugarCtrl',
+        controllerAs: 'jugar'
       })
       .when('/about', {
         templateUrl: 'views/about.html',
@@ -53,7 +64,7 @@ angular
         controller: 'TorneosCtrl',
         controllerAs: 'torneos'
       })
-      .when('/grupos', {
+      .when('/tablas', {
         templateUrl: 'views/grupos.html',
         controller: 'GruposCtrl',
         controllerAs: 'grupos'
@@ -111,12 +122,27 @@ angular
       timeOut: 1000,
     });
   })
+  .filter('reverse', function() {
+    return function(items) {
+      if(items){
+        return items.slice().reverse();
+      }
+      else{
+        return items;
+      }
+    };
+  })
+  .filter('removeSpaces', [function() {
+    return function(string) {
+        if (!angular.isString(string)) {
+            return string;
+        }
+        return string.replace(/[\s]/g, '');
+    };
+  }])
   .run(function($rootScope, $location,auth) {
     $rootScope.$on( "$routeChangeStart", function(event, next, current) {
       $rootScope.actual = next.templateUrl;
-      // if ( next.templateUrl === "partials/index.html") {
-      //   $rootScope.actual = '/';
-      // }
       if (auth.isAuthenticated == false) {
         if ( next.templateUrl === "partials/index.html") {
         } else {
@@ -124,6 +150,9 @@ angular
         }
       }
     });
+    console.log('host',window.location.hostname);
+    $rootScope.apiUrl = (window.location.hostname === "0.0.0.0")? 'http://0.0.0.0:82':"http://quinielagalactica.com";
+    $rootScope.isLoading = false;
   });
 
 'use strict';
@@ -144,20 +173,6 @@ angular.module('miQuinielaApp')
   	}, true);
 	
   }]);
-
-'use strict';
-
-/**
- * @ngdoc function
- * @name miQuinielaApp.controller:AboutCtrl
- * @description
- * # AboutCtrl
- * Controller of the miQuinielaApp
- */
-angular.module('miQuinielaApp')
-  .controller('AboutCtrl', function () {
-
-  });
 
 'use strict';
 
@@ -211,11 +226,12 @@ angular.module('miQuinielaApp')
  * Service in the miQuinielaApp.
  */
 angular.module('miQuinielaApp')
-  .service('auth', ['$http','$location',function ($http,$location) {
+  .service('auth', ['$rootScope','$http','$location','Facebook',function ($rootScope,$http,$location,Facebook) {
   	// public variables
   	this.loggedUser = {};
   	this.isAuthenticated = false,
   	this.isFacebookAuth = false,
+  	this.app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 
   	//private variables
 
@@ -223,7 +239,7 @@ angular.module('miQuinielaApp')
   		var self = this;
   		if(user.username && user.password){
 	      	$http({
-				url: 'http://appquiniela.com/API/index.php/login',
+				url: $rootScope.apiUrl+"/API/index.php/login?XDEBUG_SESSION_START=netbeans-xdebug",
 				skipAuthorization: true,
 				method: 'POST',
 				data: {
@@ -232,6 +248,7 @@ angular.module('miQuinielaApp')
 					tipo: "normal"
 				}
 			}).then(function(response) {
+                console.log('got response',response);
 				if(response.data.error){
 					self.error = response.data.error.error;
 				}
@@ -244,14 +261,47 @@ angular.module('miQuinielaApp')
 					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
 					self.isAuthenticated = true;
 					self.error = null;
-					$location.path('/home');
+                    console.log('va a traer torneos');
+					$http({
+                      url: $rootScope.apiUrl+"/API/index.php/torneo/?usuario="+response.data.auth.user.id,
+                      method: 'GET',
+                    }).then(function successCallback(response) {
+                       //console.log('success',response);
+                       //$scope.torneos = true;
+                       var torneosUsuario = response.data.torneo;
+                       if (torneosUsuario.length<=0) {
+                        $location.path("/torneos");
+                       }else{
+                       		$location.path('/home');
+                       }
+                       console.log("sirve y son "+torneosUsuario.length)
+                   }, function errorCallback(response) {
+                       alert( "Request failed: " + response );
+                   });
 				}
 			},function(error){
 				self.error = error.data.error.error;
 			});
 		}
   	};
-
+  	this.agregarEmailNuevo = function(){
+	    	var email = {
+	    		email: {
+		    		"mail":""
+		    	},
+	    	};
+	    	$http({
+			  url: $rootScope.apiUrl+"/API/index.php/email/",
+			   data: email,
+			  method: 'POST',
+			}).then(function successCallback(response) {
+			    $scope.email={};
+			}, function errorCallback(response) {
+			    if(response.status == 401){
+			    	auth.logOut();
+			    }
+			});
+    };
   	this.regularLogup = function(user){
   		var self = this;
   		if(user.username && user.password){
@@ -266,7 +316,7 @@ angular.module('miQuinielaApp')
   				}
   			}
 	      	$http({
-				url: 'http://appquiniela.com/API/index.php/signup',
+				url: $rootScope.apiUrl+"/API/index.php/signup",
 				skipAuthorization: true,
 				method: 'POST',
 				data: usuario
@@ -283,7 +333,39 @@ angular.module('miQuinielaApp')
 					localStorage.setItem('usuario', JSON.stringify(self.loggedUser));	
 					self.isAuthenticated = true;
 					self.errorLogUp = null;
-					$location.path('/home');
+					$http({
+                      url: $rootScope.apiUrl+"/API/index.php/torneo/?usuario="+response.data.auth.user.id,
+                      method: 'GET',
+                   }).then(function successCallback(response) {
+                       //console.log('success',response);
+                       //$scope.torneos = true;
+
+                       var torneosUsuario = response.data.torneo;
+                       var email = {
+				    		email: {
+					    		"user":user.correo,
+					    		"name":user.nombre,
+					    		"username":user.username,
+					    		"pass":user.password
+					    	},
+				    	};
+				    	$http({
+						  url: $rootScope.apiUrl+"/API/index.php/email/",
+						   data: email,
+						  method: 'POST',
+						}).then(function successCallback(response) {
+						    $scope.email={};
+
+						}, function errorCallback(response) {
+						    if(response.status == 401){
+						    	auth.logOut();
+						    }
+						});
+                       console.log("sirve y son "+torneosUsuario.length);
+		                $location.path("/torneos");
+                   }, function errorCallback(response) {
+                       alert( "Request failed: " + response );
+                   });
 				}
 			},function(error){
 				console.log('error',error.data.error.error);
@@ -309,7 +391,7 @@ angular.module('miQuinielaApp')
 		}
   		if(user.id){
 	      	$http({
-				url: 'http://appquiniela.com/API/index.php/signup',
+				url: $rootScope.apiUrl+"/API/index.php/signup",
 				skipAuthorization: true,
 				method: 'POST',
 				data: usuario
@@ -331,16 +413,22 @@ angular.module('miQuinielaApp')
 
   	this.fbLogin = function(user){
   		var self = this;
+  		console.log('user',user);
+  		var fbUser = {};
+  		fbUser.usuario = user.id
+  		fbUser.nombre = user.first_name;
+        fbUser.apellido1 = user.last_name.split(' ')[0];
+        if(user.last_name.split(' ').length > 1){
+            fbUser.apellido2 = user.last_name.split(' ')[1]
+        }
+        fbUser.contrasenna = 'facebook';
+        fbUser.tipo = 'fb';
   		if(user.id){
 	      	$http({
-				url: 'http://appquiniela.com/API/index.php/login?XDEBUG_SESSION_START=netbeans-xdebug',
+				url: $rootScope.apiUrl+"/API/index.php/login",
 				skipAuthorization: true,
 				method: 'POST',
-				data: {
-					usuario: user.id,
-					contrasenna: "",
-					tipo: "fb"
-				}
+				data: fbUser
 			}).then(function(response) {
 				self.isFacebookAuth = true;
 				localStorage.setItem('JWT', response.data.auth.token);
@@ -361,6 +449,32 @@ angular.module('miQuinielaApp')
   		if(localStorage.getItem('JWT')){
   			this.loggedUser = JSON.parse(localStorage.getItem('usuario'));
   			this.isFacebookAuth = localStorage.getItem('isFacebookAuth');
+  			if(this.isFacebookAuth){
+  				// $rootScope.$apply(function() {
+  					setTimeout(function(){ 
+  						if(app){
+  							window.facebookConnectPlugin.getLoginStatus((success)=>{
+				                if(success.status === 'connected'){
+				                } else {
+				                    window.facebookConnectPlugin.login(['email','public_profile'],(response) => {
+				                    	
+				                    },(error)=>{
+				                        console.log('error get user info ' + JSON.stringify(error));
+				                    });
+				                }
+				            },(error)=> {
+				                console.log('error check status');
+				                console.log(error);
+				            });
+  						} else {
+			    			Facebook.login(function(response) {
+					    		console.log('logged fb');
+					    	});
+			    		}
+				    }, 3000);
+	    		// });
+  				
+  			}
   			this.isAuthenticated = true;
   			return false;
   		}
@@ -389,15 +503,17 @@ angular.module('miQuinielaApp')
 
   }]);
 
-angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Facebook','$timeout','$rootScope',function () { 'use strict';
+angular.module('miQuinielaApp').directive('ngMenu', ['$http','$location','auth','Facebook','$timeout','$rootScope',function () { 'use strict';
 
         return {
             restrict: 'A',
             templateUrl: 'views/menu.html',
-            controller: function ($scope,$location,auth,Facebook,$timeout,$rootScope) {
+            controller: function ($http,$scope,$location,auth,Facebook,$timeout,$rootScope) {
 
             	var self = this;
             	$scope.user = {};
+				this.user = {};
+            	var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 
             	if(auth.isAuthenticated == false){
             		var needsToLog = auth.checkForLogin();
@@ -411,7 +527,6 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
             		}
             	}
             	$scope.user = auth.loggedUser;
-
             	$scope.$watch(function(){return auth.isAuthenticated;}, function (v) {
 					$scope.isAuthenticated = v;
 					if(v == true && $scope.displayLoginModal == true){
@@ -500,7 +615,8 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
                 	$scope.home = false;
                 	$scope.torneos = false;
                 	$scope.foro = false;
-                	$scope.grupos = false;
+                	$scope.tablas = false;
+                	$scope.jugar = false;
                 	$scope.configuracion = false;
 	                switch($location.path()){
 	                	case "/home": 
@@ -509,8 +625,11 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	                	case "/torneos": 
 	                		$scope.torneos = true;
 	                		break;
-	                	case "/grupos": 
-	                		$scope.grupos = true;
+	                	case "/jugar": 
+	                		$scope.jugar = true;
+	                		break;
+	                	case "/tablas": 
+	                		$scope.tablas = true;
 	                		break;
 	                	case "/configuracion": 
 	                		$scope.configuracion = true;
@@ -518,18 +637,6 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 	                }
 	            });
 
-
-                //-------------------------------------------//
-			    //login
-
-
-				// Define user empty data :/
-				this.user = {};
-
-				/**
-				* Watch for Facebook to be ready.
-				* There's also the event that could be used
-				*/
 				$scope.$watch(
 					function() {
 					  return Facebook.isReady();
@@ -548,103 +655,77 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
 					}
 				});
 
-				/**
-				* IntentLogin
-				*/
 				$scope.IntentLogin = function() {
-					//if(!userIsConnected) {
-					  $scope.login();
-					//}
+					$scope.login();
 				};
 
 				$scope.IntentLoginUp = function() {
-					//if(!userIsConnected) {
+					$scope.login();
+				};
+
+				$scope.login = function() {
+					if(app){
+						window.facebookConnectPlugin.getLoginStatus((success)=>{
+			                if(success.status === 'connected'){
+			                    $scope.me();
+			                } else {
+			                    window.facebookConnectPlugin.login(['email','public_profile'],(response) => {
+		                            $scope.me();
+		                        },(error)=>{
+		                            console.log('error get user info ' + JSON.stringify(error));
+		                        });
+			                }
+			            },(error)=> {
+			                console.log('error check status');
+			                console.log(error);
+			            });
+					} else {
 						Facebook.login(function(response) {
 							if (response.status == 'connected') {
 								$scope.logged = true;
-								Facebook.api('/me', function(response) {
-									console.log('response',response);
-								    $scope.$apply(function() {
-								      $scope.user = response;
-								      auth.fbLoginUp(response);
-								    });
-								    
-								  });
+								$scope.me();
 							}
-
 						});
-					//}
+					}
 				};
 
-				/**
-				* Login
-				*/
-				$scope.login = function() {
-					Facebook.login(function(response) {
-						if (response.status == 'connected') {
-							$scope.logged = true;
-							$scope.me();
-						}
-
-					});
-				};
-
-				/**
-				* me 
-				*/
 				$scope.me = function() {
-				  Facebook.api('/me', function(response) {
-				    /**
-				     * Using $scope.$apply since this happens outside angular framework.
-				     */
-				    $scope.$apply(function() {
-				      $scope.user = response;
-				      auth.fbLogin(response);
-				    });
-				    
-				  });
+					if(app){
+						window.facebookConnectPlugin.api("/me?fields=email,first_name,last_name,picture", null,(res)=>{
+						    $scope.$apply(function() {
+						    	$scope.user = res;
+						    	auth.fbLogin(res);
+						    });
+				        },(error)=>{
+				            console.log('error get user info ' + JSON.stringify(error));
+				        });
+					} else {
+						Facebook.api('/me?fields=email,first_name,last_name,picture', function(response) {
+							$scope.$apply(function() {
+							  $scope.user = response;
+							  auth.fbLogin(response);
+							});
+						});
+					}
 				};
 
-				/**
-				* Logout
-				*/
 				$scope.logout = function() {
-					if(userIsConnected){
+					if(this.isApp){
+			            window.facebookConnectPlugin.logout((success) => {
+			                console.log('success logout');
+			            }, (failure) => {
+			                console.log('fail login');
+			            });
+			        } else {
 						Facebook.logout(function() {
 						  $scope.$apply(function() {
 						    $scope.user   = {};
 						    $scope.logged = false;  
 						  });
 						});
-					}
-					auth.logOut();
+			        }
+			        auth.logOut();
 				}
-
-				/**
-				* Taking approach of Events :D
-				*/
-				$scope.$on('Facebook:statusChange', function(ev, data) {
-					if (data.status == 'connected') {
-
-						$scope.$apply(function() {
-							$scope.salutation = true;
-							$scope.byebye     = false;    
-						});
-					} else {
-					  $scope.$apply(function() {
-					    $scope.salutation = false;
-					    $scope.byebye     = true;
-					    
-					    // Dismiss byebye message after two seconds
-					    $timeout(function() {
-					      $scope.byebye = false;
-					    }, 2000)
-					  });
-					}
-				});
- 
-
-
             }
         };
     }]);
@@ -658,17 +739,55 @@ angular.module('miQuinielaApp').directive('ngMenu', ['$location','auth','Faceboo
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('MisjuegosCtrl', ['$scope','lodash','$http','auth','$anchorScroll','$location','$timeout','toastr',function ($scope,lodash,$http,auth,$anchorScroll,$location,$timeout,toastr) {
-
-	// $('.btn-navbar').click(); //bootstrap 2.x
- //    $('.navbar-toggle').click() //bootstrap 3.x by Richard
+  .controller('MisjuegosCtrl', ['$rootScope','$scope','lodash','$http','auth','$anchorScroll','$location','$timeout','toastr','config',function ($rootScope,$scope,lodash,$http,auth,$anchorScroll,$location,$timeout,toastr,config) {
 
     $scope.nuevoEquipo = {};
-
+    $scope.urlTest="Invierno"
     $scope.nuevoPartido = {};
-
+	$scope.email={};
     $scope.displayAddEquipo = false;
+	$scope.muestraPag="noPag";
+	$scope.isToday=true;
+	$scope.showPerc=-1;
+	function cmpVersions (a, b) {
+	    var i, diff;
+	    var regExStrip0 = /(\.0+)+$/;
+	    var segmentsA = a.replace(regExStrip0, '').split('.');
+	    var segmentsB = b.replace(regExStrip0, '').split('.');
+	    var l = Math.min(segmentsA.length, segmentsB.length);
 
+	    for (i = 0; i < l; i++) {
+	        diff = parseInt(segmentsA[i], 10) - parseInt(segmentsB[i], 10);
+	        if (diff) {
+	            return diff;
+	        }
+	    }
+	    return segmentsA.length - segmentsB.length;
+	}
+
+	//verificar version del APP
+	var tipoApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+	if ( tipoApp ) {
+	    // PhoneGap application
+	    $http({
+		  url: $rootScope.apiUrl+"/API/index.php/versiones/",
+		  method: 'GET'
+		}).then(function successCallback(response) {
+			if(cmpVersions(config.appVersion,response.data) < 0){
+				$scope.actualizaModal = true;
+			}
+		}, function errorCallback(response) {
+		    if(response.status == 401){
+		    	auth.logOut();
+		    }
+		});
+
+	} else {
+		//Web version
+	}
+	$scope.showPercDiv=function(id){
+		$scope.showPerc=id;
+	}
     $scope.displayAgregarEquipo = function(){
     	if($scope.displayAddEquipo){
     		$scope.displayAddEquipo = false;
@@ -677,7 +796,9 @@ angular.module('miQuinielaApp')
     		$scope.displayAddEquipo = true;
     	}
     };
-
+    $scope.onTextClick = function ($event) {
+	    $event.target.select();
+	};
     $scope.picker = {
         date: new Date()
     };
@@ -693,7 +814,7 @@ angular.module('miQuinielaApp')
     $scope.todayDate = new Date();
     $scope.initDate = new Date();
     $scope.finalDate = new Date()
-    $scope.finalDate.setDate($scope.todayDate.getDate() + 7);
+    $scope.finalDate.setDate($scope.todayDate.getDate() + 8);
     $scope.initDate.setDate($scope.todayDate.getDate() - 7);
 
     function convertDate(date){
@@ -726,30 +847,88 @@ angular.module('miQuinielaApp')
 	    } 
 	    return yyyy+'-'+mm+'-'+dd+' '+hours+':'+minutes+':'+seconds;
     }
+// var newDate = new Date(date.getTime()+date.getTimezoneOffset()*60*1000);
 
+//     var offset = date.getTimezoneOffset() / 60;
+//     var hours = date.getHours();
+
+//     newDate.setHours(hours - offset);
+var dd = $scope.todayDate.getDate();
+	    var mm = $scope.todayDate.getMonth()+1; //January is 0!
+	    var hours = $scope.todayDate.getHours();
+		var minutes = $scope.todayDate.getMinutes();
+		var seconds = $scope.todayDate.getSeconds();
+
+	    var yyyy = $scope.todayDate.getFullYear();
+	    if(dd<10){
+	        dd='0'+dd
+	    } 
+	    if(mm<10){
+	        mm='0'+mm
+	    } 
+//alert(hours+':'+minutes+':'+seconds);
 
     console.log($scope.initDate,$scope.finalDate);
+    $rootScope.isLoading = true;
     $http({
-	  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate),
+	  url: $rootScope.apiUrl+"/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&fechaLocal='+hours+':'+minutes+':'+seconds,
 	  method: 'GET',
 	}).then(function successCallback(response) {
+		$rootScope.isLoading = false;
 	    $scope.partidos = response.data.partido;
 		$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
-	    	return date >= new Date(o.fecha); 
-	    });
+	    	var dateTime = o.fecha.split(" ");
+		    var dateOnly = dateTime[0];
+		    var timeOnly = dateTime[1];
 
+		    var temp = dateOnly + "T" + timeOnly;
+		    function dateFromString(str) {
+			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+			}
+	    	return date >= new Date(dateFromString(temp).setHours(dateFromString(temp).getHours()+2)); 
+	    });
+		$scope.filtradosAhora = lodash.filter($scope.partidos, function(o) { 
+	    	var date = new Date();
+	    	var dateTime = o.fecha.split(" ");
+		    var dateOnly = dateTime[0];
+		    var timeOnly = dateTime[1];
+
+		    var temp = dateOnly + "T" + timeOnly;
+		    function dateFromString(str) {
+			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+			}
+	    	//console.log(date+" -- "+new Date(dateFromString(temp)));
+	    	return date >= new Date(dateFromString(temp)) && date< new Date(dateFromString(temp)).setHours(dateFromString(temp).getHours()+2); 
+	    });
 	    $scope.filtradosFuturo = lodash.filter($scope.partidos, function(o) { 
 	    	var date = new Date();
-	    	return date < new Date(o.fecha);  
+	    	var dateTime = o.fecha.split(" ");
+		    var dateOnly = dateTime[0];
+		    var timeOnly = dateTime[1];
+
+		    var temp = dateOnly + "T" + timeOnly;
+		    function dateFromString(str) {
+			  var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+			  return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+			}
+	    	return date < new Date(dateFromString(temp));  
 	    });
 	    // set the location.hash to the id of
 	    // the element you wish to scroll to.
 	    $timeout(function(){
-	    	$location.hash('hoy');
+
+    		var old = $location.hash();
+    		if($scope.filtradosAhora.length)$location.hash('ahora');
+	    	else $location.hash('hoy');
 
 		    // call $anchorScroll()
 		    $anchorScroll();
+			$location.hash(old);
+			$scope.muestraPag="siPag";
+
 		    angular.element('.scroll-icon').addClass('blink_me');
 		    $timeout(function(){
 			    angular.element('.scroll-icon').addClass('hide');
@@ -757,6 +936,7 @@ angular.module('miQuinielaApp')
 	    }, 700);
 	    
 	}, function errorCallback(response) {
+		$rootScope.isLoading = false;
 	    if(response.status == 401){
 	    	auth.logOut();
 	    }
@@ -765,7 +945,7 @@ angular.module('miQuinielaApp')
 	// traer equipos y torneos
 	if(auth.loggedUser.rol == 'admin'){
 		$http({
-		  url: "http://appquiniela.com/API/index.php/equipo/",
+		  url: $rootScope.apiUrl+"/API/index.php/equipo/",
 		  method: 'GET',
 		}).then(function successCallback(response) {
 		    $scope.equipos = response.data.equipo;
@@ -776,7 +956,7 @@ angular.module('miQuinielaApp')
 		});
 
 		$http({
-		  url: "http://appquiniela.com/API/index.php/torneo/",
+		  url: $rootScope.apiUrl+"/API/index.php/torneo/",
 		  method: 'GET',
 		}).then(function successCallback(response) {
 		    $scope.torneos = response.data.torneo;
@@ -786,7 +966,23 @@ angular.module('miQuinielaApp')
 		    }
 		});
 	}
+	$scope.irHoy=function(){
+		var old = $location.hash();
+    		if($scope.filtradosAhora.length)$location.hash('ahora');
+	    	else $location.hash('hoy');
 
+		    // call $anchorScroll()
+		    $anchorScroll();
+			$location.hash(old);
+	}
+	$scope.lastMatchDate="";
+	$scope.sameDate=function(date){
+		if(date!=$scope.lastMatchDate){
+			$scope.lastMatchDate=date;
+			return true;
+		}
+		return false;
+	}
 	$scope.guardarPartido = function(partido){
 		if(!isNaN(partido.marcadorEquipo1) && !isNaN(partido.marcadorEquipo2)){
 	    	var partido = {
@@ -797,20 +993,21 @@ angular.module('miQuinielaApp')
 	    		}
 	    	};
 	    	$http({
-			  url: "http://appquiniela.com/API/index.php/partidos/?method=PUT",
+			  url: $rootScope.apiUrl+"/API/index.php/partidos/?method=PUT",
 			  data: partido,
 			  method: 'POST',
 			}).then(function successCallback(response) {
+				toastr.success('', 'Partido Actualizado');
 				$http({
-				  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
+				  url: $rootScope.apiUrl+"/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
 				  method: 'GET',
 				}).then(function successCallback(response) {
-				    console.log('success',response.data.partido);
+				    //console.log('success',response.data.partido);
 				    $scope.partidos = response.data.partido;
 					$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
 				    	var date = new Date();
-				    	console.log(date);
-				    	console.log(Date(o.fecha));
+				    	//console.log(date);
+				    	//console.log(Date(o.fecha));
 				    	return date >= new Date(o.fecha); 
 				    });
 
@@ -849,7 +1046,7 @@ angular.module('miQuinielaApp')
 	    		}
 	    	};
 	    	$http({
-			  url: "http://appquiniela.com/API/index.php/predicciones/?method=PUT",
+			  url: $rootScope.apiUrl+"/API/index.php/predicciones/?method=PUT",
 			  data: prediccion,
 			  method: 'POST',
 			}).then(function successCallback(response) {
@@ -871,8 +1068,13 @@ angular.module('miQuinielaApp')
     $scope.agregarPartido = function(){
     	$scope.displayAddPartidoModal = true;
     };
+    $scope.agregarEmail = function(){
+    	$scope.displayAddEmailModal = true;
+    };
 
     $scope.agregarPartidoNuevo = function(){
+    	console.log($scope.nuevoPartido.jornada);
+    	console.log('jornada');
     	var partido = {
     		partido: {
 	    		idPartidoTorneo : Number($scope.nuevoPartido.torneo),
@@ -880,19 +1082,20 @@ angular.module('miQuinielaApp')
 	    		idPartidoEquipo2: Number($scope.nuevoPartido.equipo2),
 	    		marcadorEquipo1: 0,
 	    		marcadorEquipo2: 0,
+	    		jornada: $scope.nuevoPartido.jornada,
 	    		fecha: convertDateHora($scope.picker.date)
 	    	}
     	};
     	$http({
-		  url: "http://appquiniela.com/API/index.php/partidos/",
+		  url: $rootScope.apiUrl+"/API/index.php/partidos/",
 		  data: partido,
 		  method: 'POST',
 		}).then(function successCallback(response) {
 		    $http({
-			  url: "http://appquiniela.com/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
+			  url: $rootScope.apiUrl+"/API/index.php/partidos/?fechaInicio="+convertDate($scope.initDate)+'&fechaFin='+convertDate($scope.finalDate)+'&XDEBUG_SESSION_START=netbeans-xdebug',
 			  method: 'GET',
 			}).then(function successCallback(response) {
-			    console.log('success',response.data.partido);
+			    //console.log('success',response.data.partido);
 			    $scope.partidos = response.data.partido;
 				$scope.filtradosPasado = lodash.filter($scope.partidos, function(o) { 
 			    	var date = new Date();
@@ -918,7 +1121,7 @@ angular.module('miQuinielaApp')
 		});
 
 		$http({
-		  url: "http://appquiniela.com/API/index.php/torneo/",
+		  url: $rootScope.apiUrl+"/API/index.php/torneo/",
 		  method: 'GET',
 		}).then(function successCallback(response) {
 		    $scope.torneos = response.data.torneo;
@@ -929,15 +1132,42 @@ angular.module('miQuinielaApp')
 		});
     };
 
+    $scope.agregarEmailNuevo = function(){
+    	var txt;
+		var r = confirm("Desea realmente enviar el correo?");
+		if (r == true) {
+	    	var email = {
+	    		email: {
+		    		"subject" : $scope.email.titulo,
+		    		"body": $scope.email.contenido,
+		    		"user":$scope.email.correo
+		    	},
+	    	};
+	    	$http({
+			  url: $rootScope.apiUrl+"/API/index.php/email/",
+			   data: email,
+			  method: 'POST',
+			}).then(function successCallback(response) {
+			    $scope.email={};
+			}, function errorCallback(response) {
+			    if(response.status == 401){
+			    	auth.logOut();
+			    }
+			});
+
+		} 
+    };
+
     $scope.agregarEquipo = function(){
     	var equipo = {
     		equipo : {
     			equipo: $scope.nuevoEquipo.nombre,
+    			acronimo: $scope.nuevoEquipo.acronimo,
     			estado: 1
     		}
     	};
     	$http({
-		  url: "http://appquiniela.com/API/index.php/equipo/",
+		  url: $rootScope.apiUrl+"/API/index.php/equipo/",
 		  data: equipo,
 		  method: 'POST',
 		}).then(function successCallback(response) {
@@ -969,7 +1199,17 @@ angular.module('miQuinielaApp')
             fecha: "="
       },
       link: function postLink(scope, element, attrs) {
-      	var date = new Date(scope.fecha);
+        var dateTime = scope.fecha.split(" ");
+        var dateOnly = dateTime[0];
+        var timeOnly = dateTime[1];
+
+        var temp = dateOnly + "T" + timeOnly;
+        function dateFromString(str) {
+          var a = $.map(str.split(/[^0-9]/), function(s) { return parseInt(s, 10) });
+          return new Date(a[0], a[1]-1 || 0, a[2] || 1, a[3] || 0, a[4] || 0, a[5] || 0, a[6] || 0);
+        }
+
+      	var date = new Date(dateFromString(temp));
         var month = date.getMonth() + 1;
         element.text(date.getDate()+'/'+month+'/'+date.getFullYear()+' '+date.getHours() + ':'+date.getMinutes());
       }
@@ -985,71 +1225,139 @@ angular.module('miQuinielaApp')
  * # ConfiguracionCtrl
  * Controller of the miQuinielaApp
  */
-angular.module('miQuinielaApp')
-  .controller('ConfiguracionCtrl', function ($scope,auth,$http) {
-    //get user logged
-    $scope.usuario = auth.loggedUser;
-    console.log($scope.usuario);
+ angular.module('miQuinielaApp')
+ .controller('ConfiguracionCtrl', function ($rootScope,$scope,auth,$http,Facebook) {
+    $scope.usuario = auth.loggedUser; // Usuario logeado
+    var app = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
 
-  	$scope.actualizarUsuario = function(){
-  		var usuario = {
-  			"usuario": $scope.usuario
-  		}
-  		console.log(usuario);
-  		$http({
-		  url: "http://appquiniela.com/API/index.php/usuarios/?method=PUT",
-		  method: "POST",
-		  data: usuario
-		}).then(function successCallback(response) {
-		    $scope.usuario = response.data.usuario;
-		    localStorage.setItem('usuario', JSON.stringify($scope.usuario));	
-		}, function errorCallback(response) {
-		    if(response.status == 401){
-		    	auth.logOut();
-		    }
-		});
-  	};
+    $scope.actualizarUsuario = function(){
+    	actualizarUsuario($scope.usuario);
+    };
 
-  	obtenerInvitaciones(auth.loggedUser.id);
+    function actualizarUsuario(usuario) {
+    	var usuario = {
+    		"usuario": usuario
+    	}
+    	$rootScope.isLoading = true;
+    	$http({
+    		url: $rootScope.apiUrl+"/API/index.php/usuarios/?method=PUT",
+    		method: "POST",
+    		data: usuario
+    	}).then(function successCallback(response) {
+    		$rootScope.isLoading = false;
+    		$scope.usuario = response.data.usuario;
+    		localStorage.setItem('usuario', JSON.stringify($scope.usuario)); 
+    		auth.logOut();
+    	}, function errorCallback(response) {
+    		$rootScope.isLoading = false;
+    		if(response.status == 401){
+    			auth.logOut();
+    		}
+    	});
+    }
 
-  	function obtenerInvitaciones(id){
-  		$http({
-		  url: "http://appquiniela.com/API/index.php/invitaciones/"+id,
-		  method: "GET",
-		}).then(function successCallback(response) {
-		    $scope.invitaciones = response.data.grupos;
-		}, function errorCallback(response) {
-		    if(response.status == 401){
-		    	auth.logOut();
-		    }
-		});
-		
-  	}
+    $scope.aceptarInvitacion = function(id){
+    	$rootScope.isLoading = true;
+    	$http({
+    		url: $rootScope.apiUrl+"/API/index.php/invitaciones/?id="+id+"&method=PUT",
+    		method: "POST",
+    		dataType: "text"
+    	}).then(function successCallback(response) {
+    		$rootScope.isLoading = false;
+    		$scope.$apply(function() {
+    			$scope.invitaciones = _.remove($scope.invitaciones, function(n) {
+    				console.log(n,n.id, n.id == id);
+    				return n.id != id;
+    			});
+    		});
+    	}, function errorCallback(response) {
+    		$rootScope.isLoading = false;
+    		if(response.status == 401){
+    			auth.logOut();
+    		}
+    	});
+    }
 
-  	$scope.aceptarInvitacion = function(id){
-  		$http({
-		  url: "http://appquiniela.com/API/index.php/invitaciones/?id="+id+"&method=PUT",
-		  method: "POST",
-		  dataType: "text"
-		}).then(function successCallback(response) {
-		    $scope.$apply(function() {
-				$scope.invitaciones = _.remove($scope.invitaciones, function(n) {
-				  console.log(n,n.id, n.id == id);
-				  return n.id != id;
-			  	});
-			});
-		}, function errorCallback(response) {
-		    if(response.status == 401){
-		    	auth.logOut();
-		    }
-		});
-  	}
+    $scope.cancelarUsuario = function(){
+    	$scope.usuario = JSON.parse(localStorage.getItem('usuario'));
+    }
 
-  	$scope.cancelarUsuario = function(){
-  		$scope.usuario = JSON.parse(localStorage.getItem('usuario'));
-  	}
-    
-  });
+    $scope.integrarFb = function(){
+        if(app){
+            window.facebookConnectPlugin.getLoginStatus((success)=>{
+                if(success.status === 'connected'){
+                    updateMeFb();
+                } else {
+                    window.facebookConnectPlugin.login(['email','public_profile'],(response) => {
+                        updateMeFb();
+                    },(error)=>{
+                        console.log('error get user info ' + JSON.stringify(error));
+                    });
+                }
+            },(error)=> {
+                console.log('error check status');
+                console.log(error);
+            });
+        } else {
+        	Facebook.login(function(response) {
+        		if (response.status == 'connected') {
+        			updateMeFb();
+        		}
+        	});
+        }
+    }
+
+    function updateMeFb(){
+        if(app){
+            window.facebookConnectPlugin.api("/me?fields=email,first_name,last_name,picture", null,(response)=>{
+                console.log('response',response);
+                let fbUser = $scope.usuario;
+                fbUser.usuario = response.id
+                fbUser.nombre = response.first_name;
+                fbUser.apellido1 = response.last_name.split(' ')[0];
+                if(response.last_name.split(' ').length > 1){
+                    fbUser.apellido2 = response.last_name.split(' ')[1]
+                }
+                fbUser.contrasenna = 'facebook';
+                fbUser.tipo = 'fb';
+                actualizarUsuario(fbUser);
+            });
+        } else {
+            Facebook.api('/me?fields=email,first_name,last_name,picture', function(response) {
+                console.log('response',response);
+                let fbUser = $scope.usuario;
+                fbUser.usuario = response.id
+                fbUser.nombre = response.first_name;
+                fbUser.apellido1 = response.last_name.split(' ')[0];
+                if(response.last_name.split(' ').length > 1){
+                    fbUser.apellido2 = response.last_name.split(' ')[1]
+                }
+                fbUser.contrasenna = 'facebook';
+                fbUser.tipo = 'fb';
+                actualizarUsuario(fbUser);
+            });
+        }
+    }
+
+    function obtenerInvitaciones(id){
+    	$http({
+    		url: $rootScope.apiUrl+"/API/index.php/invitaciones/"+id,
+    		method: "GET",
+    	}).then(function successCallback(response) {
+    		$scope.invitaciones = response.data.grupos;
+    	}, function errorCallback(response) {
+    		if(response.status == 401){
+    			auth.logOut();
+    		}
+    	});
+    }
+
+    function init(){
+    	obtenerInvitaciones(auth.loggedUser.id);
+    }
+
+    init();
+});
 
 'use strict';
 
@@ -1061,7 +1369,7 @@ angular.module('miQuinielaApp')
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('TorneosCtrl', ['$http','$scope','$timeout','auth','lodash',function ($http,$scope,$timeout,auth,lodash) {
+  .controller('TorneosCtrl', ['$rootScope','$http','$scope','$timeout','auth','lodash',function ($rootScope,$http,$scope,$timeout,auth,lodash) {
 
 if(auth.loggedUser.rol == 'admin'){
     ListarTorneosPorUsuarioAdmin();
@@ -1074,7 +1382,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosPorUsuario(){
       $http({
-          url: "http://appquiniela.com/API/index.php/torneo/?usuario="+auth.loggedUser.id,
+          url: $rootScope.apiUrl+"/API/index.php/torneo/?usuario="+auth.loggedUser.id,
           method: 'GET',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -1086,7 +1394,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosPorUsuarioAdmin(){
       $http({
-        url: "http://appquiniela.com/API/index.php/torneo/",
+        url: $rootScope.apiUrl+"/API/index.php/torneo/",
         method: 'GET',
      }).then(function successCallback(response) {
          console.log('success',response);
@@ -1098,7 +1406,7 @@ if(auth.loggedUser.rol == 'admin'){
 
     function ListarTorneosGlobal(){
       $http({
-        url: "http://appquiniela.com/API/index.php/torneo/",
+        url: $rootScope.apiUrl+"/API/index.php/torneo/",
         method: 'GET',
      }).then(function successCallback(response) {
          console.log('success',response);
@@ -1125,13 +1433,28 @@ if(auth.loggedUser.rol == 'admin'){
         }
         if(torneo != undefined){
          $http({
-           url: "http://appquiniela.com/API/index.php/torneo/",
+           url: $rootScope.apiUrl+"/API/index.php/torneo/",
            method: 'POST',
            data: JSON.stringify(torneoAdmin)
          }).then(function successCallback(response) {
              $scope.showAgregarTorneo = false;
-             $scope.torneosUsuario.push(response.data.torneoAdmin);
-             ListarTorneosPorUsuarioAdmin();
+              $scope.torneosUsuario.push(response.data.torneoAdmin);
+              ListarTorneosPorUsuarioAdmin();
+             $http({
+                 url: $rootScope.apiUrl+"/API/index.php/usuarioTorneos/",
+                 method: 'POST',
+                 data: {
+                  "usuarioTorneo": {
+                    "torneo": response.data.torneo.id,
+                    "usuario": auth.loggedUser.id
+                    }
+                   }
+               }).then(function successCallback(response) {
+                $timeout(function() {
+                });
+               }, function errorCallback(response) {
+                   alert( "Request failed: " + response );
+               });
          }, function errorCallback(response) {
              alert( "Request failed: " + response );
          });
@@ -1152,9 +1475,14 @@ if(auth.loggedUser.rol == 'admin'){
          var validaTorneoLista = _.filter($scope.torneosUsuario,{ 'id': torneo.id }); 
          if(Object.keys(validaTorneoLista).length == 0){ 
             $http({
-                 url: "http://appquiniela.com/API/index.php/usuarioTorneos/",
+                 url: $rootScope.apiUrl+"/API/index.php/usuarioTorneos/",
                  method: 'POST',
-                 data: JSON.stringify(torneoUsuario)
+                 data: {
+                  "usuarioTorneo": {
+                    "torneo": torneo.id,
+                    "usuario": auth.loggedUser.id
+                    }
+                   }
                }).then(function successCallback(response) {
                    $scope.showAgregarTorneoUsuario = false;
                 $timeout(function() {
@@ -1172,7 +1500,7 @@ if(auth.loggedUser.rol == 'admin'){
       $scope.delTorneo = function(idTorneo) {
        if(auth.loggedUser.rol == 'admin'){
          $http({
-          url: "http://appquiniela.com/API/index.php/torneo/"+idTorneo,
+          url: $rootScope.apiUrl+"/API/index.php/torneo/"+idTorneo,
           method: 'DELETE',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -1186,7 +1514,7 @@ if(auth.loggedUser.rol == 'admin'){
        });
         } else {
           $http({
-          url: "http://appquiniela.com/API/index.php/usuarioTorneos/"+idTorneo,
+          url: $rootScope.apiUrl+"/API/index.php/usuarioTorneos/"+idTorneo,
           method: 'DELETE',
        }).then(function successCallback(response) {
            console.log('success',response);
@@ -1196,7 +1524,8 @@ if(auth.loggedUser.rol == 'admin'){
               });
            });
        }, function errorCallback(response) {
-           alert( "Request failed: " + response );
+           //alert( "Request failed: " + response );
+           alert( "Error al eliminar torneo");
        });
         }
       }
@@ -1213,18 +1542,27 @@ if(auth.loggedUser.rol == 'admin'){
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('GruposCtrl', function ($scope,auth,$http) {
+.run(['$anchorScroll', function($anchorScroll) {
+  $anchorScroll.yOffset = 250;   // always scroll by 50 extra pixels
+}])
+
+  .controller('GruposCtrl',  function ($rootScope,$scope,auth,$http, $location, $anchorScroll) {
     //get user logged
-    $scope.usuario=auth.loggedUser.id
+    $scope.usuarioLog=auth.loggedUser.id
     $scope.ordenUsuarios='position';
     $scope.flecha="Desc";
 	$scope.usuarios=[];
 	$scope.usuariosTodos={};
 	$scope.grupos={};
+	$scope.partidos={};
+	$scope.jornadas={};
     $scope.displayAddGrupoModal = false;
+    $scope.displayPredGrupoModal = false;
     $scope.grupoNuevo={};
     $scope.grupoNuevo.listaUsuarios=[];
     $scope.act={};
+    $scope.grupoNuevo.otrosGrupos=[];
+    $scope.predicciones={};
     $scope.act.crear="active";
     $scope.muestraTab=true;
 
@@ -1235,31 +1573,42 @@ angular.module('miQuinielaApp')
 
     }
   	var actualizaGrupos = function(){
+        $rootScope.isLoading = true;
   		$http({
-		  url: "http://appquiniela.com/API/index.php/grupos/?userId="+$scope.usuario,
+		  url: $rootScope.apiUrl+"/API/index.php/grupos/?userId="+$scope.usuarioLog,
 		  method: "GET",
 		}).then(function successCallback(response) {
+            $rootScope.isLoading = false;
 			$scope.grupos = response.data.grupos;
 	  		if($scope.grupos.length > 0){
 		  		$scope.grupoSeleccionado=$scope.grupos[0];
-		  		$scope.actualizarLista($scope.grupoSeleccionado.id);
+		  		$scope.actualizarLista($scope.grupoSeleccionado.id,0);
+		  		$scope.actualizaJornadas($scope.grupoSeleccionado.idTorneo);
 		  	}
+
 		}, function errorCallback(response) {
+            $rootScope.isLoading = false;
 		    if(response.status == 401){
 		    	auth.logOut();
 		    }
 		});
 
-		$http({
-		  url: "http://appquiniela.com/API/index.php/grupos/?sinUserId="+$scope.usuario,
-		  method: "GET"
+  	};
+  	$scope.actualizaJornadas = function(idTorneo){
+        $rootScope.isLoading = true;
+  		$http({
+		  url: $rootScope.apiUrl+"/API/index.php/partidos/?torneo="+idTorneo,
+		  method: "GET",
 		}).then(function successCallback(response) {
-	  		$scope.grupoNuevo.otrosGrupos=response.data.grupos;
+            $rootScope.isLoading = false;
+			$scope.partidos = response.data.partido;
 		}, function errorCallback(response) {
+            $rootScope.isLoading = false;
 		    if(response.status == 401){
 		    	auth.logOut();
 		    }
 		});
+
   	};
     var cambiaMensaje=function(msg){
 
@@ -1278,20 +1627,26 @@ angular.module('miQuinielaApp')
     	}
     	cambiaMensaje("");
     }
-  	$scope.actualizarLista = function(grupoId){
+  	$scope.actualizarLista = function(grupoId, jornada){
+
+  		// if(jornada==0)$scope.actualizaJornadas($scope.grupoSeleccionado.idTorneo);
+  		if(jornada==undefined)jornada=0;
+        $rootScope.isLoading = true;
   		$http({
-		  url: "http://appquiniela.com/API/index.php/usuarios/?userPoints="+grupoId,
+		  url: $rootScope.apiUrl+"/API/index.php/usuarios/?userPoints="+grupoId+"&jornada="+jornada,
 		  method: "GET"
 		}).then(function successCallback(response) {
+            $rootScope.isLoading = false;
 	  		$scope.usuarios=response.data.usuarios;
 		}, function errorCallback(response) {
+            $rootScope.isLoading = false;
 		    if(response.status == 401){
 		    	auth.logOut();
 		    }
 		});
 
 		$http({
-		  url: "http://appquiniela.com/API/index.php/usuarios/?byUser="+$scope.usuario,
+		  url: $rootScope.apiUrl+"/API/index.php/usuarios/?byUser="+$scope.usuarioLog,
 		  method: "GET"
 		}).then(function successCallback(response) {
 	  		$scope.usuariosTodos=response.data.usuarios;
@@ -1300,12 +1655,24 @@ angular.module('miQuinielaApp')
 		    	auth.logOut();
 		    }
 		});
-		      
+		$scope.grupoNuevo.otrosGrupos=[]; 
 		$http({
-		  url: "http://appquiniela.com/API/index.php/torneo/",
+		  url: $rootScope.apiUrl+"/API/index.php/torneo/?usuario="+$scope.usuarioLog,
 		  method: "GET"
 		}).then(function successCallback(response) {
 	  		$scope.torneos=response.data.torneo;
+			for (var i = 0; i < $scope.torneos.length; i++) {
+				$http({
+				  url: $rootScope.apiUrl+"/API/index.php/grupos/?sinUserId="+$scope.usuarioLog+"&torneo="+$scope.torneos[i].id,
+				  method: "GET"
+				}).then(function successCallback(response) {
+			  		$scope.grupoNuevo.otrosGrupos.splice.apply($scope.grupoNuevo.otrosGrupos, [response.data.grupos.length, 0].concat(response.data.grupos));
+				}, function errorCallback(response) {
+				    if(response.status == 401){
+				    	auth.logOut();
+				    }
+				});
+			};
 		}, function errorCallback(response) {
 		    if(response.status == 401){
 		    	auth.logOut();
@@ -1318,8 +1685,7 @@ angular.module('miQuinielaApp')
     $scope.agregarUsuario=function(){
     	if(typeof($scope.grupoNuevo.user)!=="undefined" && $scope.grupoNuevo.user.usuario!=="" && $scope.grupoNuevo.user!==0){
 	  		//$scope.$apply(function() {
-	  			console.log($scope.grupoNuevo.user);
-	  			if($scope.usuario!==$scope.grupoNuevo.user.id && !usuarioRepetido($scope.grupoNuevo.user.usuario)){
+	  			if($scope.usuarioLog!==$scope.grupoNuevo.user.id && !usuarioRepetido($scope.grupoNuevo.user.usuario)){
 		  			$scope.grupoNuevo.listaUsuarios[$scope.grupoNuevo.listaUsuarios.length]={
 		  				usuario:$scope.grupoNuevo.user.usuario,
 		  				id:$scope.grupoNuevo.user.id,
@@ -1350,13 +1716,13 @@ angular.module('miQuinielaApp')
     $scope.crearGrupo=function(){    	
     	if(typeof($scope.grupoNuevo.torneoSelect)!=="undefined" && $scope.grupoNuevo.name!=="" && $scope.grupoNuevo.torneoSelect.id!=="" && $scope.grupoNuevo.torneoSelect!==0){
 	      	$http({
-			  	url: "http://appquiniela.com/API/index.php/grupos/",
+			  	url: $rootScope.apiUrl+"/API/index.php/grupos/",
 				skipAuthorization: true,
 			  	method: "POST",
 			  	data: {
 			  		"grupo":{
 			      		"idTorneo":$scope.grupoNuevo.torneoSelect.id,
-			      		"idUsuario":$scope.usuario,
+			      		"idUsuario":$scope.usuarioLog,
 			      		"estado":1,
 			      		"nombre":$scope.grupoNuevo.name
 			  		}	
@@ -1365,12 +1731,12 @@ angular.module('miQuinielaApp')
 			}).then(function(response) {
 				var migrupo=response.data.grupo.id;
 					$http({
-					  	url: "http://appquiniela.com/API/index.php/invitaciones/",
+					  	url: $rootScope.apiUrl+"/API/index.php/invitaciones/",
 						skipAuthorization: true,
 					  	method: "POST",
 					  	data: {
 					  		"usuarioGrupo":{
-					      		"usuario":$scope.usuario,
+					      		"usuario":$scope.usuarioLog,
 					      		"grupo":response.data.grupo.id,
 					      		"estado":"miembro"
 					  		}	
@@ -1380,14 +1746,14 @@ angular.module('miQuinielaApp')
 						if($scope.grupoNuevo.listaUsuarios.length>0){
 							for (var i = 0; i < $scope.grupoNuevo.listaUsuarios.length; i++) {
 								$http({
-								  	url: "http://appquiniela.com/API/index.php/invitaciones/",
+								  	url: $rootScope.apiUrl+"/API/index.php/invitaciones/",
 									skipAuthorization: true,
 								  	method: "POST",
 								  	data: {
 								  		"usuarioGrupo":{
 								      		"usuario":$scope.grupoNuevo.listaUsuarios[i].id,
 								      		"grupo":migrupo,
-								      		"estado":"invitado"
+								      		"estado":"miembro"
 								  		}	
 
 								   	}
@@ -1428,12 +1794,12 @@ angular.module('miQuinielaApp')
     	console.log($scope.grupoNuevo.grupoSelect);
     	if($scope.grupoNuevo.grupoSelect!==0 && typeof($scope.grupoNuevo.grupoSelect)!=="undefined"){
 	    	$http({
-			  	url: "http://appquiniela.com/API/index.php/invitaciones/",
+			  	url: $rootScope.apiUrl+"/API/index.php/invitaciones/",
 				skipAuthorization: true,
 			  	method: "POST",
 			  	data: {
 			  		"usuarioGrupo":{
-			      		"usuario":$scope.usuario,
+			      		"usuario":$scope.usuarioLog,
 			      		"grupo":$scope.grupoNuevo.grupoSelect.id,
 			      		"estado":"miembro"
 			  		}	
@@ -1451,6 +1817,40 @@ angular.module('miQuinielaApp')
 			});
 		}else cambiaMensaje("No ha seleccionado ningún Grupo");
 	  }
+	  $scope.gotoBottom = function() {
+	      // set the location.hash to the id of
+	      // the element you wish to scroll to.
+	      
+    		  var old = $location.hash();
+		      $location.hash('pos-'+$scope.usuarioLog);
+
+		      // call $anchorScroll()
+		      $anchorScroll();
+   			  $location.hash(old);
+	    };
+	    $scope.muestraPredicciones=function(userId){
+
+    		$scope.displayPredGrupoModal = true;
+            $rootScope.isLoading = true;
+	    	//alert($scope.grupoSeleccionado.idTorneo);
+	    	$http({
+				  url: $rootScope.apiUrl+"/API/index.php/usuarios/"+userId,
+				  method: 'GET',
+				}).then(function successCallback(response) {
+                    $rootScope.isLoading = false;
+				    $scope.predicciones.user=response.data.usuario;
+				}, function errorCallback(response) {
+                    $rootScope.isLoading = false;
+				});
+	    	$http({
+				  url: $rootScope.apiUrl+"/API/index.php/predicciones/?userId="+userId+'&torneoId='+$scope.grupoSeleccionado.idTorneo,
+				  method: 'GET',
+				}).then(function successCallback(response) {
+				    $scope.predicciones.userPredictions=response.data.predicciones;
+				}, function errorCallback(response) {
+				});
+	    }
+
 	  actualizaGrupos();
     
   });
@@ -1459,153 +1859,120 @@ angular.module('miQuinielaApp')
 
 /**
  * @ngdoc function
- * @name miQuinielaApp.controller:HomeCtrl
+ * @name miQuinielaApp.controller:MainCtrl
  * @description
- * # HomeCtrl
+ * # MainCtrl
  * Controller of the miQuinielaApp
  */
 angular.module('miQuinielaApp')
-  .controller('indexCtrl',['$scope','$rootScope','auth','$location',function ($scope,$rootScope,auth,$location) {
-  	// $('.btn-navbar').click(); //bootstrap 2.x
-   //  $('.navbar-toggle').click() //bootstrap 3.x by Richard
+  .controller('JugarCtrl', ['$scope',function ($scope) {
+	
+  }]);
 
-  	var self = this;
-	$scope.user = {};
+'use strict';
 
-	if(auth.isAuthenticated == false){
-		var needsToLog = auth.checkForLogin();
-		if(needsToLog){
-			$scope.displayLoginModal = true;
-			$scope.visible = false;
-			angular.element(".collapse").addClass('displayModalLogin');
-		}
-		else{
-			$scope.visible = true;
-		}
-	}
+/**
+* @ngdoc function
+* @name miQuinielaApp.controller:HomeCtrl
+* @description
+* # HomeCtrl
+* Controller of the miQuinielaApp
+*/
+angular.module('miQuinielaApp')
+.controller('indexCtrl',['$http','$scope','$rootScope','auth','$location',function ($http,$scope,$rootScope,auth,$location) {
+	//Private
+	var self = this;
+	self.user = {};
+	var userIsConnected = false;
+	//Public
 	$scope.user = auth.loggedUser;
+	$scope.tipoApp = document.URL.indexOf( 'http://' ) === -1 && document.URL.indexOf( 'https://' ) === -1;
+	$scope.activeLink = true;
 
+	//Watch
 	$scope.$watch(function(){return auth.isAuthenticated;}, function (v) {
 		$scope.isAuthenticated = v;
-		if(v == true && $scope.displayLoginModal == true){
-			$scope.displayLoginModal = false;
-			angular.element(".collapse").removeClass('displayModalLogin');
-		}
 		if(v == true){
 			$scope.user = auth.loggedUser;
 			$scope.visible = true;
 			$scope.displayLogUpModal = false;
-		}
-		if(auth.isFacebookAuth){
-			$scope.isFacebookAuth = auth.isFacebookAuth;
+			$location.path("/misjuegos");
 		}
 		if(v == false){
 			$scope.visible = false;
 		}
-    },true);
+	},true);
 
-    $scope.$watch(function(){return auth.isFacebookAuth;}, function (v) {
-		$scope.isFacebookAuth = auth.isFacebookAuth;
-    },true);
-
-    $scope.$watch(function(){return auth.error;}, function (v) {
-    	console.log('changed',auth.error);	
+	$scope.$watch(function(){return auth.error;}, function (v) {
 		$scope.error = auth.error;
-    },true);
+	},true);
 
-    $scope.$watch(function(){return auth.errorLogUp;}, function (v) {
+	$scope.$watch(function(){return auth.errorLogUp;}, function (v) {
 		$scope.errorLogUp = auth.errorLogUp;
-    },true);
-    
+	},true);
 
-    $scope.regularLogin = function(user){
-      	if(user){
-    		auth.regularLogin(user);
-    	}
-    }
-
-    $scope.regularLogup = function(user){
-    	if(user){
-	    	if(user.password == user.confirmPassword){
-	    		$scope.logupError = null
-	    		delete user.confirmPassword;
-		    	auth.regularLogup(user);
-	    	}
-	    	else{
-	    		$scope.logupError = "Por favor confirme su contraseña";
-	    	}
-	    }
-	    else{
-	    	$scope.logupError = "Por favor ingrese un usuario";
-	    }
-    }
-
-    $scope.showLogin = function(){
-    	$scope.displayLoginModal = true;
-    }
-
-    $scope.showLogup = function(){
-    	$scope.displayLogUpModal = true;
-    }
-
-    $scope.logoutBoth = function(){
-    	if($scope.isFacebookAuth){
-    		this.logout();
-    	}
-    	else{
-    		auth.logOut();
-    	}
-    }
-
-    $scope.activeLink = true;
-    $scope.$on('$routeChangeSuccess', function(locationPath) {
-    	var isSecondexpanded = $("#js-navbar-collapse-second").attr("aria-expanded");
-        var isFirstExpanded = $("#js-navbar-collapse").attr("aria-expanded");
-        if(isSecondexpanded == "true"){
-            $('.second-collapse').click();
-        }
-        if(isFirstExpanded == "true"){
-            console.log('expand menu 2');
-            $('.first-collapse').click();
-        }
-    	$scope.home = false;
-    	$scope.torneos = false;
-    	$scope.foro = false;
-    	$scope.grupos = false;
-    	$scope.configuracion = false;
-        switch($location.path()){
-        	case "/home": 
-        		$scope.home = true;
-        		break;
-        	case "/torneos": 
-        		$scope.torneos = true;
-        		break;
-        	case "/grupos": 
-        		$scope.grupos = true;
-        		break;
-        	case "/configuracion": 
-        		$scope.configuracion = true;
-        		break;
-        }
-    });
-
-
-    //-------------------------------------------//
-    //login
-
-
-	// Define user empty data :/
-	this.user = {};
-
-	var userIsConnected = false;
-
-	$scope.logout = function() {
-		auth.logOut();
+	//Actions
+	$scope.regularLogin = function(user){
+		if(user){
+			auth.regularLogin(user);
+		}
 	}
 
+	$scope.regularLogup = function(user){
+		if(user){
+			if(user.password == user.confirmPassword){
+				$scope.logupError = null
+				delete user.confirmPassword;
+				auth.regularLogup(user);
+			}
+			else{
+				$scope.logupError = "Por favor confirme su contraseña";
+			}
+		}
+		else{
+			$scope.logupError = "Por favor ingrese un usuario";
+		}
+	}
+
+	$scope.showLogin = function(){
+		$scope.displayLoginModal = true;
+	}
+
+	$scope.showLogup = function(){
+		$scope.displayLogUpModal = true;
+	}
+
+	$scope.logoutBoth = function(){
+		if($scope.isFacebookAuth){
+			this.logout();
+		}
+		else{
+			auth.logOut();
+		}
+	}
+
+	function isAuth(){
+		if(auth.isAuthenticated == false){
+			var needsToLog = auth.checkForLogin();
+			if(needsToLog){
+				$scope.displayLoginModal = true;
+				$scope.visible = false;
+			}
+			else{
+				$scope.visible = true;
+			}
+		}
+	}
+
+	function init(){
+		isAuth();
+	}
+
+	init();
 
 
-  }]);
+
+}]);
 
 'use strict';
 
@@ -1633,6 +2000,52 @@ angular.module('miQuinielaApp')
       }
     };
   });
+
+'use strict';
+
+/**
+ * @ngdoc directive
+ * @name miQuinielaApp.directive:background
+ * @description
+ * # background
+ */
+ angular.module('miQuinielaApp')
+ .directive('ads', ['$http','$rootScope','$timeout',function ($http,$rootScope,$timeout) {
+ 	return {
+ 		templateUrl: 'views/ads.html',
+ 		restrict: 'E',
+ 		controller: function($http,$scope,$rootScope,$timeout) {
+ 			$scope.displayBg = true;
+ 			$scope.currentImg = 0;
+ 			$scope.ads = [];
+ 			$scope.test = 'test';
+
+ 			var cambiaImg = function() {
+ 				$scope.$apply(function() {
+ 					if( $scope.currentImg < $scope.ads.length ) {
+ 						$scope.currentImg = $scope.currentImg + 1
+ 					} else {
+ 						$scope.currentImg = 0;
+ 					}
+ 				});
+ 				$timeout(cambiaImg, 45000);  
+ 			}
+ 			$timeout(cambiaImg, 45000);  
+ 			
+ 			$http({
+ 				url: $rootScope.apiUrl+"/ads.json?date="+new Date().toString(),
+ 				skipAuthorization: true,
+ 				method: 'get'
+ 			}).then(function(response) {
+ 				$scope.ads = response.data.ads;
+ 			});
+
+ 			$scope.goTo = function(url) {
+ 				window.open(url, '_system');
+ 			}
+ 		}
+ 	};
+ }]);
 
 'use strict';
 

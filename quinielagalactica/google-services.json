@@ -1,27 +1,31 @@
 {
   "project_info": {
-    "project_number": "892357189512",
-    "firebase_url": "https://appquiniela-e99ef.firebaseio.com",
-    "project_id": "appquiniela-e99ef",
-    "storage_bucket": "appquiniela-e99ef.appspot.com"
+    "project_number": "762237495513",
+    "firebase_url": "https://quinielagalactica.firebaseio.com",
+    "project_id": "quinielagalactica",
+    "storage_bucket": "quinielagalactica.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:892357189512:android:101b089267a66282",
+        "mobilesdk_app_id": "1:762237495513:android:0e9d83e61f5f746a",
         "android_client_info": {
-          "package_name": "com.appquiniela.echo"
+          "package_name": "com.quinielagalactica.echo"
         }
       },
       "oauth_client": [
         {
-          "client_id": "892357189512-fscoh7ivoa6tl87h5v9d4ib91bi7bgfr.apps.googleusercontent.com",
+          "client_id": "762237495513-hqdkpetrm67c0jnqju9vk3f03k1pe4ol.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "762237495513-hqdkpetrm67c0jnqju9vk3f03k1pe4ol.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDNzkG3P_DvQqNPTxkpqAaHoPmOkGur-zI"
+          "current_key": "AIzaSyDbjBnx_8me2KFyn37sdCirga6mw9btOgk"
         }
       ],
       "services": {
